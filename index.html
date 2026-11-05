@@ -3679,18 +3679,67 @@
     var tr = q.split(" ");
     return lst.filter(function (n) { var pal = normTxt(n).split(" "); return tr.every(function (x) { return pal.some(function (p) { return p.indexOf(x) === 0; }); }); });
   }
+  // ---- personas que estaban en el Servicio en las fechas del registro (Fecha_Alta / Fecha_Baja de Personal_Investigador) ----
+  function valorId(id) { return $(id) ? String($(id).value || "").trim() : ""; }
+  function periodoReg(t) {             // [desde, hasta] en ISO, o null si aún no hay fecha de inicio
+    var ini = valorId(t === "trabajos" ? "dtInicio" : t === "tutorias" ? "duInicio" : "dmInicio"), fin;
+    if (t === "trabajos") fin = valorId("dtDefensa");
+    else if (t === "tutorias") fin = valorId("duFin");
+    else fin = $("dmEnCurso") && $("dmEnCurso").checked ? DC.datos.hoy : valorId("dmFin");
+    if (!ini) return null;
+    return [ini, fin && fin >= ini ? fin : ini];
+  }
+  function enServicio(n, per) {
+    var p = (DC.datos.periodos || {})[n]; if (!p) return false;
+    if (!per) return !!p[2];                                      // sin fechas: los que están en activo hoy
+    return (!p[0] || p[0] <= per[1]) && (!p[1] || p[1] >= per[0]);
+  }
+  function elegibles(t) { var per = periodoReg(t); return DC.datos.personas.filter(function (n) { return enServicio(n, per); }); }
+  function txtPeriodo(n) { var p = (DC.datos.periodos || {})[n] || []; return "alta " + (p[0] ? fCorta(p[0]) : "¿?") + (p[1] ? ", baja " + fCorta(p[1]) : ""); }
+  function txtRango(per) { return per[0] === per[1] ? "el " + fCorta(per[0]) : "entre el " + fCorta(per[0]) + " y el " + fCorta(per[1]); }
+  function rehacerSel(id, lista, primero) {
+    var s = $(id); if (!s || s.disabled) return;
+    var act = s.value, vals = lista.slice(); if (act && vals.indexOf(act) === -1) vals.unshift(act);
+    s.innerHTML = (primero !== undefined ? '<option value="">' + esc(primero) + "</option>" : "") + vals.map(function (v) {
+      var fuera = lista.indexOf(v) === -1;
+      return '<option value="' + esc(v) + '"' + (v === act ? " selected" : "") + ">" + esc(v) + (fuera ? " (no estaba en el Servicio en esas fechas)" : "") + "</option>"; }).join("");
+    s.value = act;
+  }
+  function refrescarPersonas(t) {        // al cambiar las fechas: listas acotadas y aviso de quién queda fuera
+    if (!$("ayPersDoc")) return;
+    var per = periodoReg(t), lista = elegibles(t), yo = G.S.inicio.usuario.nombre, fuera = [];
+    if (t === "trabajos") {
+      rehacerSel("dtTutor", lista, "—");
+      if ($("dlDtPers")) $("dlDtPers").innerHTML = lista.map(function (n) { return '<option value="' + esc(n) + '">'; }).join("");
+      Array.prototype.forEach.call($("dtDirs").querySelectorAll(".chip"), function (c) {
+        var n = c.getAttribute("data-n"), ok = lista.indexOf(n) !== -1; c.classList.toggle("fuera", !ok); c.title = ok ? "" : n + " no estaba en el Servicio " + (per ? txtRango(per) : "hoy") + " (" + txtPeriodo(n) + ")";
+        if (!ok) fuera.push(n); });
+      var tu = valorId("dtTutor"); if (tu && lista.indexOf(tu) === -1) fuera.push(tu);
+    } else {
+      var idp = t === "tutorias" ? "duTutor" : "dmPersona";
+      rehacerSel(idp, lista, "Elige…");
+      var v = valorId(idp) || ($(idp) && $(idp).disabled ? yo : ""); if (v && lista.indexOf(v) === -1) fuera.push(v);
+    }
+    $("ayPersDoc").innerHTML = (per ? "Lista acotada a quienes estaban en el Servicio " + esc(txtRango(per)) + " (" + lista.length + " personas)." : "Sin fecha de inicio: se muestran quienes están en activo hoy (" + lista.length + ").") +
+      (fuera.length ? '<br><span class="mensaje">' + fuera.map(function (n) { return esc(n) + " no estaba en el Servicio en esas fechas (" + esc(txtPeriodo(n)) + ")"; }).join("; ") +
+        ". Corrige las fechas o, si la fecha de alta es incorrecta, avisa a un administrador para que la corrija en Personal_Investigador.</span>" : "");
+    return fuera;
+  }
   function activarChips(id) {
     var cont = $(id), entrada = cont.querySelector("input");
     var anadir = function (aviso) {
       var v = entrada.value.trim(); if (!v) return;
-      var c = coincidencias(v, DC.datos.personas);
-      if (c.length === 1) { if (valorChips(id).indexOf(c[0]) === -1) entrada.insertAdjacentHTML("beforebegin", chipHtml(c[0])); entrada.value = ""; return; }
-      if (aviso) G.aviso(c.length ? "Coinciden " + c.length + " personas: " + c.slice(0, 6).join(", ") + ". Escribe más letras." : "No hay nadie en Personal_Investigador que coincida con «" + v + "». Los directores externos van en «Otros directores».", 6000);
+      var c = coincidencias(v, elegibles("trabajos"));
+      if (c.length === 1) { if (valorChips(id).indexOf(c[0]) === -1) entrada.insertAdjacentHTML("beforebegin", chipHtml(c[0])); entrada.value = ""; refrescarPersonas("trabajos"); return; }
+      var todos = coincidencias(v, DC.datos.personas), per = periodoReg("trabajos");
+      if (aviso) G.aviso(c.length ? "Coinciden " + c.length + " personas: " + c.slice(0, 6).join(", ") + ". Escribe más letras." :
+        todos.length ? todos.slice(0, 3).map(function (n) { return n + " no estaba en el Servicio " + (per ? txtRango(per) : "hoy") + " (" + txtPeriodo(n) + ")"; }).join("; ") + ". Si dirige desde fuera, va en «Otros directores»."
+        : "No hay nadie en Personal_Investigador que coincida con «" + v + "». Los directores externos van en «Otros directores».", 8000);
     };
     entrada.addEventListener("keydown", function (ev) { if (ev.key === "Enter" || ev.key === ",") { ev.preventDefault(); anadir(true); } });
-    entrada.addEventListener("change", function () { if (DC.datos.personas.indexOf(entrada.value.trim()) !== -1) anadir(false); });
+    entrada.addEventListener("change", function () { if (DC.datos.personas.indexOf(entrada.value.trim()) !== -1) anadir(true); });
     entrada.addEventListener("blur", function () { if (entrada.value.trim()) anadir(false); });
-    cont.addEventListener("click", function (ev) { var b = ev.target.closest(".chip button"); if (b) b.parentNode.remove(); else entrada.focus(); });
+    cont.addEventListener("click", function (ev) { var b = ev.target.closest(".chip button"); if (b) { b.parentNode.remove(); refrescarPersonas("trabajos"); } else entrada.focus(); });
   }
   function anioResidencia(nombre, fecha) {         // R1–R5 según la fecha de alta en Personal_Investigador
     var r = (DC.datos.residentes || []).filter(function (x) { return x.nombre === nombre; })[0];
@@ -3715,9 +3764,9 @@
         '<label for="dtAlumno">Alumno/a *</label>' + inp("dtAlumno", r.alumno) +
         '<label for="dtTitulacion" id="lblDtTitulacion">Titulación o programa</label>' + inp("dtTitulacion", r.titulacion, ' list="dlDtTit"') + dl("dlDtTit", D.sugerencias.titulaciones) +
         '<label for="dtUniversidad">Universidad</label>' + inp("dtUniversidad", r.universidad || (nuevo ? E.universidades[0] : ""), ' list="dlDtUni"') + dl("dlDtUni", D.sugerencias.universidades) +
-        '<label>Directores del Servicio</label><div class="chips" id="dtDirs">' + dirs.map(chipHtml).join("") + '<input list="dlDtPers" placeholder="Escribe parte del nombre y pulsa Intro" autocomplete="off"></div>' + dl("dlDtPers", D.personas) +
+        '<label>Directores del Servicio</label><div class="chips" id="dtDirs">' + dirs.map(chipHtml).join("") + '<input list="dlDtPers" placeholder="Escribe parte del nombre y pulsa Intro" autocomplete="off"></div>' + dl("dlDtPers", []) +
         '<label for="dtOtros">Otros directores (externos, separados por «; »)</label>' + inp("dtOtros", r.otrosDirectores) +
-        '<label for="dtTutor">Tutor/a del Servicio (si no dirige)</label>' + sel("dtTutor", D.personas, r.tutor, "—") +
+        '<label for="dtTutor">Tutor/a del Servicio (si no dirige)</label>' + sel("dtTutor", D.personas, r.tutor, "—") + '<div class="ayuda" id="ayPersDoc"></div>' +
         '<div class="fila-rango"><div style="flex:1"><label for="dtInicio">Fecha de inicio</label>' + inp("dtInicio", r.inicio, ' type="date"') + "</div>" +
         '<div style="flex:1" id="bqDtDefensa"><label for="dtDefensa">Fecha de defensa</label>' + inp("dtDefensa", r.defensa, ' type="date"') + "</div></div>" +
         '<div id="bqDtCalif"><label for="dtCalif">Calificación</label>' + sel("dtCalif", E.calificacion, r.calificacion, "—") + "</div>" +
@@ -3727,7 +3776,7 @@
     } else if (t === "tutorias") {
       titulo = nuevo ? "Añadir tutoría" : "Editar tutoría";
       html = '<label for="duTipo">Tipo *</label>' + sel("duTipo", E.tipoTutoria, r.tipo, "Elige…") +
-        '<label for="duTutor">Tutor/a del Servicio *</label>' + personaSel("duTutor", r.tutor || yo) +
+        '<label for="duTutor">Tutor/a del Servicio *</label>' + personaSel("duTutor", r.tutor || yo) + '<div class="ayuda" id="ayPersDoc"></div>' +
         '<label for="duPersona">Persona tutelada *</label>' + inp("duPersona", r.persona, ' list="dlDuRes" autocomplete="off"') + '<datalist id="dlDuRes"></datalist>' +
         '<div class="ayuda" id="ayDuPersona"></div>' +
         '<label for="duEsp">Especialidad</label>' + inp("duEsp", r.especialidad || (nuevo ? D.especialidad : ""), ' list="dlDuEsp"') + dl("dlDuEsp", D.sugerencias.especialidades) +
@@ -3739,7 +3788,7 @@
         '<label for="duObs">Observaciones</label><textarea id="duObs" rows="2">' + esc(r.obs || "") + "</textarea>";
     } else {
       titulo = nuevo ? "Añadir mérito" : "Editar mérito";
-      html = '<label for="dmPersona">Persona del Servicio *</label>' + personaSel("dmPersona", r.persona || yo) +
+      html = '<label for="dmPersona">Persona del Servicio *</label>' + personaSel("dmPersona", r.persona || yo) + '<div class="ayuda" id="ayPersDoc"></div>' +
         '<label for="dmTipo">Tipo *</label>' + sel("dmTipo", E.tipoMerito, r.tipo, "Elige…") +
         '<label for="dmTitulo">Título / Descripción *</label><textarea id="dmTitulo" rows="2">' + esc(r.titulo || "") + "</textarea>" +
         '<label for="dmEntidad">Entidad</label>' + inp("dmEntidad", r.entidad, ' list="dlDmEnt"') + dl("dlDmEnt", D.sugerencias.entidades) +
@@ -3764,26 +3813,38 @@
         $("lblDtTitulacion").textContent = tipo === "Tesis doctoral" ? "Programa de doctorado" : tipo === "TFM" ? "Máster" : tipo === "TFG" ? "Grado" : "Titulación o programa";
       };
       ["dtTipo", "dtEstado"].forEach(function (id) { $(id).addEventListener("change", vis); }); vis();
+      ["dtInicio", "dtDefensa", "dtTutor"].forEach(function (id) { $(id).addEventListener("change", function () { refrescarPersonas("trabajos"); }); });
     } else if (t === "tutorias") {
       var auto = !r.anioRes;
       var vis2 = function () {
         var mir = $("duTipo").value === D.mir;
         $("bqDuRes").classList.toggle("oculto", !mir); $("bqDuCentro").classList.toggle("oculto", mir || !$("duTipo").value);
-        var res = (D.residentes || []).filter(function (x) { return x.activo || !$("duInicio").value || !x.baja || x.baja >= $("duInicio").value; }).map(function (x) { return x.nombre; });
+        var perR = periodoReg("tutorias");      // residentes en el Servicio en esas fechas (sin fecha: los activos hoy)
+        var res = (D.residentes || []).filter(function (x) { return perR ? (!x.alta || x.alta <= perR[1]) && (!x.baja || x.baja >= perR[0]) : x.activo; }).map(function (x) { return x.nombre; });
         $("dlDuRes").innerHTML = (mir ? res : []).map(function (n) { return '<option value="' + esc(n) + '">'; }).join("");
         $("ayDuPersona").textContent = mir ? "Elige el residente de la lista (Personal_Investigador)." : "Nombre y apellidos.";
         var sug = mir ? anioResidencia($("duPersona").value.trim(), $("duInicio").value) : "";
         if (mir && sug && auto) $("duAnioRes").value = sug;
         $("ayDuRes").textContent = sug ? "Según su fecha de alta, en esa fecha era " + sug + "." : "";
       };
-      ["duTipo", "duPersona", "duInicio"].forEach(function (id) { $(id).addEventListener("change", vis2); $(id).addEventListener("input", vis2); });
+      ["duTipo", "duPersona", "duInicio", "duFin"].forEach(function (id) { $(id).addEventListener("change", vis2); $(id).addEventListener("input", vis2); });
+      ["duInicio", "duFin", "duTutor"].forEach(function (id) { $(id).addEventListener("change", function () { refrescarPersonas("tutorias"); }); });
       $("duAnioRes").addEventListener("change", function () { auto = false; }); vis2();
     } else {
       var vis3 = function () { $("bqDmFin").classList.toggle("oculto", $("dmEnCurso").checked); };
       $("dmEnCurso").addEventListener("change", vis3); vis3();
+      ["dmInicio", "dmFin", "dmEnCurso", "dmPersona"].forEach(function (id) { $(id).addEventListener("change", function () { refrescarPersonas("meritos"); }); });
     }
+    refrescarPersonas(t);
   }
   function guardar(t, r, nuevo) {
+    var fueraP = refrescarPersonas(t) || [], claveF = fueraP.join("|") + "@" + (periodoReg(t) || []).join("/");
+    if (periodoReg(t) && fueraP.length) {
+      var txtF = fueraP.join(", ") + (fueraP.length === 1 ? " no estaba" : " no estaban") + " en el Servicio en esas fechas (ver el aviso de arriba).";
+      if (!G.S.inicio.usuario.admin) { $("msgDoc").textContent = txtF; return; }
+      if (DC.okFuera !== claveF) { DC.okFuera = claveF; $("msgDoc").textContent = txtF + " Si la fecha de alta de Personal_Investigador es la que está mal, pulsa «Guardar» otra vez para guardarlo igualmente."; return; }
+    }
+    DC.okFuera = null;
     var v = function (id) { return $(id) ? $(id).value.trim() : ""; }, d = { id: r.id || "" };
     if (t === "trabajos") {
       var pend = $("dtDirs").querySelector("input").value.trim();
