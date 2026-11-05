@@ -117,9 +117,15 @@
   /* Ficha (detalle) */
   .ficha-cuerpo { flex:1; overflow:auto; background:var(--fondo); padding:10px; }
   .tarjeta { background:#fff; border:1px solid var(--borde); border-radius:4px; padding:12px 14px; margin-bottom:10px; }
-  .acciones-redondas { display:flex; flex-wrap:wrap; gap:14px; }
-  .accion { border:none; background:none; width:78px; text-align:center; color:var(--texto); font-size:12px; padding:0; }
-  .accion i { display:flex; align-items:center; justify-content:center; width:40px; height:40px; margin:0 auto 6px; border-radius:50%; background:var(--rojo); color:#fff; font-size:16px; }
+  .acciones-redondas { display:flex; flex-wrap:wrap; gap:14px; align-items:flex-start; }
+  .accion { border:none; background:none; width:78px; text-align:center; color:var(--texto); font-size:12px; line-height:1.25; padding:0;
+            display:inline-flex; flex-direction:column; align-items:center; justify-content:flex-start; align-self:flex-start; cursor:pointer; }
+  .accion i { display:flex; flex:0 0 auto; align-items:center; justify-content:center; width:40px; height:40px; margin:0 0 6px; border-radius:50%; background:var(--rojo); color:#fff; font-size:16px; }
+  .cats-jcr { display:flex; flex-direction:column; gap:7px; }
+  .cat-jcr { display:flex; flex-wrap:wrap; align-items:center; gap:6px; font-size:13.5px; }
+  .et-cat { border:1px solid var(--borde); background:#fff; border-radius:12px; padding:2px 9px; font-size:12.5px; color:var(--texto); cursor:pointer; }
+  .et-cat i { font-size:10px; color:var(--tenue); } .et-cat:hover { border-color:var(--rojo); color:var(--rojo); } .et-cat:hover i { color:var(--rojo); }
+  .cat-jcr .mejor { font-size:11.5px; color:var(--verde); }
   .accion.verde i { background:var(--verde); }
   .campo { margin-bottom:12px; }
   .campo .et-campo { font-size:12px; color:var(--tenue); margin-bottom:2px; }
@@ -398,6 +404,11 @@
           <div class="rapidos"><button class="bt" data-ultimos="5">Últimos 5 años</button><button class="bt" data-ultimos="10">Últimos 10 años</button></div>
           <label for="fIndex">Indexación JCR</label>
           <select id="fIndex"><option value="">Todas</option><option value="si">Indexada(JCR)</option><option value="no">No indexada</option></select>
+          <label for="fCat">Categoría JCR</label><select id="fCat"><option value="">Todas las categorías</option></select>
+          <label for="fCuartil">Cuartil / decil</label>
+          <select id="fCuartil"><option value="">Cualquiera</option><option value="Q1">Q1</option><option value="Q12">Q1 o Q2</option><option value="Q2">Q2</option>
+            <option value="Q3">Q3</option><option value="Q4">Q4</option><option value="D1">D1 (primer decil)</option></select>
+          <p class="tenue" style="margin:4px 0 0">Si la revista está en varias categorías cuenta la mejor («Q2 ; Q1» es Q1). Con una categoría elegida, se usa el cuartil de esa categoría.</p>
           <div class="soloAdmin"><label for="fFil">Filiación La Paz</label><select id="fFil"></select></div>
           <div class="soloAdmin"><label for="fEstado">Estado de validación</label>
             <select id="fEstado"><option value="">Confirmadas (como AppSheet)</option><option>Pendiente de Confirmación</option><option>Descartado</option><option value="*">Todas</option></select></div>
@@ -693,6 +704,22 @@
   function vacio(v) { return v === null || v === undefined || String(v).trim() === ""; }
   function personasDe(p) { return String(p["Personas Servicio"] || "").split(";").map(function (s) { return s.trim(); }).filter(Boolean); }
   function indexada(p) { return !vacio(p["Factor de Impacto"]); }
+  // ---- categorías JCR: «A ; B» con cuartil «Q2 ; Q1», decil y ranking en el mismo orden ----
+  function partes(v) { var s = String(v === null || v === undefined ? "" : v).trim(); return s ? s.split(";").map(function (x) { return x.trim(); }) : []; }
+  function categoriasJCR(p) {
+    var c = partes(p["Categoría"]), q = partes(p.Cuartil), d = partes(p.Decil), r = partes(p.Ranking), n = Math.max(c.length, q.length), out = [];
+    var en = function (a, i) { return a.length === n ? (a[i] || "") : (a.length === 1 ? a[0] : ""); };
+    for (var i = 0; i < n; i++) out.push({ nombre: c[i] || "", cats: String(c[i] || "").split(/\s+\/\s+/).map(function (x) { return x.trim(); }).filter(Boolean),
+                                          q: en(q, i), d: en(d, i), r: en(r, i) });
+    return out.filter(function (x) { return x.nombre || x.q; });
+  }
+  function numQ(q) { var m = /^Q([1-4])$/i.exec(String(q || "").trim()); return m ? +m[1] : 9; }
+  function numD(d) { var m = /^D(10|[1-9])$/i.exec(String(d || "").trim()); return m ? +m[1] : 99; }
+  function deCategoria(x, cat) { return !cat || x.cats.indexOf(cat) !== -1; }
+  // mejor cuartil / decil entre las categorías de la revista (o solo en la categoría indicada)
+  function mejorCuartil(p, cat) { var b = 9; categoriasJCR(p).forEach(function (x) { if (deCategoria(x, cat)) b = Math.min(b, numQ(x.q)); }); return b < 9 ? "Q" + b : ""; }
+  function mejorDecil(p, cat) { var b = 99; categoriasJCR(p).forEach(function (x) { if (deCategoria(x, cat)) b = Math.min(b, numD(x.d)); }); return b < 99 ? "D" + b : ""; }
+  function textoCategorias(p) { return categoriasJCR(p).map(function (x) { return (x.nombre || "Sin categoría") + ": " + [x.q, x.d, x.r].filter(Boolean).join(" · "); }).join("\n"); }
   function esLibro(p) { return LIBROS.indexOf(p["Tipo de Artículo"]) !== -1; }
   function anoDe(p) { return String(p["Año"] || "").substring(0, 4); }
   function estadoDe(p) { return String(p["Estado Validación"] || "").trim(); }
@@ -970,6 +997,12 @@
       var fil = {}, pers = {};
       lista.forEach(function (p) { if (p["Filiación La Paz"]) fil[p["Filiación La Paz"]] = 1; personasDe(p).forEach(function (n) { pers[n] = 1; }); });
       opciones($("fFil"), Object.keys(fil).sort(), "Cualquier filiación");
+      var cats = {}; lista.forEach(function (p) { if (!confirmada(p)) return; var vistas = {};
+        categoriasJCR(p).forEach(function (x) { x.cats.forEach(function (c) { if (!vistas[c]) { vistas[c] = 1; cats[c] = (cats[c] || 0) + 1; } }); }); });
+      var actualCat = $("fCat").value;
+      $("fCat").innerHTML = '<option value="">Todas las categorías</option>' + Object.keys(cats).sort(function (a, b) { return cats[b] - cats[a] || a.localeCompare(b, "es"); })
+        .map(function (c) { return '<option value="' + esc(c) + '">' + esc(c) + " (" + cats[c] + ")</option>"; }).join("");
+      if (cats[actualCat]) $("fCat").value = actualCat;
       var todos = {}; lista.forEach(function (p) { if (/^\d{4}$/.test(anoDe(p))) todos[anoDe(p)] = 1; });
       var ks = Object.keys(todos).sort();
       opciones($("fDesde"), ks, "Desde…"); opciones($("fHasta"), ks.slice().reverse(), "Hasta…");
@@ -982,7 +1015,8 @@
   // ---------- lista (tabla agrupada como en AppSheet) ----------
   function pasaFiltros(p, conAno) {
     var t = $("fTexto").value.trim().toLowerCase(), tipo = $("fTipo").value, per = $("fPersona").value, ix = $("fIndex").value,
-        fil = $("fFil").value, est = S.inicio.usuario.admin ? $("fEstado").value : "", mias = $("fMias").checked;
+        fil = $("fFil").value, est = S.inicio.usuario.admin ? $("fEstado").value : "", mias = $("fMias").checked,
+        cat = $("fCat").value, cq = $("fCuartil").value;
     if (est === "") { if (!confirmada(p)) return false; } else if (est !== "*" && estadoDe(p) !== est) return false;
     if (conAno && S.ano && anoDe(p) !== S.ano) return false;
     var desde = $("fDesde").value, hasta = $("fHasta").value;
@@ -1004,6 +1038,12 @@
     if (ix === "si" && !(indexada(p) && cuentaJCR(p))) return false;
     if (ix === "no" && (indexada(p) || !cuentaJCR(p))) return false;
     if (fil && p["Filiación La Paz"] !== fil) return false;
+    if (cat && !categoriasJCR(p).some(function (x) { return x.cats.indexOf(cat) !== -1; })) return false;
+    if (cq) {                     // cuartil: el mejor entre sus categorías, o el de la categoría elegida
+      if (!(indexada(p) && cuentaJCR(p))) return false;
+      var mq = mejorCuartil(p, cat);
+      if (cq === "D1" ? mejorDecil(p, cat) !== "D1" : cq === "Q12" ? (mq !== "Q1" && mq !== "Q2") : mq !== cq) return false;
+    }
     if (t) {
       var hay = [p["Título del artículo"], p.Revista, p.PMID, p.DOI, p.Autores, p["Personas Servicio"], p["Tipo de Artículo"], anoDe(p)].join(" ").toLowerCase();
       if (hay.indexOf(t) === -1) return false;
@@ -1012,7 +1052,7 @@
   }
   function posTipo(t) { var i = ORDEN_TIPOS.indexOf(t); return i === -1 ? 99 : i; }
   function filtrosActivos() {
-    return ["fTipo", "fPersona", "fIndex", "fFil", "fPosicion", "fDesde", "fHasta"].some(function (id) { return $(id).value; }) || $("fMias").checked ||
+    return ["fTipo", "fPersona", "fIndex", "fFil", "fPosicion", "fDesde", "fHasta", "fCat", "fCuartil"].some(function (id) { return $(id).value; }) || $("fMias").checked ||
            (S.inicio.usuario.admin && $("fEstado").value !== "");
   }
   function pintarLista() {
@@ -1063,7 +1103,7 @@
     }
     var ix = l.filter(function (p) { return indexada(p) && cuentaJCR(p); }).length;
     $("resumen").textContent = l.length + " publicaciones" + (S.ano ? " en " + S.ano : "") + " · " + ix + " indexadas en JCR · " +
-      l.filter(function (p) { return indexada(p) && cuentaJCR(p) && /Q1/.test(String(p.Cuartil || "")); }).length + " Q1";
+      l.filter(function (p) { return indexada(p) && cuentaJCR(p) && mejorCuartil(p) === "Q1"; }).length + " Q1";
     $("btFiltros").style.color = filtrosActivos() ? "var(--rojo)" : "";
     $("btIndicadores").style.color = $("indicadores").classList.contains("oculto") ? "" : "var(--rojo)";
     S.indicadores = calcularIndicadores(l);
@@ -1081,7 +1121,7 @@
               abstracts: l.filter(esAbs).length };
     art.forEach(function (p) {
       var fi = primerFI(p);
-      if (fi !== null) { k.ix++; k.fi += fi; if (/Q1/.test(String(p.Cuartil || ""))) k.q1++; if (/\bD1\b/.test(String(p.Decil || ""))) k.d1++; }
+      if (fi !== null) { k.ix++; k.fi += fi; if (mejorCuartil(p) === "Q1") k.q1++; if (mejorDecil(p) === "D1") k.d1++; }
       if (/^[sS][iíIÍ]$/.test(String(p["Es Open Access"] || "").trim())) k.oa++;
       var c = parseFloat(p["Citas Totales"]); if (!isNaN(c)) k.citas += c;
       var r = papeles(p, per);
@@ -1120,13 +1160,13 @@
     return "";
   }
   function etiquetas(p) {
-    var e = [], c = String(p.Cuartil || "");
+    var e = [], c = mejorCuartil(p), nc = categoriasJCR(p).length;
     if (!cuentaJCR(p)) e.push('<span class="et">' + esc(p["Tipo de Artículo"]) + '</span>');
-    else if (indexada(p)) { e.push('<span class="et">FI ' + esc(numero(String(p["Factor de Impacto"]).split(";")[0])) + '</span>'); if (c) e.push('<span class="et' + (/Q1/.test(c) ? " q1" : "") + '">' + esc(c.split(";")[0].trim()) + '</span>'); }
+    else if (indexada(p)) { e.push('<span class="et">FI ' + esc(numero(String(p["Factor de Impacto"]).split(";")[0])) + '</span>'); if (c) e.push('<span class="et' + (c === "Q1" ? " q1" : "") + '" title="' + esc((nc > 1 ? "Mejor cuartil de " + nc + " categorías\n" : "") + textoCategorias(p)) + '">' + esc(c) + '</span>'); }
     else e.push('<span class="et no">No indexada</span>');
     return e.join("") + etiquetaEstado(p);
   }
-  ["fTexto", "fTipo", "fPersona", "fIndex", "fFil", "fEstado", "fMias", "fPosicion", "fDesde", "fHasta"].forEach(function (id) {
+  ["fTexto", "fTipo", "fPersona", "fIndex", "fFil", "fEstado", "fMias", "fPosicion", "fDesde", "fHasta", "fCat", "fCuartil"].forEach(function (id) {
     $(id).addEventListener(id === "fTexto" ? "input" : "change", function () { if (id === "fTexto" && GC.mod[S.vista]) { if (GC.mod[S.vista].buscar) GC.mod[S.vista].buscar(); return; }
       if (id === "fTexto" && S.vista !== "pubs") mostrarVista("pubs"); pintarLista(); });
   });
@@ -1140,7 +1180,7 @@
   $("tabla").addEventListener("click", clicLista); $("tarjetasMovil").addEventListener("click", clicLista);
   $("btFiltros").onclick = function () { $("panelFiltros").classList.toggle("oculto"); };
   $("btCerrarFiltros").onclick = function () { $("panelFiltros").classList.add("oculto"); };
-  $("btLimpiar").onclick = function () { ["fTipo", "fPersona", "fIndex", "fFil", "fEstado", "fPosicion", "fDesde", "fHasta"].forEach(function (id) { $(id).value = ""; }); $("fMias").checked = false; pintarLista(); };
+  $("btLimpiar").onclick = function () { ["fTipo", "fPersona", "fIndex", "fFil", "fEstado", "fPosicion", "fDesde", "fHasta", "fCat", "fCuartil"].forEach(function (id) { $(id).value = ""; }); $("fMias").checked = false; pintarLista(); };
   document.querySelectorAll("[data-ultimos]").forEach(function (b) {
     b.onclick = function () {
       var n = +b.getAttribute("data-ultimos"), hoy = new Date().getFullYear(), anos = Array.prototype.map.call($("fDesde").options, function (o) { return o.value; });
@@ -1217,6 +1257,7 @@
       if (!admin && SOLO_ADMIN.indexOf(c) !== -1) return false;
       if (c === "Estado Validación" && !admin && confirmada(d)) return false;
       if (c === "Motivo Revisión" && estadoDe(d) !== "Pendiente de Confirmación" && !admin) return false;
+      if (["Cuartil", "Decil", "Ranking"].indexOf(c) !== -1 && partes(d["Categoría"]).length) return false;   // van dentro de «Categorías JCR»
       return valorCampo(c, d) !== "";
     });
     var col2 = '<div class="tarjeta">' + campos.map(function (c) {
@@ -1224,16 +1265,38 @@
       if (c === "Tipo Open Access") return '<div class="campo"><div class="et-campo">' + esc(et) +
         ' <button class="bt-info" id="btInfoOA" title="¿Qué significa cada tipo?"><i class="fa-solid fa-circle-info"></i></button></div>' +
         '<div class="valor">' + valorCampo(c, d) + '</div>' + infoOA(d[c]) + '</div>';
+      if (c === "Categoría") return campoCategorias(d);
       return '<div class="campo"><div class="et-campo">' + esc(et) + '</div><div class="valor">' + valorCampo(c, d) + '</div></div>'; }).join("") + '</div>';
     $("ficha").innerHTML = '<div class="col">' + col1 + col2 + '</div>';       // una sola columna: acciones encima de los detalles
     $("ficha").querySelectorAll("[data-url]").forEach(function (b) { b.onclick = function () { window.open(b.getAttribute("data-url"), "_blank", "noopener"); }; });
     var on = function (id, fn) { if ($(id)) $(id).onclick = fn; };
     on("acReclamar", formReclamar);
+    $("ficha").querySelectorAll("[data-cat]").forEach(function (b) { b.onclick = function () { filtrarCategoria(b.getAttribute("data-cat")); }; });
     on("btInfoOA", function () { $("infoOA").classList.toggle("oculto"); });
     on("acConfirmar", function () { validar("Confirmado", ""); });
     on("acRellenar", function () { accion(api("webRellenarDeNuevo", S.token, d.ID_Articulo), true); });
     $("btFichaDescartar").classList.toggle("oculto", !admin || estadoDe(d) === "Descartado");
     $("btFichaEditar").classList.toggle("oculto", !r.editables.length);
+  }
+  // Categorías JCR de la revista: una línea por categoría (cuartil · decil · ranking); la mejor, resaltada. Cada categoría es un filtro.
+  function campoCategorias(d) {
+    var l = categoriasJCR(d), mejor = mejorCuartil(d), varias = l.length > 1;
+    var filas = l.map(function (x) {
+      var top = varias && numQ(x.q) === numQ(mejor);
+      return '<div class="cat-jcr">' + (x.cats.length ? x.cats.map(function (c) {
+          return '<button type="button" class="et-cat" data-cat="' + esc(c) + '" title="Ver todas las publicaciones de esta categoría"><i class="fa-solid fa-filter"></i> ' + esc(c) + '</button>'; }).join("") : '<span class="tenue">Sin categoría</span>') +
+        (x.q ? ' <span class="et' + (x.q === "Q1" ? " q1" : "") + '">' + esc(x.q) + '</span>' : '') +
+        ([x.d, x.r ? "ranking " + x.r : ""].filter(Boolean).length ? ' <span class="tenue">' + esc([x.d, x.r ? "ranking " + x.r : ""].filter(Boolean).join(" · ")) + '</span>' : '') +
+        (top ? ' <span class="mejor"><i class="fa-solid fa-star"></i> cuenta como ' + esc(mejor) + '</span>' : '') + '</div>'; }).join("");
+    return '<div class="campo"><div class="et-campo">' + (varias ? "Categorías JCR (" + l.length + ") · cuartil y decil en cada una" : "Categoría JCR") + '</div><div class="valor cats-jcr">' + filas + '</div></div>';
+  }
+  function filtrarCategoria(cat) {
+    if (!Array.prototype.some.call($("fCat").options || [], function (o) { return o.value === cat; }))
+      $("fCat").insertAdjacentHTML("beforeend", '<option value="' + esc(cat) + '">' + esc(cat) + '</option>');
+    $("fCat").value = cat;
+    if (esMovil()) cerrarFicha();
+    pintarLista();
+    aviso("Filtrando por categoría: " + cat + ". Para quitarlo: Filtrar → Quitar filtros.", 5000);
   }
   function accion(promesa, recargar) {
     cargando(true);
@@ -1414,6 +1477,8 @@
     if ($("fPersona").value) f.push("Investigador/a: " + $("fPersona").value);
     if ($("fIndex").value) f.push($("fIndex").value === "si" ? "Indexadas en JCR" : "No indexadas");
     if ($("fFil").value) f.push("Filiación: " + $("fFil").value);
+    if ($("fCat").value) f.push("Categoría JCR: " + $("fCat").value);
+    if ($("fCuartil").value) f.push("Cuartil: " + ({ Q12: "Q1 o Q2", D1: "D1 (primer decil)" }[$("fCuartil").value] || $("fCuartil").value) + ($("fCat").value ? " en esa categoría" : " (mejor categoría)"));
     if ($("fMias").checked) f.push("Solo mis publicaciones");
     if (S.inicio.usuario.admin && $("fEstado").value) f.push("Estado: " + ($("fEstado").value === "*" ? "todas" : $("fEstado").value));
     if ($("fTexto").value.trim()) f.push("Búsqueda: «" + $("fTexto").value.trim() + "»");
@@ -1523,7 +1588,7 @@
     var col = colaboradoresServicio(p);
     if (col.length) r += " [Miembros del Servicio en el grupo colaborativo: " + col.map(function (c) { return opc.negrita ? "<b>" + esc(c) + "</b>" : esc(c); }).join(", ") + "]";
     if (opc.metricas && !vacio(p["Factor de Impacto"])) r += " [FI " + esc(numero(String(p["Factor de Impacto"]).split(";")[0])) +
-      (p.Cuartil ? " · " + esc(String(p.Cuartil).split(";")[0].trim()) : "") + (p.Decil ? " · " + esc(String(p.Decil).split(";")[0].trim()) : "") + "]";
+      (mejorCuartil(p) ? " · " + esc(mejorCuartil(p)) : "") + (mejorDecil(p) ? " · " + esc(mejorDecil(p)) : "") + "]";
     return r;
   }
   function vancouverHtml(filas) {
@@ -1598,7 +1663,7 @@
       var pg = String(p["Páginas"] || "").split("-"); add("SP", pg[0]); if (pg.length > 1) add("EP", pg[1]);
       add("PB", p.Editorial); add("SN", p.ISBN || p.ISSN); add("DO", p.DOI);
       if (p.PMID) { add("AN", "PMID:" + p.PMID); add("UR", "https://pubmed.ncbi.nlm.nih.gov/" + p.PMID + "/"); }
-      add("N1", t + (vacio(p["Factor de Impacto"]) ? "" : " · FI " + p["Factor de Impacto"] + (p.Cuartil ? " · " + p.Cuartil : "")));
+      add("N1", t + (vacio(p["Factor de Impacto"]) ? "" : " · FI " + p["Factor de Impacto"] + (mejorCuartil(p) ? " · " + mejorCuartil(p) : "") + (categoriasJCR(p).length > 1 ? " (" + textoCategorias(p).replace(/\n/g, "; ") + ")" : "")));
       L.push("ER  - ", "");
     });
     return L.join("\r\n");
