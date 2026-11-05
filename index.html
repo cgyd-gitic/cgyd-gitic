@@ -38,6 +38,8 @@
   .bt { border:1px solid var(--borde); background:#fff; border-radius:4px; padding:7px 12px; color:var(--texto); }
   .bt-rojo { background:var(--rojo); border:1px solid var(--rojo); color:#fff; border-radius:4px; padding:7px 12px; font-weight:500; }
   .bt-rojo:hover { background:var(--rojo-osc); }
+  .preparando { opacity:.6; cursor:progress; } .preparando .fa-fingerprint { animation:pulsoBio 1.1s ease-in-out infinite; }
+  @keyframes pulsoBio { 50% { opacity:.35; } }
   .bt-icono { border:none; background:none; color:var(--tenue); width:34px; height:34px; border-radius:50%; }
   .bt-icono:hover { background:var(--gris); color:var(--texto); }
   .bt-texto { border:none; background:none; color:var(--rojo); font-weight:500; padding:6px 8px; }
@@ -777,17 +779,36 @@
   // ---------- Face ID / huella (passkeys WebAuthn) — solo en la web publicada en su propia dirección ----------
   var PK = (function () {
     var soportado = !EN_APPS_SCRIPT && !!window.PublicKeyCredential && window.isSecureContext && window.top === window.self;
-    var opcEntrada = null, opcRegistro = null;
+    var opcEntrada = null, opcRegistro = null, pEntrada = null, pRegistro = null, avisar = function () {};
+    var VIDA_ENTRADA = 200000, VIDA_REGISTRO = 480000;          // el servidor los guarda 300 s / 600 s: se renuevan antes
+    function vigente(x, vida) { return !!x && Date.now() - x.t < vida; }
     function aBuf(s) { s = String(s).replace(/-/g, "+").replace(/_/g, "/"); while (s.length % 4) s += "="; var b = atob(s), a = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) a[i] = b.charCodeAt(i); return a.buffer; }
     function aB64u(buf) { var a = new Uint8Array(buf), s = ""; for (var i = 0; i < a.length; i++) s += String.fromCharCode(a[i]); return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); }
     function disponible() {
       if (!soportado || !PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable) return Promise.resolve(false);
       return PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable().catch(function () { return false; });
     }
-    function prepararEntrada() { opcEntrada = null; return api("webPasskeyOpcionesEntrada").then(function (o) { opcEntrada = { o: o, t: Date.now() }; return o; }); }
-    function entrar() {           // se llama directamente desde el clic (Safari exige un gesto del usuario)
-      if (!opcEntrada || Date.now() - opcEntrada.t > 240000) return prepararEntrada().then(function () { throw new Error("Pulsa otra vez el botón."); });
-      var o = opcEntrada.o, id = leer("gc_pk"); opcEntrada = null;
+    // Reto de un solo uso, pedido por adelantado: así el clic llama a Face ID al instante (Safari exige que sea dentro del gesto)
+    function prepararEntrada(forzar) {
+      if (!forzar && vigente(opcEntrada, VIDA_ENTRADA)) return Promise.resolve(opcEntrada.o);
+      if (pEntrada) return pEntrada;
+      opcEntrada = null; avisar();
+      pEntrada = api("webPasskeyOpcionesEntrada").then(function (o) { opcEntrada = { o: o, t: Date.now() }; pEntrada = null; avisar(); return o; },
+                                                      function (e) { pEntrada = null; avisar(); throw e; });
+      return pEntrada;
+    }
+    function entradaLista() { return vigente(opcEntrada, VIDA_ENTRADA); }
+    function entrar() {           // se llama directamente desde el clic
+      if (!entradaLista()) {      // aún llegando (o caducado): se espera y se continúa sin pedir otro clic
+        var t0 = Date.now();
+        return prepararEntrada().then(function () { return pedirFirma(); }).catch(function (e) {
+          if (e && e.name === "NotAllowedError" && Date.now() - t0 < 15000 && /iPhone|iPad|Macintosh/.test(navigator.userAgent)) throw new Error("Ya está listo: pulsa el botón otra vez.");
+          throw e; });
+      }
+      return pedirFirma();
+    }
+    function pedirFirma() {
+      var o = opcEntrada.o, id = leer("gc_pk"); opcEntrada = null; avisar();
       return navigator.credentials.get({ publicKey: { challenge: aBuf(o.challenge), rpId: o.rpId, userVerification: "required", timeout: 60000,
           allowCredentials: id ? [{ type: "public-key", id: aBuf(id) }] : [] } })
         .then(function (c) {
@@ -796,10 +817,26 @@
             .then(function (r) { if (r && r.ok && !leer("gc_pk")) { guardar("gc_pk", c.id); guardar("gc_bio", "1"); } return r; });
         });
     }
-    function prepararRegistro() { opcRegistro = null; return api("webPasskeyOpcionesRegistro", S.token).then(function (o) { opcRegistro = { o: o, t: Date.now() }; return o; }); }
+    function prepararRegistro(forzar) {
+      if (!forzar && vigente(opcRegistro, VIDA_REGISTRO)) return Promise.resolve(opcRegistro.o);
+      if (pRegistro) return pRegistro;
+      opcRegistro = null; avisar();
+      pRegistro = api("webPasskeyOpcionesRegistro", S.token).then(function (o) { opcRegistro = { o: o, t: Date.now() }; pRegistro = null; avisar(); return o; },
+                                                                 function (e) { pRegistro = null; avisar(); throw e; });
+      return pRegistro;
+    }
+    function registroListo() { return vigente(opcRegistro, VIDA_REGISTRO); }
     function registrar() {
-      if (!opcRegistro || Date.now() - opcRegistro.t > 540000) return prepararRegistro().then(function () { throw new Error("Pulsa otra vez el botón."); });
-      var o = opcRegistro.o; opcRegistro = null;
+      if (!registroListo()) {
+        var t0 = Date.now();
+        return prepararRegistro().then(function () { return crearClave(); }).catch(function (e) {
+          if (e && e.name === "NotAllowedError" && Date.now() - t0 < 15000 && /iPhone|iPad|Macintosh/.test(navigator.userAgent)) throw new Error("Ya está listo: pulsa el botón otra vez.");
+          throw e; });
+      }
+      return crearClave();
+    }
+    function crearClave() {
+      var o = opcRegistro.o; opcRegistro = null; avisar();
       return navigator.credentials.create({ publicKey: { challenge: aBuf(o.challenge), rp: { id: o.rpId, name: o.rpName },
           user: { id: aBuf(o.userId), name: o.userName, displayName: o.displayName },
           pubKeyCredParams: [{ type: "public-key", alg: -7 }, { type: "public-key", alg: -257 }],
@@ -810,8 +847,28 @@
             dispositivo: navigator.userAgent, nombre: nombreDispositivo() }).then(function (r) { if (r && r.ok) { guardar("gc_pk", r.id); guardar("gc_bio", "1"); guardarToken(S.token); } return r; });
         });
     }
-    return { soportado: soportado, disponible: disponible, prepararEntrada: prepararEntrada, entrar: entrar, prepararRegistro: prepararRegistro, registrar: registrar };
+    // Renovación automática: al volver a la pestaña / reabrir la app desde segundo plano y cada 30 s mientras haya un botón esperando
+    function renovar() {
+      if (!soportado || document.hidden) return;
+      if (!$("vAcceso").classList.contains("oculto") && !entradaLista() && !pEntrada) prepararEntrada().catch(function () {});
+      if (!$("dlgForm").classList.contains("oculto") && $("dlgAceptar").getAttribute("data-pk") === "registro" && !registroListo() && !pRegistro) prepararRegistro().catch(function () {});
+    }
+    if (soportado) {
+      document.addEventListener("visibilitychange", renovar); window.addEventListener("pageshow", renovar); window.addEventListener("focus", renovar);
+      setInterval(renovar, 30000);
+    }
+    return { soportado: soportado, disponible: disponible, prepararEntrada: prepararEntrada, entrar: entrar, prepararRegistro: prepararRegistro, registrar: registrar,
+             entradaLista: entradaLista, registroListo: registroListo, alCambiar: function (f) { avisar = f; } };
   })();
+  // Botones de Face ID / huella: «Preparando…» solo mientras llega el reto (1–3 s); después, un único toque abre Face ID
+  function estadoBotonesBio() {
+    var listo = PK.entradaLista();
+    ["btBioDesbloquear", "btBioEntrar"].forEach(function (id) { var b = $(id); if (!b || b.getAttribute("data-ocupado") === "1") return;
+      b.classList.toggle("preparando", !listo); b.setAttribute("aria-busy", listo ? "false" : "true"); });
+    var d = $("dlgAceptar");
+    if (d && d.getAttribute("data-pk") === "registro" && d.getAttribute("data-ocupado") !== "1") { var r = PK.registroListo(); d.classList.toggle("preparando", !r); d.setAttribute("aria-busy", r ? "false" : "true"); }
+  }
+  PK.alCambiar(estadoBotonesBio);
   function nombreBio() {
     var ua = navigator.userAgent;
     return /iPhone|iPad/.test(ua) ? "Face ID / Touch ID" : /Macintosh/.test(ua) ? "Touch ID" : /Android/.test(ua) ? "huella o reconocimiento facial" : /Windows/.test(ua) ? "Windows Hello" : "Face ID / huella";
@@ -831,15 +888,17 @@
     $("msgAcceso").textContent = ""; PK.prepararEntrada().catch(function (e) { $("msgAcceso").textContent = e.message; });
   }
   function entrarConBio(boton) {
-    boton.disabled = true; $("msgAcceso").textContent = "";
+    if (boton.getAttribute("data-ocupado") === "1") return;
+    boton.setAttribute("data-ocupado", "1"); boton.disabled = true; $("msgAcceso").textContent = PK.entradaLista() ? "" : "Preparando…";
     PK.entrar().then(function (r) {
       if (!r || !r.ok) {
         $("msgAcceso").textContent = (r && r.mensaje) || "No se pudo entrar.";
         if (r && r.noRegistrada) { guardar("gc_bio", null); guardar("gc_pk", null); $("pasoBio").classList.add("oculto"); $("pasoEmail").classList.remove("oculto"); return; }
         PK.prepararEntrada(); return;
       }
-      S.token = r.token; guardarToken(r.token); if (r.email) guardar("gc_email", r.email); arrancar();
-    }).catch(function (e) { $("msgAcceso").textContent = errorBio(e); PK.prepararEntrada().catch(function () {}); }).then(function () { boton.disabled = false; });
+      $("msgAcceso").textContent = ""; S.token = r.token; guardarToken(r.token); if (r.email) guardar("gc_email", r.email); arrancar();
+    }).catch(function (e) { $("msgAcceso").textContent = errorBio(e); PK.prepararEntrada().catch(function () {}); })
+      .then(function () { boton.disabled = false; boton.removeAttribute("data-ocupado"); estadoBotonesBio(); });
   }
   $("btBioDesbloquear").onclick = function () { entrarConBio(this); };
   $("btBioEntrar").onclick = function () { entrarConBio(this); };
@@ -855,6 +914,7 @@
           PK.registrar().then(function (r) { cerrarDialogo(); aviso((r && r.mensaje) || "Activado.", 5000); })
             .catch(function (e) { $("msgBio").textContent = errorBio(e); }).then(function () { b.disabled = false; });
         });
+      $("dlgAceptar").setAttribute("data-pk", "registro"); estadoBotonesBio();
       $("btBioNo").onclick = function () { guardar("gc_pk_no", "1"); cerrarDialogo(); aviso("Puedes activarlo cuando quieras desde tu menú de usuario (círculo con tu inicial)."); };
     }); }).catch(function () {});
   }
@@ -876,7 +936,7 @@
             var b = $("dlgAceptar"); b.disabled = true;
             PK.registrar().then(function (r) { cerrarDialogo(); aviso((r && r.mensaje) || "Activado.", 5000); }).catch(function (e) { $("msgBio").textContent = errorBio(e); }).then(function () { b.disabled = false; });
           });
-        if (si && !activo) PK.prepararRegistro().catch(function (e) { $("msgBio").textContent = e.message; });
+        if (si && !activo) { $("dlgAceptar").setAttribute("data-pk", "registro"); estadoBotonesBio(); PK.prepararRegistro().catch(function (e) { $("msgBio").textContent = e.message; }); }
         document.querySelectorAll("[data-pkborrar]").forEach(function (b) { b.onclick = function () {
           var x = b.getAttribute("data-pkborrar");
           api("webPasskeyBorrar", S.token, x).then(function (r) { if (x === leer("gc_pk")) { guardar("gc_bio", null); guardar("gc_pk", null); guardarToken(S.token); } b.parentNode.remove(); aviso(r.mensaje); });
@@ -1188,7 +1248,7 @@
   function dialogo(titulo, cuerpo, textoOk, alAceptar) {
     document.querySelector("#dlgForm .dialogo").classList.remove("ancho");
     $("dlgTitulo").textContent = titulo; $("dlgCuerpo").innerHTML = cuerpo; $("dlgAceptar").textContent = textoOk;
-    $("dlgAceptar").onclick = alAceptar; $("dlgForm").classList.remove("oculto");
+    $("dlgAceptar").onclick = alAceptar; $("dlgAceptar").removeAttribute("data-pk"); $("dlgAceptar").classList.remove("preparando"); $("dlgForm").classList.remove("oculto");
     var primero = $("dlgCuerpo").querySelector("input, textarea, select"); if (primero) primero.focus();
   }
   function cerrarDialogo() { $("dlgForm").classList.add("oculto"); }
