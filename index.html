@@ -259,6 +259,7 @@
   .aviso-pend { padding:8px 12px; background:#fff8e1; border-bottom:1px solid #f3e3b0; font-size:13px; display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
   .aviso-pend .bt-texto { padding:2px 6px; }
   .pestanas button em { font-style:normal; }
+  .pestanas button span[id^="cntConDias"] { background:var(--rojo); color:#fff; }
   @media (max-width: 899px) { .pestanas button { padding:8px 9px; font-size:13px; } .pestanas button i, .pestanas button em.largo { display:none; } }
 
   /* Calendario y días de congreso (v0.3.1) */
@@ -367,8 +368,7 @@
     <nav class="riel" id="riel">
       <button data-vista="estudios" data-tip="Estudios del Servicio"><i class="fa-solid fa-flask"></i></button>
       <button data-vista="pubs" data-tip="Publicaciones"><i class="fa-solid fa-book"></i></button>
-      <button data-vista="congresos" data-tip="Congresos y Cursos"><i class="fa-solid fa-people-group"></i></button>
-      <button data-vista="calendario" data-tip="Calendario y días de congreso"><i class="fa-solid fa-calendar-days"></i><span class="contador" id="cntDiasRiel"></span></button>
+      <button data-vista="congresos" data-tip="Congresos y Cursos (y calendario de días)"><i class="fa-solid fa-people-group"></i><span class="contador" id="cntDiasRiel"></span></button>
       <button data-vista="docencia" data-tip="Docencia"><i class="fa-solid fa-user-graduate"></i></button>
       <button data-vista="memoria" data-tip="Memoria IdiPAZ/HULP"><i class="fa-solid fa-file-lines"></i></button>
       <button data-vista="pacientes" data-tip="Pacientes por Año"><i class="fa-solid fa-chart-column"></i></button>
@@ -382,8 +382,7 @@
     <div id="cajon" class="cajon oculto">
       <button data-vista="estudios"><i class="fa-solid fa-flask"></i>Estudios del Servicio</button>
       <button data-vista="pubs"><i class="fa-solid fa-book"></i>Publicaciones</button>
-      <button data-vista="congresos"><i class="fa-solid fa-people-group"></i>Congresos y Cursos</button>
-      <button data-vista="calendario"><i class="fa-solid fa-calendar-days"></i>Calendario y días <span class="contador" id="cntDiasCajon"></span></button>
+      <button data-vista="congresos"><i class="fa-solid fa-people-group"></i>Congresos y Cursos <span class="contador" id="cntDiasCajon"></span></button>
       <button data-vista="docencia"><i class="fa-solid fa-user-graduate"></i>Docencia</button>
       <button data-vista="memoria"><i class="fa-solid fa-file-lines"></i>Memoria IdiPAZ/HULP</button>
       <button data-vista="pacientes"><i class="fa-solid fa-chart-column"></i>Pacientes por Año</button>
@@ -512,6 +511,10 @@
           <button class="bt-icono" id="btFiltrosCon" title="Filtrar"><i class="fa-solid fa-filter"></i></button>
           <button class="bt-rojo" id="btAnadirCon"><i class="fa-solid fa-plus"></i> Añadir</button>
         </div>
+        <div class="pestanas">
+          <button data-tcon="congresos" class="activo"><i class="fa-solid fa-people-group"></i> Congresos y cursos <span id="cntConListaA"></span></button>
+          <button data-tcon="calendario"><i class="fa-solid fa-calendar-days"></i> Calendario y días<em class="largo"> de congreso</em> <span class="oculto" id="cntConDiasA"></span></button>
+        </div>
         <div id="panelFiltrosCon" class="filtros oculto">
           <label for="fcTipo">Tipo de actividad</label><select id="fcTipo"></select>
           <label for="fcAmbito">Ámbito</label><select id="fcAmbito"></select>
@@ -531,15 +534,19 @@
         <div class="tabla" id="listaCon"></div>
       </section>
 
-      <!-- Calendario y días de congreso (v0.3.1) -->
+      <!-- Calendario y días de congreso (v0.3.1) · desde la v0.4, pestaña de Congresos y Cursos -->
       <section class="panel panel-lista oculto" id="vistaCalendario">
         <div class="barra-vista">
-          <h2>Calendario y días de congreso</h2>
+          <h2>Congresos y Cursos</h2>
           <button class="bt-icono" id="btCalAnt" title="Mes anterior"><i class="fa-solid fa-chevron-left"></i></button>
           <span id="lblCalMes" class="cal-mes"></span>
           <button class="bt-icono" id="btCalSig" title="Mes siguiente"><i class="fa-solid fa-chevron-right"></i></button>
           <button class="bt" id="btCalHoy">Hoy</button>
           <button class="bt-icono oculto" id="btCalExcel" title="Descargar saldos y solicitudes del año (Excel)"><i class="fa-solid fa-download"></i></button>
+        </div>
+        <div class="pestanas">
+          <button data-tcon="congresos"><i class="fa-solid fa-people-group"></i> Congresos y cursos <span id="cntConListaB"></span></button>
+          <button data-tcon="calendario" class="activo"><i class="fa-solid fa-calendar-days"></i> Calendario y días<em class="largo"> de congreso</em> <span class="oculto" id="cntConDiasB"></span></button>
         </div>
         <div class="cal-cuerpo" id="calCuerpo"></div>
       </section>
@@ -1470,8 +1477,9 @@
     Object.keys(GC.mod).forEach(function (k) { (GC.mod[k].secciones || []).forEach(function (id) { $(id).classList.toggle("oculto", k !== v); }); });
     if (anterior !== v) $("fTexto").value = textoPorVista[v] || "";
     S.vista = v;
-    document.querySelectorAll("[data-vista]").forEach(function (b) { b.classList.toggle("activo", b.getAttribute("data-vista") === v); });
-    $("btMas").classList.toggle("activo", ["revision", "recl", "info", "memoria", "pacientes", "calendario"].indexOf(v) !== -1);
+    var vMenu = v === "calendario" ? "congresos" : v;          // el calendario es una pestaña de Congresos y Cursos
+    document.querySelectorAll("[data-vista]").forEach(function (b) { b.classList.toggle("activo", b.getAttribute("data-vista") === vMenu); });
+    $("btMas").classList.toggle("activo", ["revision", "recl", "info", "memoria", "pacientes"].indexOf(v) !== -1);
     $("vistaPubs").classList.toggle("oculto", v !== "pubs");
     $("vistaRevision").classList.toggle("oculto", v !== "revision");
     $("vistaRecl").classList.toggle("oculto", v !== "recl");
@@ -2582,6 +2590,7 @@
     var aps = []; l.forEach(function (c) { c.aportaciones.forEach(function (a) { if (aportDe(a, p)) aps.push(a); }); });
     $("resumenCon").textContent = l.length + (l.length === 1 ? " actividad · " : " actividades · ") + l.filter(function (c) { return c.inicio > hoy; }).length + " próximas · " +
       aps.length + " trabajos presentados · " + aps.filter(function (a) { return a.premio; }).length + " premios";
+    CN.ordenListo = true; contadoresPestanas();
     $("btFiltrosCon").style.color = filtrosActivos() ? "var(--rojo)" : "";
     $("btIndCon").style.color = $("indicadoresCon").classList.contains("oculto") ? "" : "var(--rojo)";
     if (!$("indicadoresCon").classList.contains("oculto")) pintarIndicadores(indicadores(l));
@@ -3239,6 +3248,7 @@
   var CAL = { anio: null, mes: null };
   function pintarCalendario() {
     if (!CN.datos) return;
+    contadoresPestanas();
     var hoy = CN.datos.hoy, admin = G.S.inicio.usuario.admin, yo = G.S.inicio.usuario.nombre, lim = DD().limite, umbral = DD().umbral;
     if (CAL.anio === null) { CAL.anio = Number(hoy.substring(0, 4)); CAL.mes = Number(hoy.substring(5, 7)) - 1; }
     var MES_L = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -3328,7 +3338,7 @@
   function contadorPendientes() {
     if (!CN.datos || !G.S.inicio.usuario.admin) return;
     var n = DD().solicitudes.filter(function (x) { return x.estado === "Pendiente"; }).length;
-    ["cntDiasRiel", "cntDiasCajon"].forEach(function (id) { if ($(id)) { $(id).textContent = n || ""; $(id).classList.toggle("oculto", !n); } });
+    ["cntDiasRiel", "cntDiasCajon", "cntConDiasA", "cntConDiasB"].forEach(function (id) { if ($(id)) { $(id).textContent = n || ""; $(id).classList.toggle("oculto", !n); } });
   }
   $("btCalAnt").onclick = function () { CAL.mes--; if (CAL.mes < 0) { CAL.mes = 11; CAL.anio--; } pintarCalendario(); };
   $("btCalSig").onclick = function () { CAL.mes++; if (CAL.mes > 11) { CAL.mes = 0; CAL.anio++; } pintarCalendario(); };
@@ -3345,6 +3355,13 @@
       { nombre: "Solicitudes " + a, filas: sols, anchos: [12, 28, 50, 40, 11, 11, 30, 24, 14, 30], cabecera: true }]),
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", nombreArchivo("Dias_congreso_" + a, "xlsx"));
   };
+
+  // ---------- pestañas: Congresos y cursos · Calendario y días ----------
+  document.querySelectorAll("[data-tcon]").forEach(function (b) { b.onclick = function () { var v = b.getAttribute("data-tcon"); if (G.S.vista !== v) G.mostrarVista(v); }; });
+  function contadoresPestanas() {
+    var n = CN.orden && CN.ordenListo ? CN.orden.length : (CN.datos ? CN.datos.congresos.length : "");
+    ["A", "B"].forEach(function (s) { if ($("cntConLista" + s)) $("cntConLista" + s).textContent = n; });
+  }
 
   // ---------- registro de la vista ----------
   function asegurarDatos(fn) { if (CN.datos) fn(); else if (CN.cargando) CN.cargando.then(fn); else cargar().then(fn); }
