@@ -251,6 +251,33 @@
   .checks { display:flex; flex-direction:column; gap:2px; margin:4px 0 6px; }
   .acciones-redondas a.accion { text-decoration:none; color:inherit; }
 
+  /* Inicio: bienvenida y acceso a los módulos (v0.4) */
+  body.en-inicio .riel, body.en-inicio .inferior, body.en-inicio .buscador { display:none !important; }
+  body.en-inicio .area { left:0; }
+  .inicio { flex:1; overflow:auto; padding:32px 28px 40px; background:linear-gradient(180deg, #fff 0%, var(--fondo) 100%); }
+  .inicio-hola { display:flex; align-items:center; gap:16px; max-width:1100px; margin:0 auto; }
+  .inicio-hola h1 { font-size:28px; font-weight:400; margin:0 0 4px; }
+  .inicio-hola p { margin:0; font-size:14px; }
+  .inicio-sub { max-width:1100px; margin:28px auto 12px; font-size:16px; color:var(--tenue); }
+  .inicio-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:14px; max-width:1100px; margin:0 auto; }
+  .mosaico { position:relative; display:flex; gap:14px; align-items:flex-start; text-align:left; padding:18px 16px; border:1px solid var(--borde); border-radius:10px; background:#fff; cursor:pointer; color:var(--texto); transition:box-shadow .15s, border-color .15s; }
+  .mosaico:hover, .mosaico:focus-visible { border-color:var(--rojo); box-shadow:0 4px 14px rgba(0,0,0,.08); outline:none; }
+  .mosaico > i { flex:none; width:46px; height:46px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:20px; background:var(--rojo-claro); color:var(--rojo); }
+  .mosaico .txt { display:flex; flex-direction:column; gap:4px; min-width:0; }
+  .mosaico .txt b { font-size:15.5px; font-weight:500; }
+  .mosaico .txt small { font-size:12.5px; color:var(--tenue); line-height:1.35; }
+  .mosaico .contador { position:absolute; top:10px; right:10px; }
+  .mosaico.proximo { opacity:.6; }
+  .mosaico.proximo > i { background:var(--gris); color:var(--tenue); }
+  @media (max-width: 899px) {
+    body.en-inicio .area { top:var(--cab); bottom:0; }
+    .inicio { padding:20px 14px 28px; }
+    .inicio-hola h1 { font-size:22px; }
+    .inicio-grid { grid-template-columns:1fr 1fr; gap:10px; }
+    .mosaico { flex-direction:column; gap:10px; padding:14px 12px; }
+    .mosaico .txt small { display:none; }
+  }
+
   /* Docencia (v0.4) */
   .pestanas { display:flex; gap:4px; padding:6px 10px 0; border-bottom:1px solid var(--borde); overflow-x:auto; flex-shrink:0; }
   .pestanas button { border:none; background:none; padding:8px 12px; font-size:13.5px; color:var(--tenue); border-bottom:3px solid transparent; white-space:nowrap; cursor:pointer; }
@@ -366,6 +393,7 @@
 
     <!-- Riel de iconos (escritorio) -->
     <nav class="riel" id="riel">
+      <button data-vista="inicio" data-tip="Inicio"><i class="fa-solid fa-house"></i></button>
       <button data-vista="estudios" data-tip="Estudios del Servicio"><i class="fa-solid fa-flask"></i></button>
       <button data-vista="pubs" data-tip="Publicaciones"><i class="fa-solid fa-book"></i></button>
       <button data-vista="congresos" data-tip="Congresos y Cursos (y calendario de días)"><i class="fa-solid fa-people-group"></i><span class="contador" id="cntDiasRiel"></span></button>
@@ -380,6 +408,7 @@
 
     <!-- Menú lateral con nombres (botón ≡) -->
     <div id="cajon" class="cajon oculto">
+      <button data-vista="inicio"><i class="fa-solid fa-house"></i>Inicio</button>
       <button data-vista="estudios"><i class="fa-solid fa-flask"></i>Estudios del Servicio</button>
       <button data-vista="pubs"><i class="fa-solid fa-book"></i>Publicaciones</button>
       <button data-vista="congresos"><i class="fa-solid fa-people-group"></i>Congresos y Cursos <span class="contador" id="cntDiasCajon"></span></button>
@@ -392,6 +421,25 @@
     </div>
 
     <main class="area">
+      <!-- Inicio: bienvenida y acceso a los módulos (v0.4) -->
+      <section class="panel panel-lista oculto" id="vistaInicio">
+        <div class="inicio">
+          <div class="inicio-hola"><span class="hueco-logo" data-tam="56"></span>
+            <div><h1 id="inicioSaludo">Hola</h1><p class="tenue" id="inicioFecha"></p></div></div>
+          <p class="inicio-sub">¿A qué quieres acceder?</p>
+          <div class="inicio-grid">
+        <button class="mosaico" data-vista="pubs"><i class="fa-solid fa-book"></i><span class="txt"><b>Publicaciones</b><small>Artículos científicos, libros y capítulos, y abstracts de congreso</small></span></button>
+        <button class="mosaico" data-vista="estudios"><i class="fa-solid fa-flask"></i><span class="txt"><b>Estudios del Servicio</b><small>Estudios activos y finalizados, CEIm, financiación y documentos</small></span></button>
+        <button class="mosaico" data-vista="congresos"><i class="fa-solid fa-people-group"></i><span class="txt"><b>Congresos y Cursos</b><small>Asistencia, trabajos presentados, plazos y calendario de días</small></span><span class="contador oculto" id="cntDiasInicio"></span></button>
+        <button class="mosaico" data-vista="docencia"><i class="fa-solid fa-user-graduate"></i><span class="txt"><b>Docencia</b><small>Trabajos dirigidos (TFG, TFM, tesis), tutorías y otros méritos</small></span></button>
+        <button class="mosaico" data-vista="pacientes"><i class="fa-solid fa-chart-column"></i><span class="txt"><b>Pacientes por año</b><small>Pacientes incluidos en los estudios, por año</small></span></button>
+        <button class="mosaico soloAdmin" data-vista="revision"><i class="fa-solid fa-list-check"></i><span class="txt"><b>Revisar pendientes</b><small>Publicaciones y reclamaciones por validar</small></span><span class="contador oculto" id="cntRevisionInicio"></span></button>
+        <button class="mosaico" data-vista="recl"><i class="fa-solid fa-hand"></i><span class="txt"><b>Reclamaciones de autoría</b><small>Solicita figurar como autor/a de una publicación</small></span></button>
+        <button class="mosaico proximo" data-vista="memoria"><i class="fa-solid fa-file-lines"></i><span class="txt"><b>Memoria IdiPAZ/HULP</b><small>Próximamente: la memoria anual con todos los módulos</small></span></button>
+          </div>
+        </div>
+      </section>
+
       <!-- Publicaciones -->
       <section class="panel panel-lista" id="vistaPubs">
         <div class="barra-vista">
@@ -505,6 +553,7 @@
       <section class="panel panel-lista oculto" id="vistaCongresos">
         <div class="barra-vista">
           <h2>Congresos y Cursos</h2>
+          <select id="fAnoMovilCon" class="anos-movil" title="Año"></select>
           <button class="bt-icono" id="btIndCon" title="Indicadores de la lista filtrada"><i class="fa-solid fa-chart-simple"></i></button>
           <button class="bt-icono" id="btCvnCon" title="Exportar trabajos al CVN (FECYT)"><i class="fa-regular fa-id-card"></i></button>
           <button class="bt-icono" id="btDescCon" title="Descargar en Excel (con los filtros aplicados)"><i class="fa-solid fa-download"></i></button>
@@ -531,7 +580,10 @@
         </div>
         <div class="resumen" id="resumenCon"></div>
         <div class="indicadores oculto" id="indicadoresCon"></div>
-        <div class="tabla" id="listaCon"></div>
+        <div class="cuerpo">
+          <aside class="grupos" id="gruposCon"></aside>
+          <div class="tabla" id="listaCon"></div>
+        </div>
       </section>
 
       <!-- Calendario y días de congreso (v0.3.1) · desde la v0.4, pestaña de Congresos y Cursos -->
@@ -1064,7 +1116,7 @@
       if (PUB_TABS[leer("gc_pub_tab")]) S.pubTab = leer("gc_pub_tab");
       S.tiposTodos = tipos; prepararTabPub();
       $("tituloRecl").textContent = u.admin ? "Reclamaciones de autoría (todas)" : "Mis reclamaciones de autoría";
-      mostrarVista("pubs");
+      mostrarVista("inicio");                 // pantalla de bienvenida; las publicaciones se cargan en segundo plano
       return cargarPubs();
     }).catch(function (e) { cargando(false); aviso(e.message); if (!S.inicio) mostrarAcceso(); });
   }
@@ -1142,6 +1194,8 @@
     // panel de años (Todo + años con recuento)
     var cuenta = {}; base.forEach(function (p) { var a = anoDe(p) || "Sin año"; cuenta[a] = (cuenta[a] || 0) + 1; });
     var anos = Object.keys(cuenta).sort().reverse();
+    // Año: por defecto el actual (o el último con datos). Con búsqueda de texto o rango de años, todos los años.
+    if (S.anoAuto !== false) S.ano = ($("fTexto").value.trim() || $("fDesde").value || $("fHasta").value) ? "" : anioPorDefecto(cuenta);
     if (S.ano && !cuenta[S.ano]) S.ano = "";
     $("grupos").innerHTML = '<button data-ano=""' + (S.ano === "" ? ' class="activo"' : "") + '>Todo <span>' + base.length + '</span></button>' +
       anos.map(function (a) { return '<button data-ano="' + esc(a) + '"' + (S.ano === a ? ' class="activo"' : "") + '>' + esc(a) + ' <span>' + cuenta[a] + '</span></button>'; }).join("");
@@ -1192,6 +1246,11 @@
     S.indicadores = calcularIndicadores(l);
     if (!$("indicadores").classList.contains("oculto")) pintarIndicadores(S.indicadores);
   }
+  function anioPorDefecto(cuenta) {        // año actual si tiene registros; si no, el más reciente con registros
+    var y = String(new Date().getFullYear());
+    if (cuenta[y]) return y;
+    return Object.keys(cuenta).filter(function (a) { return /^\d{4}$/.test(a); }).sort().reverse()[0] || "";
+  }
   function prepararTabPub() {
     var t = S.pubTab;
     document.querySelectorAll("#pestPub [data-tpub]").forEach(function (b) { b.classList.toggle("activo", b.getAttribute("data-tpub") === t); });
@@ -1202,7 +1261,7 @@
   }
   function cambiarTabPub(t) {
     if (!PUB_TABS[t] || t === S.pubTab) return;
-    S.pubTab = t; guardar("gc_pub_tab", t); prepararTabPub(); cerrarFicha(); pintarLista();
+    S.pubTab = t; S.anoAuto = true; guardar("gc_pub_tab", t); prepararTabPub(); cerrarFicha(); pintarLista();
   }
   document.querySelectorAll("#pestPub [data-tpub]").forEach(function (b) { b.onclick = function () { cambiarTabPub(b.getAttribute("data-tpub")); }; });
 
@@ -1277,8 +1336,8 @@
     $(id).addEventListener(id === "fTexto" ? "input" : "change", function () { if (id === "fTexto" && GC.mod[S.vista]) { if (GC.mod[S.vista].buscar) GC.mod[S.vista].buscar(); return; }
       if (id === "fTexto" && S.vista !== "pubs") mostrarVista("pubs"); pintarLista(); });
   });
-  $("grupos").addEventListener("click", function (ev) { var b = ev.target.closest("[data-ano]"); if (b) { S.ano = b.getAttribute("data-ano"); pintarLista(); } });
-  $("fAnoMovil").onchange = function () { S.ano = this.value; pintarLista(); };
+  $("grupos").addEventListener("click", function (ev) { var b = ev.target.closest("[data-ano]"); if (b) { S.ano = b.getAttribute("data-ano"); S.anoAuto = false; pintarLista(); } });
+  $("fAnoMovil").onchange = function () { S.ano = this.value; S.anoAuto = false; pintarLista(); };
   function clicLista(ev) {            // un segundo clic sobre la misma fila cierra los detalles
     var it = ev.target.closest("[data-id]"); if (!it) return;
     var id = it.getAttribute("data-id");
@@ -1479,6 +1538,7 @@
     if (anterior !== v) $("fTexto").value = textoPorVista[v] || "";
     S.vista = v;
     var vMenu = v === "calendario" ? "congresos" : v;          // el calendario es una pestaña de Congresos y Cursos
+    if (document.body && document.body.classList) document.body.classList.toggle("en-inicio", v === "inicio");
     document.querySelectorAll("[data-vista]").forEach(function (b) { b.classList.toggle("activo", b.getAttribute("data-vista") === vMenu); });
     $("btMas").classList.toggle("activo", ["revision", "recl", "info", "memoria", "pacientes"].indexOf(v) !== -1);
     $("vistaPubs").classList.toggle("oculto", v !== "pubs");
@@ -1495,7 +1555,7 @@
     }
     if (v === "info") {
       $("tituloProx").textContent = "Acerca de";
-      $("textoProx").innerHTML = '<span class="hueco-logo" data-tam="64"></span><p><b>Gestión Científica CGyD-GITIC</b> · versión web 0.3</p>' +
+      $("textoProx").innerHTML = '<span class="hueco-logo" data-tam="64"></span><p><b>Gestión Científica CGyD-GITIC</b> · versión web 0.4</p>' +
         '<p>Servicio de Cirugía General y del Aparato Digestivo · Hospital Universitario La Paz · IdiPAZ</p>' +
         '<p class="tenue">Los datos se guardan en las mismas hojas de Google que usa AppSheet.<br>Dudas o errores: escribe al administrador del Servicio.</p>';
       ponerLogo();
@@ -1505,6 +1565,19 @@
     if (GC.mod[v] && GC.mod[v].mostrar) GC.mod[v].mostrar();
   }
   document.querySelectorAll("[data-vista]").forEach(function (b) { b.addEventListener("click", function () { mostrarVista(b.getAttribute("data-vista")); }); });
+  // ---------- pantalla de inicio (bienvenida) ----------
+  function pintarInicio() {
+    if (!S.inicio) return;
+    var h = new Date().getHours(), nombre = String(S.inicio.usuario.nombre || "").trim().split(/\s+/)[0] || "";
+    $("inicioSaludo").textContent = (h >= 6 && h < 14 ? "Buenos días" : h >= 14 && h < 21 ? "Buenas tardes" : "Buenas noches") + (nombre ? ", " + nombre : "");
+    var d = new Date(), DSEM = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"],
+        MES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+    var f = DSEM[d.getDay()] + ", " + d.getDate() + " de " + MES[d.getMonth()] + " de " + d.getFullYear();
+    $("inicioFecha").textContent = f.charAt(0).toUpperCase() + f.slice(1) + " · Servicio de Cirugía General y del Aparato Digestivo";
+  }
+  GC.registrar("inicio", { secciones: ["vistaInicio"], placeholder: "Buscar", mostrar: pintarInicio, ocultar: function () {} });
+  var tituloCab = document.querySelector(".cab .titulo");
+  if (tituloCab) { tituloCab.style.cursor = "pointer"; tituloCab.title = "Inicio"; tituloCab.addEventListener("click", function () { if (S.inicio) mostrarVista("inicio"); }); }
   // Móvil: marca en <body> cuando hay unos detalles abiertos (Publicaciones, Estudios o Congresos) para mostrarlos a pantalla completa
   (function () {
     var ids = ["panelFicha", "panelFichaEst", "panelFichaCon", "panelFichaDoc"];
@@ -1531,7 +1604,7 @@
     if (!S.inicio.usuario.admin) return;
     cargarRecl().then(function (l) {
       var n = S.pubs.filter(function (p) { return estadoDe(p) === "Pendiente de Confirmación"; }).length + l.filter(function (r) { return r.Estado === "Pendiente"; }).length;
-      ["cntRevision", "cntRevisionRiel", "cntRevisionCajon"].forEach(function (id) { $(id).textContent = n ? String(n) : ""; $(id).classList.toggle("oculto", !n); });
+      ["cntRevision", "cntRevisionRiel", "cntRevisionCajon", "cntRevisionInicio"].forEach(function (id) { $(id).textContent = n ? String(n) : ""; $(id).classList.toggle("oculto", !n); });
     }).catch(function () {});
   }
   function itemPub(p) {
@@ -2560,6 +2633,7 @@
   function descripcionFiltros() {
     var f = [];
     [["fcTipo", "Tipo"], ["fcAmbito", "Ámbito"], ["fcFormato", "Formato"], ["fcPersona", "Investigador/a"], ["fcAport", "Aportación"]].forEach(function (x) { if ($(x[0]).value) f.push(x[1] + ": " + $(x[0]).value); });
+    if (CN.ano) f.push("Año " + CN.ano);
     if ($("fcDesde").value || $("fcHasta").value) f.push("Años " + ($("fcDesde").value || "…") + "–" + ($("fcHasta").value || "…"));
     if ($("fcMios").checked) f.push("Solo mis congresos"); if ($("fcOrg").checked) f.push("Organizados por el Servicio");
     if ($("fcTrab").checked) f.push("Con trabajos presentados"); if ($("fcIA").checked) f.push("Con propuestas de la IA");
@@ -2571,7 +2645,21 @@
   function pintar() {
     if (!CN.datos) return;
     var hoy = CN.datos.hoy, p = persona(), admin = G.S.inicio.usuario.admin;
-    var l = CN.datos.congresos.filter(pasa).sort(function (a, b) { return (b.inicio || "0").localeCompare(a.inicio || "0") || a.nombre.localeCompare(b.nombre, "es"); });
+    var base = CN.datos.congresos.filter(pasa);
+    // columna de años (igual que Publicaciones): por defecto el año actual o, si no hay, el último con actividades
+    var porAno = {}; base.forEach(function (c) { var a = c.anio ? String(c.anio) : "Sin fecha"; porAno[a] = (porAno[a] || 0) + 1; });
+    var anos = Object.keys(porAno).sort(function (a, b) { return a === "Sin fecha" ? 1 : b === "Sin fecha" ? -1 : b.localeCompare(a); });
+    if (CN.anoAuto !== false) {
+      var y = String(new Date().getFullYear()), libre = $("fTexto").value.trim() || $("fcDesde").value || $("fcHasta").value;
+      CN.ano = libre ? "" : porAno[y] ? y : (anos.filter(function (a) { return /^\d{4}$/.test(a); })[0] || "");
+    }
+    if (CN.ano && !porAno[CN.ano]) CN.ano = "";
+    $("gruposCon").innerHTML = '<button data-ano=""' + (!CN.ano ? ' class="activo"' : "") + ">Todo <span>" + base.length + "</span></button>" +
+      anos.map(function (a) { return '<button data-ano="' + esc(a) + '"' + (CN.ano === a ? ' class="activo"' : "") + ">" + esc(a) + " <span>" + porAno[a] + "</span></button>"; }).join("");
+    $("fAnoMovilCon").innerHTML = '<option value="">Todos los años</option>' + anos.map(function (a) { return '<option value="' + esc(a) + '">' + esc(a) + "</option>"; }).join("");
+    $("fAnoMovilCon").value = CN.ano || "";
+    var l = base.filter(function (c) { return !CN.ano || (c.anio ? String(c.anio) : "Sin fecha") === CN.ano; })
+      .sort(function (a, b) { return (b.inicio || "0").localeCompare(a.inicio || "0") || a.nombre.localeCompare(b.nombre, "es"); });
     CN.orden = l.map(function (c) { return c.id; });
     var cuenta = {}; l.forEach(function (c) { var g = c.anio || "Sin fecha"; cuenta[g] = (cuenta[g] || 0) + 1; });
     var html = [], grupo = null;
@@ -2589,7 +2677,7 @@
     });
     $("listaCon").innerHTML = html.join("") || '<p class="tenue" style="padding:14px">No hay congresos ni cursos con estos filtros.</p>';
     var aps = []; l.forEach(function (c) { c.aportaciones.forEach(function (a) { if (aportDe(a, p)) aps.push(a); }); });
-    $("resumenCon").textContent = l.length + (l.length === 1 ? " actividad · " : " actividades · ") + l.filter(function (c) { return c.inicio > hoy; }).length + " próximas · " +
+    $("resumenCon").textContent = l.length + (l.length === 1 ? " actividad" : " actividades") + (CN.ano ? " en " + CN.ano : "") + " · " + l.filter(function (c) { return c.inicio > hoy; }).length + " próximas · " +
       aps.length + " trabajos presentados · " + aps.filter(function (a) { return a.premio; }).length + " premios";
     CN.ordenListo = true; contadoresPestanas();
     $("btFiltrosCon").style.color = filtrosActivos() ? "var(--rojo)" : "";
@@ -2597,6 +2685,8 @@
     if (!$("indicadoresCon").classList.contains("oculto")) pintarIndicadores(indicadores(l));
     if (CN.sel) navegacion();
   }
+  $("gruposCon").addEventListener("click", function (ev) { var b = ev.target.closest("[data-ano]"); if (b) { CN.ano = b.getAttribute("data-ano"); CN.anoAuto = false; pintar(); } });
+  $("fAnoMovilCon").onchange = function () { CN.ano = this.value; CN.anoAuto = false; pintar(); };
   $("listaCon").addEventListener("click", function (ev) {     // un segundo clic sobre el mismo congreso cierra los detalles
     var d = ev.target.closest("[data-con]"); if (!d) return;
     var id = d.getAttribute("data-con");
@@ -3339,7 +3429,7 @@
   function contadorPendientes() {
     if (!CN.datos || !G.S.inicio.usuario.admin) return;
     var n = DD().solicitudes.filter(function (x) { return x.estado === "Pendiente"; }).length;
-    ["cntDiasRiel", "cntDiasCajon", "cntConDiasA", "cntConDiasB"].forEach(function (id) { if ($(id)) { $(id).textContent = n || ""; $(id).classList.toggle("oculto", !n); } });
+    ["cntDiasRiel", "cntDiasCajon", "cntConDiasA", "cntConDiasB", "cntDiasInicio"].forEach(function (id) { if ($(id)) { $(id).textContent = n || ""; $(id).classList.toggle("oculto", !n); } });
   }
   $("btCalAnt").onclick = function () { CAL.mes--; if (CAL.mes < 0) { CAL.mes = 11; CAL.anio--; } pintarCalendario(); };
   $("btCalSig").onclick = function () { CAL.mes++; if (CAL.mes > 11) { CAL.mes = 0; CAL.anio++; } pintarCalendario(); };
