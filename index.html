@@ -760,6 +760,7 @@
     var args = Array.prototype.slice.call(arguments, 1);
     var fallo = function (m, ko) {
       if (String(m).indexOf("SESION") !== -1) { salir(true); ko(new Error("Tu sesión ha caducado. Vuelve a entrar.")); return; }
+      if (/^Función no permitida\.?$/.test(String(m))) m = "El servidor no tiene la función «" + fn + "». Falta publicar la versión nueva en Apps Script (Implementar → Gestionar implementaciones → ✏️ → Nueva versión) o falta algún archivo (ejecuta comprobarInstalacionWeb).";
       ko(new Error(m));
     };
     return new Promise(function (ok, ko) {
