@@ -253,6 +253,7 @@
 
   /* Inicio: bienvenida y acceso a los módulos (v0.4) */
   body.en-inicio .riel, body.en-inicio .inferior, body.en-inicio .buscador { display:none !important; }
+  body.en-inicio .cab #btSync { margin-left:auto; }            /* sin buscador, «Actualizar» y «Mi cuenta» siguen a la derecha */
   body.en-inicio .area { left:0; }
   .inicio { flex:1; overflow:auto; padding:32px 28px 40px; background:linear-gradient(180deg, #fff 0%, var(--fondo) 100%); }
   .inicio-hola { display:flex; align-items:center; gap:16px; max-width:1100px; margin:0 auto; }
@@ -488,6 +489,22 @@
   .inicio-hola { max-width:1180px; }
   .ico-pdf { color:#b3261e; font-size:12px; }
   .pf-contacto a { color:var(--rojo); font-weight:500; }
+
+  /* ===== v0.5.1: ficha personal a todo el ancho ===== */
+  .pf-cab, .pf-per, .pf-bloque { max-width:none; }
+  .pf-campos { display:block; }
+  .pf-dos { display:block; }
+  .pf-rejilla { display:block; }
+  .pf-barra { max-width:none; }
+  .pf-barras { height:130px; }
+  @media (min-width: 1200px) {
+    .pf-campos { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); column-gap:28px; max-width:1000px; }
+    .pf-dos { display:grid; grid-template-columns:minmax(0, 1fr) minmax(0, 1fr); gap:0 12px; align-items:start; }
+    .pf-dos.pf-pubs { grid-template-columns:minmax(0, 3fr) minmax(300px, 2fr); }
+    .pf-pubs .pf-barras { height:170px; }
+    .pf-rejilla { display:grid; grid-template-columns:repeat(auto-fit, minmax(380px, 1fr)); gap:0 12px; align-items:start; }
+    .pf-rejilla .pf-bloque { margin:12px 0; }
+  }
 </style>
 
 </head>
@@ -996,6 +1013,7 @@
     "Ranking", "Notas_JCR", "Indexación JCR", "Citas Totales", "Citas (sin autocitas)", "Investigadores Servicio", "Posiciones Servicio",
     "Es Correspondencia", "Fuente Correspondencia", "Estado Validación", "Motivo Revisión", "Email Investigador", "Tipo Open Access",
     "Es Open Access", "PDF_Artículo", "Filiación La Paz", "Detalle Filiación", "Aviso Filiación"];
+  var SOLO_REVISION = ["Estado Validación", "Motivo Revisión", "Email Investigador", "Filiación La Paz", "Detalle Filiación"];
   var SOLO_ADMIN = ["Email Investigador", "Fuente Correspondencia", "Filiación La Paz", "Detalle Filiación", "Aviso Filiación"];
   // Significado de cada categoría (mismo texto que la descripción de la columna en AppSheet)
   var OA_TIPOS = [["Diamond", "Acceso libre sin costes (APC) para autores."], ["Gold", "100% Acceso Abierto en la revista."],
@@ -1727,6 +1745,7 @@
       if (libro && SOLO_ARTICULO.indexOf(c) !== -1) return false;
       if (!libro && SOLO_LIBRO.indexOf(c) !== -1) return false;
       if (!admin && SOLO_ADMIN.indexOf(c) !== -1) return false;
+      if (SOLO_REVISION.indexOf(c) !== -1 && estadoDe(d) !== "Pendiente de Confirmación") return false;   // solo hacen falta para revisar lo que añade la búsqueda automática
       if (c === "Estado Validación" && !admin && confirmada(d)) return false;
       if (c === "Motivo Revisión" && estadoDe(d) !== "Pendiente de Confirmación" && !admin) return false;
       if (["Cuartil", "Decil", "Ranking"].indexOf(c) !== -1 && partes(d["Categoría"]).length) return false;   // van dentro de «Categorías JCR»
@@ -2090,7 +2109,17 @@
     if (window.MutationObserver) ids.forEach(function (id) { var e = document.getElementById(id); if (e) new MutationObserver(actualizar).observe(e, { attributes: true, attributeFilter: ["class"] }); });
     actualizar();
   })();
-  $("btMenu").onclick = function () { $("cajon").classList.toggle("oculto"); };
+  // Menú: con ratón se abre al pasar por el icono y se cierra al salir de él o al elegir una opción; en pantallas táctiles, al tocar el icono
+  var MENU = { mq: window.matchMedia ? window.matchMedia("(hover: hover) and (pointer: fine)") : null, t: null };
+  function menuRaton() { return !!(MENU.mq && MENU.mq.matches); }
+  function abrirMenu() { clearTimeout(MENU.t); $("cajon").classList.remove("oculto"); }
+  function cerrarMenuLuego() { clearTimeout(MENU.t); MENU.t = setTimeout(function () { $("cajon").classList.add("oculto"); }, 280); }
+  $("btMenu").addEventListener("mouseenter", function () { if (menuRaton()) abrirMenu(); });
+  $("btMenu").addEventListener("mouseleave", function () { if (menuRaton()) cerrarMenuLuego(); });
+  $("cajon").addEventListener("mouseenter", function () { if (menuRaton()) clearTimeout(MENU.t); });
+  $("cajon").addEventListener("mouseleave", function () { if (menuRaton()) cerrarMenuLuego(); });
+  $("cajon").addEventListener("click", function (ev) { if (ev.target.closest && ev.target.closest("button")) { clearTimeout(MENU.t); $("cajon").classList.add("oculto"); } });
+  $("btMenu").onclick = function () { if (menuRaton()) abrirMenu(); else $("cajon").classList.toggle("oculto"); };
   $("btMas").onclick = function () { $("cajon").classList.toggle("oculto"); };
   $("btSync").onclick = function () {
     var p = [cargarPubs(false, true)];
@@ -5096,9 +5125,9 @@
     else {
       var cf = function (et, v, html) { return v ? '<div class="pf-campo"><span class="et-campo">' + esc(et) + '</span><span class="valor">' + (html ? v : esc(v)) + "</span></div>" : ""; };
       var orcid = d.orcid ? '<a href="https://orcid.org/' + esc(String(d.orcid).replace(/^https?:\/\/orcid\.org\//, "")) + '" target="_blank" rel="noopener">' + esc(d.orcid) + "</a>" : "";
-      campos = cf("Nombre completo", d.nombreCompleto) + cf("Cargo", d.cargo) + cf("Rol en la web", d.rol) + cf("Estado", d.estado) +
+      campos = '<div class="pf-campos">' + cf("Nombre completo", d.nombreCompleto) + cf("Cargo", d.cargo) + cf("Rol en la web", d.rol) + cf("Estado", d.estado) +
         cf("Correo", d.email) + cf("Correo alternativo", d.emailAlt) + cf("ORCID", orcid, true) +
-        cf("En el Servicio desde", fTxt(d.alta)) + cf("Fecha de baja", fTxt(d.baja)) + contactoAdmin(d);
+        cf("En el Servicio desde", fTxt(d.alta)) + cf("Fecha de baja", fTxt(d.baja)) + "</div>" + contactoAdmin(d);
     }
     h.push('<div class="pf-cab"><div class="pf-foto" id="pfFoto"></div><div class="pf-datos"><h2 class="pf-nombre">' + esc(n) + "</h2>" +
       ((n === yo() || admin()) ? '<button class="bt-texto" id="pfQuitar"><i class="fa-regular fa-trash-can"></i> Quitar foto</button>' : "") + campos + "</div></div>");
@@ -5106,6 +5135,7 @@
     // Ciencia
     var mp = metricasPubs(n, per), mc = metricasCongresos(n, per), me = metricasEstudios(n, per);
     h.push('<section class="pf-bloque"><h3><i class="fa-solid fa-microscope"></i> Ciencia</h3>');
+    h.push('<div class="pf-dos pf-pubs"><div>');
     h.push('<div class="pf-sub">Publicaciones <button class="bt-texto" id="pfVerPubs">Ver la lista</button></div><div class="indicadores pf-ind">' +
       tile(mp.art, "artículos", mp.libros || mp.abs ? "+ " + mp.libros + " libros/capítulos · " + mp.abs + " abstracts" : "") +
       tile(mp.jcr, "indexados JCR", mp.art ? Math.round(mp.jcr / mp.art * 100) + " % de los artículos" : "") +
@@ -5113,13 +5143,14 @@
       tile(dec1(mp.fi), "FI acumulado", mp.jcr ? "medio " + dec1(mp.fi / mp.jcr) : "") +
       tile(mp.primero, "primer/a autor/a") + tile(mp.ultimo, "último/a autor/a") + tile(mp.corr, "autor/a de correspondencia") +
       tile(mp.citas.toLocaleString("es-ES"), "citas", "índice h " + mp.h + " (con estos artículos)") + "</div>");
-    if (mp.art) h.push('<div class="pf-sub">Artículos por año</div>' + barras(mp.porAno, per));
-    h.push('<div class="pf-sub">Congresos y cursos</div>' + (mc ? '<div class="indicadores pf-ind">' + tile(mc.asist, "asistencias") + tile(mc.aport, "comunicaciones y pósteres", mc.ponente ? mc.ponente + " como ponente" : "") +
+    h.push("</div><div>" + (mp.art ? '<div class="pf-sub">Artículos por año</div>' + barras(mp.porAno, per) : "") + "</div></div>");
+    h.push('<div class="pf-dos"><div><div class="pf-sub">Congresos y cursos</div>' + (mc ? '<div class="indicadores pf-ind">' + tile(mc.asist, "asistencias") + tile(mc.aport, "comunicaciones y pósteres", mc.ponente ? mc.ponente + " como ponente" : "") +
       tile(mc.premios, "premios") + tile(mc.org, "organizados") +
-      (mc.limite !== undefined ? tile(mc.diasAprob + " / " + mc.limite, "días de congreso " + new Date().getFullYear(), mc.diasPend ? mc.diasPend + " pendientes de aprobar" : "") : "") + "</div>" : CARGANDO));
-    h.push('<div class="pf-sub">Estudios</div>' + (me ? '<div class="indicadores pf-ind">' + tile(me.ip, "como IP") + tile(me.ipLocal, "como IP local") + tile(me.colab, "como colaborador/a") +
-      tile(me.activos, "activos ahora") + tile(me.pacientes.toLocaleString("es-ES"), "pacientes incluidos", "estudios en los que es IP o IP local") + "</div>" : CARGANDO));
+      (mc.limite !== undefined ? tile(mc.diasAprob + " / " + mc.limite, "días de congreso " + new Date().getFullYear(), mc.diasPend ? mc.diasPend + " pendientes de aprobar" : "") : "") + "</div>" : CARGANDO) + "</div>");
+    h.push('<div><div class="pf-sub">Estudios</div>' + (me ? '<div class="indicadores pf-ind">' + tile(me.ip, "como IP") + tile(me.ipLocal, "como IP local") + tile(me.colab, "como colaborador/a") +
+      tile(me.activos, "activos ahora") + tile(me.pacientes.toLocaleString("es-ES"), "pacientes incluidos", "estudios en los que es IP o IP local") + "</div>" : CARGANDO) + "</div></div>");
     h.push("</section>");
+    h.push('<div class="pf-rejilla">');
     // Docencia (+ otros méritos, que son de Ciencia pero comparten tabla)
     var md = metricasDocencia(n, per);
     h.push('<section class="pf-bloque"><h3><i class="fa-solid fa-user-graduate"></i> Docencia</h3>');
@@ -5137,7 +5168,7 @@
       if (md.pend) h.push('<p class="ayuda">' + md.pend + " registro" + (md.pend === 1 ? "" : "s") + " pendiente" + (md.pend === 1 ? "" : "s") + " de validación (incluidos arriba).</p>");
     }
     h.push("</section>");
-    h.push('<section class="pf-bloque"><h3><i class="fa-solid fa-stethoscope"></i> Asistencial</h3><p class="tenue">Se añadirá cuando esté el bloque Asistencial.</p></section>');
+    h.push('<section class="pf-bloque"><h3><i class="fa-solid fa-stethoscope"></i> Asistencial</h3><p class="tenue">Se añadirá cuando esté el bloque Asistencial.</p></section></div>');
     $("cuerpoPerfil").innerHTML = h.join("");
     pintarFoto();
     if ($("pfQuitar")) $("pfQuitar").onclick = quitarFoto;
