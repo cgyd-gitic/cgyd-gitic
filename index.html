@@ -46,7 +46,7 @@
   .mensaje { min-height:1.2em; font-size:14px; color:var(--rojo-osc); }
 
   /* Acceso */
-  .acceso { min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; background:#fff; }
+  .acceso { min-height:calc(100 * var(--vh, 1vh)); display:flex; align-items:center; justify-content:center; padding:20px; background:#fff; }
   .tarjeta-acceso { width:100%; max-width:380px; text-align:center; }
   .tarjeta-acceso h1 { font-size:22px; font-weight:500; margin:14px 0 4px; }
   .tarjeta-acceso .sub { color:var(--tenue); font-size:13px; margin:0 0 22px; }
@@ -140,10 +140,10 @@
 
   /* Ventanas y avisos */
   .velo { position:fixed; inset:0; background:rgba(0,0,0,.35); display:flex; align-items:center; justify-content:center; z-index:50; padding:16px; }
-  .dialogo { background:#fff; border-radius:8px; padding:20px; width:100%; max-width:480px; max-height:90vh; overflow:auto; }
+  .dialogo { background:#fff; border-radius:8px; padding:20px; width:100%; max-width:480px; max-height:calc(90 * var(--vh, 1vh)); overflow:auto; }
   .dialogo h2 { font-size:18px; font-weight:500; margin:0 0 8px; }
   .botones { display:flex; justify-content:flex-end; gap:8px; margin-top:16px; }
-  .aviso { position:fixed; left:50%; transform:translateX(-50%); bottom:24px; background:#323232; color:#fff; padding:11px 18px; border-radius:4px; z-index:60; max-width:92vw; font-size:14px; }
+  .aviso { position:fixed; left:50%; transform:translateX(-50%); bottom:24px; background:#323232; color:#fff; padding:11px 18px; border-radius:4px; z-index:60; max-width:calc(92 * var(--vw, 1vw)); font-size:14px; }
   .cargando { position:fixed; top:var(--cab); left:0; right:0; height:3px; z-index:55; overflow:hidden; }
   .cargando::before { content:""; position:absolute; height:3px; width:40%; background:var(--rojo); animation:barra 1s linear infinite; }
   @keyframes barra { from { left:-40%; } to { left:100%; } }
@@ -196,7 +196,7 @@
   .info-oa .actual::before { content:"▸ "; }
   .opciones-formato label.check { margin:6px 0; align-items:flex-start; }
   .opciones-formato input { margin-top:3px; }
-  .filtros { max-height:calc(100vh - 140px); overflow:auto; }
+  .filtros { max-height:calc(100 * var(--vh, 1vh) - 140px); overflow:auto; }
   .fila-rango { display:flex; align-items:center; gap:8px; } .fila-rango span { color:var(--tenue); }
   .rapidos { display:flex; gap:6px; margin-top:6px; } .rapidos .bt { padding:4px 9px; font-size:12.5px; }
   .indicadores { display:grid; grid-template-columns:repeat(auto-fill, minmax(128px, 1fr)); gap:8px; padding:10px 12px; border-bottom:1px solid var(--borde); background:#fafbfc; }
@@ -207,7 +207,7 @@
   .ind .l { font-size:12px; color:var(--tenue); }
   .ind .s { font-size:11.5px; color:var(--tenue); }
   .ind.destacado .n { color:var(--rojo-osc); }
-  @media (max-width: 899px) { .indicadores { grid-template-columns:repeat(2, 1fr); max-height:45vh; overflow:auto; } }
+  @media (max-width: 899px) { .indicadores { grid-template-columns:repeat(2, 1fr); max-height:calc(45 * var(--vh, 1vh)); overflow:auto; } }
   /* Estudios: lista tipo «deck» de AppSheet */
   .deck-grupo { padding:12px 12px 8px; font-size:15px; background:#fafbfc; border-bottom:1px solid #eef0f2; }
   .deck-grupo span { background:var(--gris); border-radius:8px; padding:0 6px; font-size:11px; color:var(--tenue); margin-left:6px; }
@@ -331,7 +331,7 @@
     .cal-cuerpo { padding:8px; }
     .deck .lado { max-width:34%; }
     .tabla-simple { font-size:12.5px; }
-    .dialogo { max-height:92vh; }
+    .dialogo { max-height:calc(92 * var(--vh, 1vh)); }
   }
 
   /* ===== v0.5: bloques (Ciencia · Docencia · Asistencial), Revisar unificado, ficha personal, gesto atrás ===== */
@@ -490,21 +490,66 @@
   .ico-pdf { color:#b3261e; font-size:12px; }
   .pf-contacto a { color:var(--rojo); font-weight:500; }
 
-  /* ===== v0.5.1: ficha personal a todo el ancho ===== */
-  .pf-cab, .pf-per, .pf-bloque { max-width:none; }
-  .pf-campos { display:block; }
-  .pf-dos { display:block; }
-  .pf-rejilla { display:block; }
-  .pf-barra { max-width:none; }
-  .pf-barras { height:130px; }
-  @media (min-width: 1200px) {
-    .pf-campos { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); column-gap:28px; max-width:1000px; }
-    .pf-dos { display:grid; grid-template-columns:minmax(0, 1fr) minmax(0, 1fr); gap:0 12px; align-items:start; }
-    .pf-dos.pf-pubs { grid-template-columns:minmax(0, 3fr) minmax(300px, 2fr); }
-    .pf-pubs .pf-barras { height:170px; }
-    .pf-rejilla { display:grid; grid-template-columns:repeat(auto-fit, minmax(380px, 1fr)); gap:0 12px; align-items:start; }
-    .pf-rejilla .pf-bloque { margin:12px 0; }
+  /* ===== v0.5.1: ficha personal en tarjetas (rejilla de 12 columnas) ===== */
+  #vistaPerfil .perfil-cuerpo { background:#f6f7f9; padding:16px 18px 90px; }
+  .pf-card { background:#fff; border:1px solid var(--borde); border-radius:12px; padding:14px 16px; min-width:0; display:flex; flex-direction:column; }
+  .pf-card h4 { margin:0 0 12px; font-size:14px; font-weight:500; display:flex; align-items:center; gap:8px; color:#202124; }
+  .pf-card h4 > i { color:var(--rojo); width:16px; text-align:center; }
+  .pf-card h4 .bt-texto { margin-left:auto; font-size:12.5px; }
+  .pf-head { display:grid; grid-template-columns:auto minmax(0, 1fr) minmax(0, auto); gap:22px; align-items:center; padding:18px 20px; }
+  .pf-head .pf-foto { width:112px; height:112px; } .pf-head .pf-foto img { width:112px; height:112px; } .pf-head .pf-ini { font-size:38px; }
+  .pf-nombre-fila { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-bottom:12px; }
+  .pf-nombre-fila .pf-nombre { margin:0 6px 0 0; font-size:22px; font-weight:500; display:inline; }
+  .pf-nombre-fila .bt-texto { font-size:12.5px; }
+  .pf-chip { background:var(--gris); border-radius:12px; padding:2px 10px; font-size:12px; color:#3c4043; white-space:nowrap; }
+  .pf-campos { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:10px 24px; max-width:none; }
+  .pf-campos .pf-campo { display:flex; flex-direction:column; gap:1px; padding:0; }
+  .pf-campos .et-campo { width:auto; font-size:11.5px; color:var(--tenue); }
+  .pf-campos .valor { font-size:13.5px; overflow-wrap:anywhere; }
+  .pf-contacto { margin:12px 0 0; }
+  .pf-kpis { display:grid; grid-template-columns:repeat(4, minmax(104px, 1fr)); gap:10px; }
+  .pf-kpi { background:#fdf2f2; border-radius:10px; padding:12px 10px; text-align:center; display:flex; flex-direction:column; gap:2px; }
+  .pf-kpi b { font-size:26px; font-weight:500; color:var(--rojo-osc); line-height:1.1; }
+  .pf-kpi span { font-size:12.5px; color:#3c4043; }
+  .pf-kpi small { font-size:11px; color:var(--tenue); }
+  .pf-per { margin:14px 2px 0; font-size:12.5px; color:var(--tenue); }
+  .pf-grupo { font-size:12px; text-transform:uppercase; letter-spacing:.07em; color:var(--tenue); font-weight:500; margin:20px 2px 8px; display:flex; align-items:center; gap:8px; }
+  .pf-grupo i { color:var(--rojo); }
+  .pf-fila { display:grid; grid-template-columns:repeat(12, minmax(0, 1fr)); gap:12px; margin-bottom:12px; align-items:stretch; }
+  .pf-fila > .s4 { grid-column:span 4; } .pf-fila > .s5 { grid-column:span 5; } .pf-fila > .s7 { grid-column:span 7; } .pf-fila > .s12 { grid-column:span 12; }
+  .pf-tiles { display:grid; gap:8px; } .pf-tiles.c4 { grid-template-columns:repeat(4, minmax(0, 1fr)); } .pf-tiles.c2 { grid-template-columns:repeat(2, minmax(0, 1fr)); }
+  .pf-tiles .ind { min-height:68px; background:#fafbfc; }
+  .pf-pie { margin:10px 0 0; font-size:13px; color:#3c4043; }
+  .pf-stats { display:flex; flex-direction:column; }
+  .pf-stat { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:7px 0; border-top:1px solid #eef0f2; font-size:13.5px; }
+  .pf-stat:first-child { border-top:none; padding-top:0; }
+  .pf-stat b { font-weight:500; }
+  .pf-acr span { display:flex; flex-direction:column; } .pf-acr small { color:var(--tenue); font-size:12px; }
+  .pf-graf .pf-barras { flex:1; min-height:150px; height:auto; padding:6px 0 0; gap:6px; }
+  .pf-graf .pf-barra { max-width:none; }
+  .pf-fina { padding:10px 16px; } .pf-fina h4 { margin-bottom:6px; }
+  @media (max-width: 1199px) {
+    .pf-head { grid-template-columns:auto minmax(0, 1fr); }
+    .pf-kpis { grid-column:1 / -1; }
+    .pf-campos { grid-template-columns:repeat(2, minmax(0, 1fr)); }
+    .pf-fila > .s5, .pf-fila > .s7 { grid-column:span 12; }
+    .pf-fila > .s4 { grid-column:span 6; }
+    .pf-fila > .s4:nth-child(3) { grid-column:span 12; }
   }
+  @media (max-width: 899px) {
+    #vistaPerfil .perfil-cuerpo { padding:10px 10px 90px; }
+    .pf-head { grid-template-columns:1fr; justify-items:center; text-align:center; padding:16px 12px; }
+    .pf-datos { width:100%; }
+    .pf-nombre-fila { justify-content:center; }
+    .pf-campos { grid-template-columns:1fr; text-align:left; }
+    .pf-kpis { grid-template-columns:repeat(2, minmax(0, 1fr)); width:100%; }
+    .pf-fila > .s4, .pf-fila > .s4:nth-child(3) { grid-column:span 12; }
+    .pf-tiles.c4 { grid-template-columns:repeat(2, minmax(0, 1fr)); }
+  }
+  @media print { #vistaPerfil .perfil-cuerpo { background:#fff; } .pf-card { break-inside:avoid; } }
+  /* selector de tamaño en «Mi cuenta» */
+  .menu-et { display:block; font-size:12px; color:var(--tenue); margin:4px 0 4px; }
+  .menu-sel { width:100%; margin-bottom:10px; }
 </style>
 
 </head>
@@ -561,6 +606,8 @@
     <div id="menuUsuario" class="menu-usuario oculto">
       <p><b id="lblNombre"></b><br><span class="tenue" id="lblEmail"></span><br><span class="tenue" id="lblRol"></span></p>
       <button class="bt oculto" id="btBio" style="margin-bottom:8px"><i class="fa-solid fa-fingerprint"></i> Face ID / huella</button>
+      <label class="menu-et" for="selEscala"><i class="fa-solid fa-text-height"></i> Tamaño de la pantalla</label>
+      <select id="selEscala" class="menu-sel"></select>
       <button class="bt" id="btMiFicha" style="margin-bottom:8px"><i class="fa-solid fa-id-badge"></i> Mi ficha personal</button>
       <button class="bt" id="btSalir"><i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión</button>
     </div>
@@ -1059,6 +1106,31 @@
         .catch(function (e) { ko(new Error(/Failed to fetch|NetworkError|Load failed/i.test(e.message) ? "Sin conexión con el servidor. Comprueba tu conexión a internet." : e.message)); });
     });
   }
+
+  // ---------- tamaño de la interfaz: automático según el ancho de la ventana (pantallas grandes) o elegido en «Mi cuenta» ----------
+  // Se amplía toda la página (letra, campos y tarjetas) manteniendo al menos 1000 px de ancho útil para que la estructura no se rompa.
+  var ESCALAS = [["auto", "Automático (según la pantalla)"], ["0.9", "90 %"], ["1", "100 %"], ["1.1", "110 %"], ["1.25", "125 %"], ["1.4", "140 %"], ["1.6", "160 %"]];
+  function escalaAuto(w) { return w < 1500 ? 1 : Math.min(1.6, Math.round(w / 1500 * 20) / 20); }
+  function aplicarEscala() {
+    var pref = leer("gc_escala") || "auto", w = window.innerWidth || 1280, h = window.innerHeight || 800;
+    var f = pref === "auto" ? (w < 900 ? 1 : escalaAuto(w)) : (Number(pref) || 1);
+    f = Math.max(0.8, Math.min(f, Math.max(1, w / (w >= 900 ? 1000 : 320))));
+    f = Math.round(f * 100) / 100;
+    var r = document.documentElement;
+    if (r && r.style) {
+      r.style.zoom = f === 1 ? "" : String(f);
+      if (r.style.setProperty) { r.style.setProperty("--vh", (h / f / 100) + "px"); r.style.setProperty("--vw", (w / f / 100) + "px"); }
+    }
+    S.escala = f;
+  }
+  (function () {
+    var s = $("selEscala"); if (!s) return;
+    s.innerHTML = ESCALAS.map(function (x) { return '<option value="' + x[0] + '">' + x[1] + "</option>"; }).join("");
+    s.value = leer("gc_escala") || "auto";
+    s.onchange = function () { guardar("gc_escala", s.value === "auto" ? null : s.value); aplicarEscala(); aviso("Tamaño: " + s.options[s.selectedIndex].text + (S.escala ? " (" + Math.round(S.escala * 100) + " %)" : ""), 2500); };
+    window.addEventListener("resize", aplicarEscala);
+    aplicarEscala();
+  })();
   // ---------- caché del dispositivo (IndexedDB): se muestra al instante lo último descargado y se actualiza en segundo plano ----------
   var CACHE_VER = "0.5", CACHE_MAX = 30 * 86400000;
   var CACHE = (function () {
@@ -2117,6 +2189,9 @@
   $("btMenu").addEventListener("mouseenter", function () { if (menuRaton()) abrirMenu(); });
   $("btMenu").addEventListener("mouseleave", function () { if (menuRaton()) cerrarMenuLuego(); });
   $("cajon").addEventListener("mouseenter", function () { if (menuRaton()) clearTimeout(MENU.t); });
+  // también al pasar por la barra lateral de iconos (con una breve pausa para no abrirlo al cruzarla)
+  $("riel").addEventListener("mouseenter", function () { if (!menuRaton()) return; clearTimeout(MENU.t); MENU.t = setTimeout(abrirMenu, 160); });
+  $("riel").addEventListener("mouseleave", function () { if (menuRaton()) cerrarMenuLuego(); });
   $("cajon").addEventListener("mouseleave", function () { if (menuRaton()) cerrarMenuLuego(); });
   $("cajon").addEventListener("click", function (ev) { if (ev.target.closest && ev.target.closest("button")) { clearTimeout(MENU.t); $("cajon").classList.add("oculto"); } });
   $("btMenu").onclick = function () { if (menuRaton()) abrirMenu(); else $("cajon").classList.toggle("oculto"); };
@@ -5102,7 +5177,8 @@
     var aneca = me.filter(function (r) { return r.tipo === G.docencia.ANECA; }), otros = me.filter(function (r) { return r.tipo !== G.docencia.ANECA; });
     var porTipo = {}; otros.forEach(function (r) { porTipo[r.tipo] = (porTipo[r.tipo] || 0) + 1; });
     return { tesis: def("Tesis doctoral"), tfm: def("TFM"), tfg: def("TFG"), enCurso: tr.filter(function (r) { return r.estado === "En curso"; }).length,
-      tutorias: tu.length, mir: tu.filter(function (r) { return r.tipo === D.mir; }).length, rotantes: rot.length, otros: otros.length, porTipo: porTipo, aneca: aneca,
+      tutorias: tu.length, mir: tu.filter(function (r) { return r.tipo === D.mir; }).length, rotantes: rot.length,
+      est: tu.filter(function (r) { return r.tipo === "Estudiante en prácticas"; }).length, otros: otros.length, porTipo: porTipo, aneca: aneca,
       pend: tr.concat(tuT, me).filter(function (r) { return r.estadoVal === V.pend; }).length };
   }
   function barras(porAno, per) {
@@ -5115,60 +5191,62 @@
   var CARGANDO = '<p class="tenue"><i class="fa-solid fa-spinner fa-spin"></i> Cargando…</p>';
 
   // ---------- pintado ----------
+  function card(span, icono, titulo, cuerpo, extra) { return '<section class="pf-card ' + span + '"><h4><i class="fa-solid ' + icono + '"></i> ' + esc(titulo) + (extra || "") + "</h4>" + cuerpo + "</section>"; }
+  function grupo(icono, titulo) { return '<h3 class="pf-grupo"><i class="fa-solid ' + icono + '"></i> ' + esc(titulo) + "</h3>"; }
+  function stat(et, n) { return '<div class="pf-stat"><span>' + esc(et) + "</span><b>" + n + "</b></div>"; }
+  function kpi(n, lab, sub) { return '<div class="pf-kpi"><b>' + n + "</b><span>" + esc(lab) + "</span>" + (sub ? "<small>" + esc(sub) + "</small>" : "") + "</div>"; }
+  function tiles(cols, html) { return '<div class="pf-tiles c' + cols + '">' + html + "</div>"; }
   function pintar() {
     if (!G.S.inicio || G.S.vista !== "perfil") return;
     var n = PF.persona || yo(), per = periodo(), d = PF.datos[n], h = [];
     $("tituloPerfil").textContent = n === yo() ? "Mi ficha personal" : "Ficha personal";
-    var campos = "";
-    if (!d) campos = CARGANDO;
-    else if (d.error) campos = '<p class="mensaje">' + esc(d.error) + "</p>";
+    var mp = metricasPubs(n, per), mc = metricasCongresos(n, per), me = metricasEstudios(n, per), md = metricasDocencia(n, per);
+    // ---- cabecera: foto, nombre, datos y cifras principales ----
+    var datos = "", chips = "";
+    if (!d) datos = CARGANDO;
+    else if (d.error) datos = '<p class="mensaje">' + esc(d.error) + "</p>";
     else {
       var cf = function (et, v, html) { return v ? '<div class="pf-campo"><span class="et-campo">' + esc(et) + '</span><span class="valor">' + (html ? v : esc(v)) + "</span></div>" : ""; };
       var orcid = d.orcid ? '<a href="https://orcid.org/' + esc(String(d.orcid).replace(/^https?:\/\/orcid\.org\//, "")) + '" target="_blank" rel="noopener">' + esc(d.orcid) + "</a>" : "";
-      campos = '<div class="pf-campos">' + cf("Nombre completo", d.nombreCompleto) + cf("Cargo", d.cargo) + cf("Rol en la web", d.rol) + cf("Estado", d.estado) +
-        cf("Correo", d.email) + cf("Correo alternativo", d.emailAlt) + cf("ORCID", orcid, true) +
-        cf("En el Servicio desde", fTxt(d.alta)) + cf("Fecha de baja", fTxt(d.baja)) + "</div>" + contactoAdmin(d);
+      chips = [d.cargo, d.rol, d.estado].filter(Boolean).map(function (x) { return '<span class="pf-chip">' + esc(x) + "</span>"; }).join("");
+      datos = '<div class="pf-campos">' + cf("Nombre completo", d.nombreCompleto) + cf("Correo", d.email) + cf("Correo alternativo", d.emailAlt) +
+        cf("ORCID", orcid, true) + cf("En el Servicio desde", fTxt(d.alta)) + cf("Fecha de baja", fTxt(d.baja)) + "</div>" + contactoAdmin(d);
     }
-    h.push('<div class="pf-cab"><div class="pf-foto" id="pfFoto"></div><div class="pf-datos"><h2 class="pf-nombre">' + esc(n) + "</h2>" +
-      ((n === yo() || admin()) ? '<button class="bt-texto" id="pfQuitar"><i class="fa-regular fa-trash-can"></i> Quitar foto</button>' : "") + campos + "</div></div>");
-    h.push('<p class="pf-per">Métricas de <b>' + esc(per[2]) + '</b> · solo registros confirmados o validados (no se cuentan los rechazados).</p>');
-    // Ciencia
-    var mp = metricasPubs(n, per), mc = metricasCongresos(n, per), me = metricasEstudios(n, per);
-    h.push('<section class="pf-bloque"><h3><i class="fa-solid fa-microscope"></i> Ciencia</h3>');
-    h.push('<div class="pf-dos pf-pubs"><div>');
-    h.push('<div class="pf-sub">Publicaciones <button class="bt-texto" id="pfVerPubs">Ver la lista</button></div><div class="indicadores pf-ind">' +
-      tile(mp.art, "artículos", mp.libros || mp.abs ? "+ " + mp.libros + " libros/capítulos · " + mp.abs + " abstracts" : "") +
-      tile(mp.jcr, "indexados JCR", mp.art ? Math.round(mp.jcr / mp.art * 100) + " % de los artículos" : "") +
-      tile(mp.q1, "en Q1", mp.jcr ? Math.round(mp.q1 / mp.jcr * 100) + " % de los indexados" : "", "destacado") + tile(mp.d1, "en D1") +
-      tile(dec1(mp.fi), "FI acumulado", mp.jcr ? "medio " + dec1(mp.fi / mp.jcr) : "") +
-      tile(mp.primero, "primer/a autor/a") + tile(mp.ultimo, "último/a autor/a") + tile(mp.corr, "autor/a de correspondencia") +
-      tile(mp.citas.toLocaleString("es-ES"), "citas", "índice h " + mp.h + " (con estos artículos)") + "</div>");
-    h.push("</div><div>" + (mp.art ? '<div class="pf-sub">Artículos por año</div>' + barras(mp.porAno, per) : "") + "</div></div>");
-    h.push('<div class="pf-dos"><div><div class="pf-sub">Congresos y cursos</div>' + (mc ? '<div class="indicadores pf-ind">' + tile(mc.asist, "asistencias") + tile(mc.aport, "comunicaciones y pósteres", mc.ponente ? mc.ponente + " como ponente" : "") +
-      tile(mc.premios, "premios") + tile(mc.org, "organizados") +
-      (mc.limite !== undefined ? tile(mc.diasAprob + " / " + mc.limite, "días de congreso " + new Date().getFullYear(), mc.diasPend ? mc.diasPend + " pendientes de aprobar" : "") : "") + "</div>" : CARGANDO) + "</div>");
-    h.push('<div><div class="pf-sub">Estudios</div>' + (me ? '<div class="indicadores pf-ind">' + tile(me.ip, "como IP") + tile(me.ipLocal, "como IP local") + tile(me.colab, "como colaborador/a") +
-      tile(me.activos, "activos ahora") + tile(me.pacientes.toLocaleString("es-ES"), "pacientes incluidos", "estudios en los que es IP o IP local") + "</div>" : CARGANDO) + "</div></div>");
-    h.push("</section>");
-    h.push('<div class="pf-rejilla">');
-    // Docencia (+ otros méritos, que son de Ciencia pero comparten tabla)
-    var md = metricasDocencia(n, per);
-    h.push('<section class="pf-bloque"><h3><i class="fa-solid fa-user-graduate"></i> Docencia</h3>');
-    if (!md) h.push(CARGANDO);
-    else {
-      h.push('<div class="indicadores pf-ind">' + tile(md.tesis, "tesis dirigidas", "defendidas") + tile(md.tfm, "TFM dirigidos", "defendidos") + tile(md.tfg, "TFG dirigidos", "defendidos") +
-        tile(md.enCurso, "trabajos en curso") + tile(md.tutorias, "tutorías", md.mir + " de residentes MIR") + tile(md.rotantes, "rotantes", "de otros hospitales") + "</div>");
-      h.push('<div class="pf-sub">Acreditaciones ANECA</div>' + (md.aneca.length ? '<ul class="pf-lista">' + md.aneca.map(function (r) {
-        return "<li><b>" + esc(r.titulo) + "</b> · " + esc([r.entidad, fTxt(r.inicio)].filter(Boolean).join(" · ")) + (r.estadoVal === G.docencia.VAL.pend ? ' <span class="et pend">pendiente de validar</span>' : "") + "</li>"; }).join("") + "</ul>" :
-        '<p class="tenue">Sin acreditaciones registradas.</p>'));
-      var tipos = Object.keys(md.porTipo).sort(function (a, b) { return md.porTipo[b] - md.porTipo[a]; });
-      h.push("</section>");
-      h.push('<section class="pf-bloque"><h3><i class="fa-solid fa-award"></i> Otros méritos</h3>' + (tipos.length ? '<div class="indicadores pf-ind">' +
-        tipos.map(function (t) { return tile(md.porTipo[t], t); }).join("") + "</div>" : '<p class="tenue">Sin otros méritos registrados en este periodo.</p>'));
-      if (md.pend) h.push('<p class="ayuda">' + md.pend + " registro" + (md.pend === 1 ? "" : "s") + " pendiente" + (md.pend === 1 ? "" : "s") + " de validación (incluidos arriba).</p>");
-    }
-    h.push("</section>");
-    h.push('<section class="pf-bloque"><h3><i class="fa-solid fa-stethoscope"></i> Asistencial</h3><p class="tenue">Se añadirá cuando esté el bloque Asistencial.</p></section></div>');
+    h.push('<section class="pf-card pf-head"><div class="pf-foto" id="pfFoto"></div><div class="pf-datos"><div class="pf-nombre-fila"><h2 class="pf-nombre">' + esc(n) + "</h2>" + chips +
+      ((n === yo() || admin()) ? '<button class="bt-texto" id="pfQuitar"><i class="fa-regular fa-trash-can"></i> Quitar foto</button>' : "") + "</div>" + datos + "</div>" +
+      '<div class="pf-kpis">' + kpi(mp.art, "artículos", mp.libros || mp.abs ? "+ " + (mp.libros + mp.abs) + (mp.libros + mp.abs === 1 ? " libro o abstract" : " libros o abstracts") : "") + kpi(mp.q1, "en Q1", mp.jcr ? Math.round(mp.q1 / mp.jcr * 100) + " % de los JCR" : "") +
+      kpi(dec1(mp.fi), "FI acumulado", mp.jcr ? "medio " + dec1(mp.fi / mp.jcr) : "") + kpi(mp.h, "índice h", mp.citas.toLocaleString("es-ES") + " citas") + "</div></section>");
+    h.push('<p class="pf-per">Métricas de <b>' + esc(per[2]) + "</b> · solo registros confirmados o validados (no se cuentan los rechazados)." +
+      (md && md.pend ? " Incluye " + md.pend + " registro" + (md.pend === 1 ? "" : "s") + " de docencia o méritos pendiente" + (md.pend === 1 ? "" : "s") + " de validar." : "") + "</p>");
+    // ---- Ciencia ----
+    h.push(grupo("fa-microscope", "Ciencia"));
+    h.push('<div class="pf-fila">' +
+      card("s7", "fa-book", "Publicaciones", tiles(4,
+        tile(mp.jcr, "indexados JCR", mp.art ? Math.round(mp.jcr / mp.art * 100) + " % de los artículos" : "") + tile(mp.q1, "en Q1", "", "destacado") + tile(mp.d1, "en D1") +
+        tile(mp.jcr ? dec1(mp.fi / mp.jcr) : "—", "FI medio") + tile(mp.primero, "primer/a autor/a") + tile(mp.ultimo, "último/a autor/a") +
+        tile(mp.corr, "correspondencia") + tile(mp.libros + " · " + mp.abs, "libros · abstracts")), ' <button class="bt-texto" id="pfVerPubs">Ver la lista</button>') +
+      card("s5 pf-graf", "fa-chart-column", "Artículos por año", mp.art ? barras(mp.porAno, per) : '<p class="tenue">Sin artículos en este periodo.</p>') + "</div>");
+    var tiposM = md ? Object.keys(md.porTipo).sort(function (a, b) { return md.porTipo[b] - md.porTipo[a]; }) : [];
+    h.push('<div class="pf-fila">' +
+      card("s4", "fa-people-group", "Congresos y cursos", mc ? tiles(2, tile(mc.asist, "asistencias") + tile(mc.aport, "comunicaciones y pósteres", mc.ponente ? mc.ponente + " como ponente" : "") +
+        tile(mc.premios, "premios") + tile(mc.org, "organizados")) +
+        (mc.limite !== undefined ? '<p class="pf-pie">Días de congreso ' + new Date().getFullYear() + ": <b>" + mc.diasAprob + " de " + mc.limite + "</b>" + (mc.diasPend ? " · " + mc.diasPend + " pendientes de aprobar" : "") + "</p>" : "") : CARGANDO) +
+      card("s4", "fa-flask", "Estudios", me ? tiles(2, tile(me.ip, "como IP") + tile(me.ipLocal, "como IP local") + tile(me.colab, "como colaborador/a") + tile(me.activos, "activos ahora")) +
+        '<p class="pf-pie">Pacientes incluidos como IP o IP local: <b>' + me.pacientes.toLocaleString("es-ES") + "</b></p>" : CARGANDO) +
+      card("s4", "fa-award", "Otros méritos", !md ? CARGANDO : tiposM.length ? '<div class="pf-stats">' + tiposM.map(function (t) { return stat(t, md.porTipo[t]); }).join("") + "</div>" :
+        '<p class="tenue">Sin otros méritos registrados en este periodo.</p>') + "</div>");
+    // ---- Docencia ----
+    h.push(grupo("fa-user-graduate", "Docencia"));
+    h.push('<div class="pf-fila">' +
+      card("s4", "fa-graduation-cap", "Trabajos dirigidos", md ? tiles(2, tile(md.tesis, "tesis defendidas") + tile(md.tfm, "TFM defendidos") + tile(md.tfg, "TFG defendidos") + tile(md.enCurso, "en curso")) : CARGANDO) +
+      card("s4", "fa-user-doctor", "Tutorías y rotantes", md ? tiles(2, tile(md.tutorias, "tutorías") + tile(md.mir, "de residentes MIR") + tile(md.est, "estudiantes en prácticas") + tile(md.rotantes, "rotantes")) : CARGANDO) +
+      card("s4", "fa-certificate", "Acreditaciones ANECA", !md ? CARGANDO : md.aneca.length ? '<div class="pf-stats">' + md.aneca.map(function (r) {
+        return '<div class="pf-stat pf-acr"><span><b>' + esc(r.titulo) + "</b><small>" + esc([r.entidad, r.rol, fTxt(r.inicio)].filter(Boolean).join(" · ")) + "</small></span>" +
+          (r.estadoVal === G.docencia.VAL.pend ? '<span class="et pend">pendiente</span>' : '<i class="fa-solid fa-circle-check" style="color:var(--verde)"></i>') + "</div>"; }).join("") + "</div>" :
+        '<p class="tenue">Sin acreditaciones registradas.</p>') + "</div>");
+    // ---- Asistencial ----
+    h.push(grupo("fa-stethoscope", "Asistencial"));
+    h.push('<div class="pf-fila">' + card("s12 pf-fina", "fa-stethoscope", "Actividad asistencial", '<p class="tenue" style="margin:0">Se añadirá cuando esté el bloque Asistencial.</p>') + "</div>");
     $("cuerpoPerfil").innerHTML = h.join("");
     pintarFoto();
     if ($("pfQuitar")) $("pfQuitar").onclick = quitarFoto;
