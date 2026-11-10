@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Gestión Científica CGyD-GITIC · web publicada (GitHub Pages) · generado el 05/11/2026 a partir de Web_App + Web_Estilos + Web_Cliente + Web_Estudios_Cliente + Web_Congresos_Cliente.
+<!-- Gestión Científica CGyAD-GITIC · web publicada (GitHub Pages) · versión 0.5 · generado el 10/11/2026 a partir de Web_App + Web_Estilos + Web_Cliente + Web_Estudios_Cliente + Web_Congresos_Cliente + Web_Docencia_Cliente + Web_Perfil_Cliente.
      No edites este archivo: la dirección del servidor está en config.js. -->
 <html lang="es">
 <head>
@@ -9,14 +9,14 @@
   <meta name="theme-color" content="#e53935">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="CGyD-GITIC">
+  <meta name="apple-mobile-web-app-title" content="CGyAD-GITIC">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <script src="config.js"></script>
 
-  <title>Gestión Científica CGyD-GITIC</title>
+  <title>Gestión Científica CGyAD-GITIC</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -332,6 +332,94 @@
     .tabla-simple { font-size:12.5px; }
     .dialogo { max-height:92vh; }
   }
+
+  /* ===== v0.5: bloques (Ciencia · Docencia · Asistencial), Revisar unificado, ficha personal, gesto atrás ===== */
+  .bloque-bar { display:flex; align-items:center; gap:4px; padding:6px 10px; border-bottom:1px solid var(--borde); background:#fafbfc; overflow-x:auto; flex-shrink:0; scrollbar-width:none; }
+  .bloque-bar::-webkit-scrollbar { display:none; }
+  .bloque-bar .bloque-nom { font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--tenue); margin-right:6px; white-space:nowrap; }
+  .bloque-bar button { border:1px solid var(--borde); background:#fff; color:var(--texto); border-radius:16px; padding:5px 12px; font-size:13px; white-space:nowrap; cursor:pointer; }
+  .bloque-bar button i { color:var(--tenue); margin-right:3px; }
+  .bloque-bar button:hover { border-color:var(--rojo); }
+  .bloque-bar button.activo { background:var(--rojo-claro); border-color:var(--rojo); color:var(--rojo); font-weight:500; } .bloque-bar button.activo i { color:var(--rojo); }
+  #vistaDocencia:not(.modo-ciencia) > .bloque-bar { display:none; }
+  .cajon { overflow-y:auto; }
+  .cajon-tit { font-size:11.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--tenue); padding:12px 18px 4px; }
+  .cajon button.sub { padding:9px 18px 9px 30px; }
+  .cajon hr { border:none; border-top:1px solid var(--borde); margin:6px 0; }
+  .cajon .et { margin-left:auto; font-size:10.5px; }
+  .inferior button { position:relative; }
+  .inferior .contador { position:absolute; top:0; right:4px; }
+  .inicio-bloques { display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; max-width:1100px; margin:0 auto 14px; }
+  .bloque-mosaico { display:flex; flex-direction:column; border:1px solid var(--borde); border-radius:12px; background:#fff; overflow:hidden; }
+  .bloque-mosaico .mosaico.grande { border:none; border-radius:0; padding:22px 18px 14px; flex:1; }
+  .bloque-mosaico .mosaico.grande > i { width:54px; height:54px; font-size:24px; }
+  .bloque-mosaico .mosaico.grande .txt b { font-size:18px; }
+  .bloque-mosaico:hover { border-color:var(--rojo); box-shadow:0 4px 14px rgba(0,0,0,.08); }
+  .bloque-mosaico .mosaico.grande:hover { box-shadow:none; }
+  .bloque-mosaico .atajos { display:flex; flex-wrap:wrap; gap:6px; padding:0 16px 16px; }
+  .bloque-mosaico .atajos:empty { display:none; }
+  .bloque-mosaico .atajos button { border:1px solid var(--borde); background:#fafbfc; border-radius:14px; padding:4px 10px; font-size:12.5px; color:var(--texto); cursor:pointer; }
+  .bloque-mosaico .atajos button:hover { border-color:var(--rojo); color:var(--rojo); }
+  .bloque-mosaico.proximo { opacity:.65; }
+  .bloque-mosaico.proximo .mosaico > i { background:var(--gris); color:var(--tenue); }
+  @media (max-width: 899px) {
+    .inicio-bloques { grid-template-columns:1fr; gap:10px; }
+    .bloque-mosaico .mosaico.grande { flex-direction:row; padding:14px 12px 8px; }
+    .bloque-mosaico .mosaico.grande .txt small { display:block; }
+    .bloque-mosaico .atajos { padding:0 12px 12px; }
+    .bloque-bar .bloque-nom { display:none; }
+    .inicio-grid { grid-template-columns:1fr 1fr 1fr; }
+  }
+  @media (max-width: 480px) { .inicio-grid { grid-template-columns:1fr 1fr; } }
+  /* Revisar */
+  #cuerpoRev { padding:8px 14px 80px; overflow:auto; }
+  .rev-ayuda { color:var(--tenue); font-size:13px; margin:6px 0 10px; }
+  .rev-sub { font-size:13.5px; font-weight:500; margin:16px 0 6px; color:var(--texto); }
+  .rev-vacio { padding:22px 10px; color:var(--tenue); text-align:center; font-size:14px; }
+  .rev-vacio i { color:#188038; margin-right:4px; }
+  .lista-simple .item-lista .et { font-size:11px; margin-right:4px; }
+  .lista-simple .item-lista .mensaje { margin:4px 0 0; }
+  /* Ficha personal */
+  .perfil-cuerpo { padding:14px 16px 90px; overflow:auto; }
+  .pf-cab { display:flex; gap:20px; align-items:flex-start; max-width:1100px; }
+  .pf-foto { position:relative; flex:none; width:132px; height:132px; border-radius:50%; background:var(--rojo-claro); display:flex; align-items:center; justify-content:center; overflow:visible; }
+  .pf-foto img { width:132px; height:132px; border-radius:50%; object-fit:cover; display:block; }
+  .pf-ini { font-size:44px; color:var(--rojo); font-weight:500; }
+  .pf-cambiar { position:absolute; right:2px; bottom:2px; width:36px; height:36px; border-radius:50%; border:2px solid #fff; background:var(--rojo); color:#fff; cursor:pointer; }
+  .pf-datos { flex:1; min-width:0; }
+  .pf-nombre { font-size:22px; font-weight:400; margin:4px 0 8px; display:inline-block; margin-right:10px; }
+  .pf-campo { display:flex; gap:10px; font-size:13.5px; padding:3px 0; }
+  .pf-campo .et-campo { flex:none; width:170px; color:var(--tenue); }
+  .pf-campo .valor { min-width:0; overflow-wrap:anywhere; }
+  .pf-per { max-width:1100px; margin:18px 0 6px; font-size:13px; color:var(--tenue); }
+  .pf-bloque { max-width:1100px; border:1px solid var(--borde); border-radius:10px; margin:12px 0; padding:4px 0 10px; background:#fff; }
+  .pf-bloque h3 { font-size:15px; font-weight:500; margin:8px 14px 2px; } .pf-bloque h3 i { color:var(--rojo); margin-right:6px; }
+  .pf-bloque > p { margin:6px 14px; }
+  .pf-sub { font-size:12.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--tenue); margin:12px 14px 0; display:flex; align-items:center; gap:10px; }
+  .pf-sub .bt-texto { text-transform:none; letter-spacing:0; }
+  .pf-ind { border-bottom:none; background:none; padding:8px 14px 0; }
+  .pf-barras { display:flex; align-items:flex-end; gap:6px; height:120px; padding:8px 14px 0; }
+  .pf-barra { flex:1; max-width:44px; height:100%; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; font-size:11px; color:var(--tenue); }
+  .pf-barra .b { width:100%; background:var(--rojo); border-radius:3px 3px 0 0; min-height:1px; opacity:.85; }
+  .pf-barra .v { font-size:11px; color:var(--texto); }
+  .pf-lista { margin:6px 14px 0; padding-left:18px; font-size:13.5px; } .pf-lista li { margin:3px 0; }
+  #vistaPerfil select { max-width:220px; }
+  @media (max-width: 899px) {
+    .pf-cab { flex-direction:column; align-items:center; text-align:center; }
+    .pf-datos { width:100%; text-align:left; }
+    .pf-nombre { display:block; text-align:center; margin-right:0; }
+    .pf-campo .et-campo { width:130px; }
+    .perfil-cuerpo { padding:10px 10px 90px; }
+    #vistaPerfil select { max-width:130px; }
+  }
+  .avatar.con-foto { background-size:cover; background-position:center; color:transparent; }
+  /* gesto «atrás» desde el borde izquierdo (iPhone con la app instalada) */
+  .gesto-atras { position:fixed; left:0; top:50%; transform:translate(0, -50%); width:40px; height:40px; border-radius:50%; background:rgba(60,64,67,.85); color:#fff;
+    display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; z-index:90; transition:opacity .1s; }
+  @media print {
+    .cab, .riel, .inferior, .cajon, .bloque-bar, #vistaPerfil .barra-vista select, #vistaPerfil .barra-vista button, .pf-cambiar, #pfQuitar, .pf-sub .bt-texto { display:none !important; }
+    .area { position:static !important; left:0 !important; top:0 !important; } .perfil-cuerpo { overflow:visible; padding:0; } .pf-bloque { break-inside:avoid; }
+  }
 </style>
 
 </head>
@@ -352,7 +440,7 @@
   <div id="vAcceso" class="acceso oculto">
     <div class="tarjeta-acceso">
       <span class="hueco-logo" data-tam="72"></span>
-      <h1>Gestión Científica CGyD-GITIC</h1>
+      <h1>Gestión Científica CGyAD-GITIC</h1>
       <p class="sub">Cirugía General y del Aparato Digestivo · H. U. La Paz · IdiPAZ</p>
       <div id="pasoEmail">
         <label for="inEmail">Correo del Servicio</label>
@@ -380,7 +468,7 @@
     <header class="cab">
       <button class="bt-icono" id="btMenu" title="Menú"><i class="fa-solid fa-bars"></i></button>
       <span class="hueco-logo" data-tam="32"></span>
-      <span class="titulo">Gestión Científica CGyD-GITIC</span>
+      <span class="titulo">Gestión Científica CGyAD-GITIC</span>
       <div class="buscador"><div><i class="fa-solid fa-magnifying-glass"></i><input id="fTexto" type="search" placeholder="Buscar Publicaciones"></div></div>
       <button class="bt-icono" id="btSync" title="Actualizar datos"><i class="fa-solid fa-rotate"></i></button>
       <button class="avatar" id="avatar" title="Mi cuenta">?</button>
@@ -394,29 +482,34 @@
     <!-- Riel de iconos (escritorio) -->
     <nav class="riel" id="riel">
       <button data-vista="inicio" data-tip="Inicio"><i class="fa-solid fa-house"></i></button>
-      <button data-vista="estudios" data-tip="Estudios del Servicio"><i class="fa-solid fa-flask"></i></button>
-      <button data-vista="pubs" data-tip="Publicaciones"><i class="fa-solid fa-book"></i></button>
-      <button data-vista="congresos" data-tip="Congresos y Cursos (y calendario de días)"><i class="fa-solid fa-people-group"></i><span class="contador" id="cntDiasRiel"></span></button>
-      <button data-vista="docencia" data-tip="Docencia"><i class="fa-solid fa-user-graduate"></i></button>
-      <button data-vista="memoria" data-tip="Memoria IdiPAZ/HULP"><i class="fa-solid fa-file-lines"></i></button>
-      <button data-vista="pacientes" data-tip="Pacientes por Año"><i class="fa-solid fa-chart-column"></i></button>
+      <button data-vista="ciencia" data-tip="Ciencia: publicaciones, congresos, estudios y méritos"><i class="fa-solid fa-microscope"></i><span class="contador" id="cntDiasRiel"></span></button>
+      <button data-vista="docencia" data-tip="Docencia: trabajos dirigidos, tutorías y ANECA"><i class="fa-solid fa-user-graduate"></i></button>
+      <button data-vista="asistencial" data-tip="Asistencial"><i class="fa-solid fa-stethoscope"></i></button>
       <hr>
-      <button data-vista="revision" data-tip="Revisar pendientes" class="soloAdmin"><i class="fa-solid fa-list-check"></i><span class="contador" id="cntRevisionRiel"></span></button>
-      <button data-vista="recl" data-tip="Reclamaciones de autoría"><i class="fa-solid fa-hand"></i></button>
+      <button data-vista="revision" data-tip="Revisar"><i class="fa-solid fa-list-check"></i><span class="contador" id="cntRevisionRiel"></span></button>
+      <button data-vista="perfil" data-tip="Mi ficha personal"><i class="fa-solid fa-id-badge"></i></button>
+      <button data-vista="memoria" data-tip="Memoria IdiPAZ/HULP"><i class="fa-solid fa-file-lines"></i></button>
       <button data-vista="info" data-tip="Acerca de"><i class="fa-solid fa-circle-info"></i></button>
     </nav>
 
     <!-- Menú lateral con nombres (botón ≡) -->
     <div id="cajon" class="cajon oculto">
       <button data-vista="inicio"><i class="fa-solid fa-house"></i>Inicio</button>
-      <button data-vista="estudios"><i class="fa-solid fa-flask"></i>Estudios del Servicio</button>
-      <button data-vista="pubs"><i class="fa-solid fa-book"></i>Publicaciones</button>
-      <button data-vista="congresos"><i class="fa-solid fa-people-group"></i>Congresos y Cursos <span class="contador" id="cntDiasCajon"></span></button>
-      <button data-vista="docencia"><i class="fa-solid fa-user-graduate"></i>Docencia</button>
+      <div class="cajon-tit">Ciencia</div>
+      <button data-vista="pubs" class="sub"><i class="fa-solid fa-book"></i>Publicaciones</button>
+      <button data-vista="congresos" class="sub"><i class="fa-solid fa-people-group"></i>Congresos y cursos <span class="contador" id="cntDiasCajon"></span></button>
+      <button data-vista="estudios" class="sub"><i class="fa-solid fa-flask"></i>Estudios</button>
+      <button data-vista="meritos" class="sub"><i class="fa-solid fa-award"></i>Otros méritos</button>
+      <div class="cajon-tit">Docencia</div>
+      <button data-vista="docencia" data-tab="trabajos" class="sub"><i class="fa-solid fa-graduation-cap"></i>Trabajos dirigidos</button>
+      <button data-vista="docencia" data-tab="tutorias" class="sub"><i class="fa-solid fa-user-doctor"></i>Tutorías</button>
+      <button data-vista="docencia" data-tab="aneca" class="sub"><i class="fa-solid fa-certificate"></i>Acreditaciones ANECA</button>
+      <div class="cajon-tit">Asistencial</div>
+      <button data-vista="asistencial" class="sub"><i class="fa-solid fa-stethoscope"></i>Asistencial <span class="et">próximamente</span></button>
+      <hr>
+      <button data-vista="revision"><i class="fa-solid fa-list-check"></i>Revisar <span class="contador" id="cntRevisionCajon"></span></button>
+      <button data-vista="perfil"><i class="fa-solid fa-id-badge"></i>Mi ficha personal</button>
       <button data-vista="memoria"><i class="fa-solid fa-file-lines"></i>Memoria IdiPAZ/HULP</button>
-      <button data-vista="pacientes"><i class="fa-solid fa-chart-column"></i>Pacientes por Año</button>
-      <button data-vista="revision" class="soloAdmin"><i class="fa-solid fa-list-check"></i>Revisar pendientes <span class="contador" id="cntRevisionCajon"></span></button>
-      <button data-vista="recl"><i class="fa-solid fa-hand"></i>Reclamaciones de autoría</button>
       <button data-vista="info"><i class="fa-solid fa-circle-info"></i>Acerca de</button>
     </div>
 
@@ -427,15 +520,18 @@
           <div class="inicio-hola"><span class="hueco-logo" data-tam="56"></span>
             <div><h1 id="inicioSaludo">Hola</h1><p class="tenue" id="inicioFecha"></p></div></div>
           <p class="inicio-sub">¿A qué quieres acceder?</p>
+          <div class="inicio-bloques">
+            <div class="bloque-mosaico"><button class="mosaico grande" data-vista="ciencia"><i class="fa-solid fa-microscope"></i><span class="txt"><b>Ciencia</b><small>Publicaciones, congresos y cursos, estudios y otros méritos</small></span><span class="contador oculto" id="cntDiasInicio"></span></button>
+              <div class="atajos"><button data-vista="pubs">Publicaciones</button><button data-vista="congresos">Congresos y cursos</button><button data-vista="estudios">Estudios</button><button data-vista="meritos">Otros méritos</button></div></div>
+            <div class="bloque-mosaico"><button class="mosaico grande" data-vista="docencia"><i class="fa-solid fa-user-graduate"></i><span class="txt"><b>Docencia</b><small>Dirección de TFG, TFM y tesis, tutorías y acreditaciones ANECA</small></span></button>
+              <div class="atajos"><button data-vista="docencia" data-tab="trabajos">Trabajos dirigidos</button><button data-vista="docencia" data-tab="tutorias">Tutorías</button><button data-vista="docencia" data-tab="aneca">ANECA</button></div></div>
+            <div class="bloque-mosaico proximo"><button class="mosaico grande" data-vista="asistencial"><i class="fa-solid fa-stethoscope"></i><span class="txt"><b>Asistencial</b><small>Estructura integral de la actividad asistencial (en diseño)</small></span></button>
+              <div class="atajos"></div></div>
+          </div>
           <div class="inicio-grid">
-        <button class="mosaico" data-vista="pubs"><i class="fa-solid fa-book"></i><span class="txt"><b>Publicaciones</b><small>Artículos científicos, libros y capítulos, y abstracts de congreso</small></span></button>
-        <button class="mosaico" data-vista="estudios"><i class="fa-solid fa-flask"></i><span class="txt"><b>Estudios del Servicio</b><small>Estudios activos y finalizados, CEIm, financiación y documentos</small></span></button>
-        <button class="mosaico" data-vista="congresos"><i class="fa-solid fa-people-group"></i><span class="txt"><b>Congresos y Cursos</b><small>Asistencia, trabajos presentados, plazos y calendario de días</small></span><span class="contador oculto" id="cntDiasInicio"></span></button>
-        <button class="mosaico" data-vista="docencia"><i class="fa-solid fa-user-graduate"></i><span class="txt"><b>Docencia</b><small>Trabajos dirigidos (TFG, TFM, tesis), tutorías y otros méritos</small></span></button>
-        <button class="mosaico" data-vista="pacientes"><i class="fa-solid fa-chart-column"></i><span class="txt"><b>Pacientes por año</b><small>Pacientes incluidos en los estudios, por año</small></span></button>
-        <button class="mosaico soloAdmin" data-vista="revision"><i class="fa-solid fa-list-check"></i><span class="txt"><b>Revisar pendientes</b><small>Publicaciones y reclamaciones por validar</small></span><span class="contador oculto" id="cntRevisionInicio"></span></button>
-        <button class="mosaico" data-vista="recl"><i class="fa-solid fa-hand"></i><span class="txt"><b>Reclamaciones de autoría</b><small>Solicita figurar como autor/a de una publicación</small></span></button>
-        <button class="mosaico proximo" data-vista="memoria"><i class="fa-solid fa-file-lines"></i><span class="txt"><b>Memoria IdiPAZ/HULP</b><small>Próximamente: la memoria anual con todos los módulos</small></span></button>
+            <button class="mosaico" data-vista="revision"><i class="fa-solid fa-list-check"></i><span class="txt"><b>Revisar</b><small>Pendientes y reclamaciones de autoría</small></span><span class="contador oculto" id="cntRevisionInicio"></span></button>
+            <button class="mosaico" data-vista="perfil"><i class="fa-solid fa-id-badge"></i><span class="txt"><b>Mi ficha personal</b><small>Tus datos, tu foto y tus métricas</small></span></button>
+            <button class="mosaico proximo" data-vista="memoria"><i class="fa-solid fa-file-lines"></i><span class="txt"><b>Memoria IdiPAZ/HULP</b><small>Próximamente: la memoria anual con todos los bloques</small></span></button>
           </div>
         </div>
       </section>
@@ -445,7 +541,6 @@
         <div class="barra-vista">
           <h2>Publicaciones</h2>
           <select id="fAnoMovil" class="anos-movil" title="Año"></select>
-          <button class="bt solo-escritorio soloAdmin" id="btIrRevision" title="Publicaciones y reclamaciones pendientes">Revisar <span class="contador" id="cntRevision"></span></button>
           <button class="bt-icono" id="btIndicadores" title="Indicadores de la lista filtrada"><i class="fa-solid fa-chart-simple"></i></button>
           <button class="bt-icono" id="btDescargar" title="Descargar la lista (con los filtros aplicados)"><i class="fa-solid fa-download"></i></button>
           <button class="bt-icono" id="btFiltros" title="Filtrar"><i class="fa-solid fa-filter"></i></button>
@@ -493,17 +588,20 @@
 
       <!-- Revisión (admin) -->
       <section class="panel panel-lista oculto" id="vistaRevision">
-        <div class="barra-vista"><h2>Revisar pendientes</h2></div>
-        <div class="ficha-cuerpo" style="display:block">
-          <div class="tarjeta"><h3>Publicaciones pendientes de confirmación</h3><div id="listaPendientes"></div></div>
-          <div class="tarjeta"><h3>Reclamaciones de autoría pendientes</h3><div id="listaReclPend"></div></div>
-        </div>
+        <div class="barra-vista"><h2 id="tituloRev">Revisar</h2></div>
+        <div class="pestanas" id="pestRev"></div>
+        <div class="ficha-cuerpo" style="display:block" id="cuerpoRev"></div>
       </section>
 
-      <!-- Reclamaciones -->
-      <section class="panel panel-lista oculto" id="vistaRecl">
-        <div class="barra-vista"><h2 id="tituloRecl">Mis reclamaciones</h2></div>
-        <div class="ficha-cuerpo" style="display:block"><div class="tarjeta" id="listaRecl"></div></div>
+      <section class="panel panel-lista oculto" id="vistaPerfil">
+        <div class="barra-vista">
+          <h2 id="tituloPerfil">Mi ficha personal</h2>
+          <select id="pfPersona" class="oculto" title="Ver la ficha de otra persona (administradores)"></select>
+          <select id="pfAnios" title="Periodo de las métricas"></select>
+          <button class="bt-icono" id="btImprimirPerfil" title="Imprimir o guardar en PDF"><i class="fa-solid fa-print"></i></button>
+        </div>
+        <div class="perfil-cuerpo" id="cuerpoPerfil"></div>
+        <input type="file" id="pfArchivo" accept="image/*" class="oculto">
       </section>
 
       <!-- Módulos aún no migrados / Acerca de -->
@@ -520,6 +618,10 @@
           <button class="bt-icono" id="btDescEst" title="Descargar en Excel (con los filtros aplicados)"><i class="fa-solid fa-download"></i></button>
           <button class="bt-icono" id="btFiltrosEst" title="Filtrar"><i class="fa-solid fa-filter"></i></button>
           <button class="bt-rojo" id="btAnadirEst"><i class="fa-solid fa-plus"></i> Añadir</button>
+        </div>
+        <div class="pestanas">
+          <button data-tvista="estudios" class="activo"><i class="fa-solid fa-flask"></i> Estudios del Servicio</button>
+          <button data-tvista="pacientes"><i class="fa-solid fa-chart-column"></i> Pacientes por año</button>
         </div>
         <div id="panelFiltrosEst" class="filtros oculto">
           <label for="feEstado">Estado actual del estudio</label><select id="feEstado"></select>
@@ -542,8 +644,12 @@
       <!-- Pacientes por Año -->
       <section class="panel panel-lista oculto" id="vistaPacientes">
         <div class="barra-vista">
-          <h2>Pacientes por Año</h2>
+          <h2>Estudios del Servicio</h2>
           <button class="bt-icono" id="btDescPac" title="Descargar en Excel"><i class="fa-solid fa-download"></i></button>
+        </div>
+        <div class="pestanas">
+          <button data-tvista="estudios"><i class="fa-solid fa-flask"></i> Estudios del Servicio</button>
+          <button data-tvista="pacientes" class="activo"><i class="fa-solid fa-chart-column"></i> Pacientes por año</button>
         </div>
         <div class="resumen" id="resumenPac"></div>
         <div class="tabla" id="tablaPac"></div>
@@ -606,7 +712,7 @@
       <!-- Docencia (v0.4): trabajos dirigidos, tutorías y otros méritos -->
       <section class="panel panel-lista oculto" id="vistaDocencia">
         <div class="barra-vista">
-          <h2>Docencia</h2>
+          <h2 id="tituloDoc">Docencia</h2>
           <button class="bt-icono" id="btIndDoc" title="Indicadores de la lista filtrada"><i class="fa-solid fa-chart-simple"></i></button>
           <button class="bt-icono" id="btMemDoc" title="Texto para la memoria anual / CVN"><i class="fa-regular fa-id-card"></i></button>
           <button class="bt-icono" id="btDescDoc" title="Descargar en Excel (con los filtros aplicados)"><i class="fa-solid fa-download"></i></button>
@@ -616,7 +722,8 @@
         <div class="pestanas" id="pestDoc">
           <button data-tdoc="trabajos" class="activo"><i class="fa-solid fa-graduation-cap"></i> Trabajos dirigidos <span id="cntDoc_trabajos"></span></button>
           <button data-tdoc="tutorias"><i class="fa-solid fa-user-doctor"></i> Tutorías <span id="cntDoc_tutorias"></span></button>
-          <button data-tdoc="meritos"><i class="fa-solid fa-award"></i> Otros méritos <span id="cntDoc_meritos"></span></button>
+          <button data-tdoc="aneca"><i class="fa-solid fa-certificate"></i> Acreditaciones ANECA <span id="cntDoc_aneca"></span></button>
+          <button data-tdoc="meritos" class="oculto"><i class="fa-solid fa-award"></i> Otros méritos <span id="cntDoc_meritos"></span></button>
         </div>
         <div id="panelFiltrosDoc" class="filtros oculto">
           <label for="fdTipo">Tipo</label><select id="fdTipo"></select>
@@ -690,10 +797,10 @@
 
     <!-- Barra inferior (móvil) -->
     <nav class="inferior" id="inferior">
-      <button data-vista="estudios"><i class="fa-solid fa-flask"></i><small>Estudios</small></button>
-      <button data-vista="pubs"><i class="fa-solid fa-book"></i><small>Publicaciones</small></button>
-      <button data-vista="congresos"><i class="fa-solid fa-people-group"></i><small>Congresos</small></button>
+      <button data-vista="inicio"><i class="fa-solid fa-house"></i><small>Inicio</small></button>
+      <button data-vista="ciencia"><i class="fa-solid fa-microscope"></i><small>Ciencia</small></button>
       <button data-vista="docencia"><i class="fa-solid fa-user-graduate"></i><small>Docencia</small></button>
+      <button data-vista="revision"><i class="fa-solid fa-list-check"></i><small>Revisar</small><span class="contador oculto" id="cntRevisionInferior"></span></button>
       <button id="btMas"><i class="fa-solid fa-ellipsis"></i><small>Más</small></button>
     </nav>
   </div>
@@ -767,9 +874,11 @@
   var LIBROS = ["Capítulo de libro", "Libro"];
   var ORDEN_TIPOS = ["Original", "Revisión", "Caso clínico", "Carta al Editor", "Comentario", "Editorial", "Guía clínica",
                      "Documento de consenso", "Capítulo de libro", "Libro", "Abstract de congreso", "Otros"];
-  var MODULOS = {   // módulos que siguen en AppSheet hasta su migración
-    memoria: ["Memoria IdiPAZ/HULP", "fa-file-lines", "0.5"]
+  var MODULOS = {   // bloques aún no disponibles en la web
+    memoria: ["Memoria IdiPAZ/HULP", "fa-file-lines", "0.6"],
+    asistencial: ["Asistencial", "fa-stethoscope", ""]
   };
+  var VERSION_WEB = "0.5";
   // Nombres visibles iguales a los de AppSheet (con las erratas corregidas) y orden de la ficha
   var ETIQ = { "Volúmen": "Volumen", "Notas_JCR": "Notas sobre JCR", "Investigadores Servicio": "Investigadores participantes",
                "Posiciones Servicio": "Posición en la autoría", "Es Correspondencia": "¿Es autor de correspondencia?",
@@ -825,6 +934,68 @@
         .catch(function (e) { ko(new Error(/Failed to fetch|NetworkError|Load failed/i.test(e.message) ? "Sin conexión con el servidor. Comprueba tu conexión a internet." : e.message)); });
     });
   }
+  // ---------- caché del dispositivo (IndexedDB): se muestra al instante lo último descargado y se actualiza en segundo plano ----------
+  var CACHE_VER = "0.5", CACHE_MAX = 30 * 86400000;
+  var CACHE = (function () {
+    var db = null, abriendo = null;
+    function abrir() {
+      if (db) return Promise.resolve(db);
+      if (abriendo) return abriendo;
+      abriendo = new Promise(function (ok) {
+        try {
+          if (!window.indexedDB) return ok(null);
+          var r = indexedDB.open("gc_cache", 1);
+          r.onupgradeneeded = function () { r.result.createObjectStore("d"); };
+          r.onsuccess = function () { db = r.result; ok(db); };
+          r.onerror = r.onblocked = function () { ok(null); };
+        } catch (e) { ok(null); }
+      });
+      return abriendo;
+    }
+    function clave(k) { return (leer("gc_cuenta") || "") + "|" + k; }
+    return {
+      get: function (k) {
+        if (!leer("gc_cuenta")) return Promise.resolve(null);
+        return abrir().then(function (d) {
+          if (!d) return null;
+          return new Promise(function (ok) {
+            try { var q = d.transaction("d").objectStore("d").get(clave(k)); q.onsuccess = function () { var x = q.result;
+              ok(x && x.ver === CACHE_VER && Date.now() - x.t < CACHE_MAX ? x : null); }; q.onerror = function () { ok(null); }; } catch (e) { ok(null); }
+          });
+        });
+      },
+      set: function (k, v) {
+        if (!leer("gc_cuenta")) return Promise.resolve();
+        return abrir().then(function (d) { if (d) try { d.transaction("d", "readwrite").objectStore("d").put({ t: Date.now(), ver: CACHE_VER, v: v }, clave(k)); } catch (e) {} });
+      },
+      vaciar: function () { return abrir().then(function (d) { if (d) try { d.transaction("d", "readwrite").objectStore("d").clear(); } catch (e) {} }); }
+    };
+  })();
+  // Llama al servidor; si usarCache y hay copia en el dispositivo, entrega primero esa copia (cb(datos, true)) y después,
+  // solo si han cambiado, los datos nuevos (cb(datos, false)). La promesa se resuelve con la primera entrega.
+  function apiCache(fn, args, cb, usarCache, clave) {
+    var entregado = false, txtCache = null, k = clave || fn;
+    var fresco = api.apply(null, [fn].concat(args)).then(function (r) {
+      var txt = null; try { txt = JSON.stringify(r); } catch (e) {}
+      CACHE.set(k, r);
+      if (!(entregado && txt !== null && txt === txtCache)) { entregado = true; cb(r, false); }
+      return r;
+    });
+    if (!usarCache) return fresco;
+    return new Promise(function (ok, ko) {
+      var listo = false;
+      CACHE.get(k).then(function (x) {
+        if (!x || entregado) return;
+        try { txtCache = JSON.stringify(x.v); } catch (e) {}
+        entregado = true;
+        try { cb(x.v, true); } catch (e) { entregado = false; return; }
+        if (!listo) { listo = true; ok(x.v); }
+      });
+      fresco.then(function (r) { if (!listo) { listo = true; ok(r); } },
+        function (e) { if (!listo) { listo = true; ko(e); } else if (S.token) aviso("No se han podido actualizar los datos (" + e.message + "). Se muestran los guardados en este dispositivo.", 6000); });
+    });
+  }
+
   function vacio(v) { return v === null || v === undefined || String(v).trim() === ""; }
   function personasDe(p) { return String(p["Personas Servicio"] || "").split(";").map(function (s) { return s.trim(); }).filter(Boolean); }
   function indexada(p) { return !vacio(p["Factor de Impacto"]); }
@@ -919,7 +1090,7 @@
     $("btEntrar").disabled = true;
     api("webVerificarCodigo", email, cod, navigator.userAgent).then(function (r) {
       if (!r.ok) { $("msgAcceso").textContent = r.mensaje; return; }
-      S.token = r.token; guardarToken(r.token); arrancar(); setTimeout(ofrecerBio, 2500);
+      S.token = r.token; guardarToken(r.token); arrancar(String(email).toLowerCase() === leer("gc_cuenta")); setTimeout(ofrecerBio, 2500);
     }).catch(function (e) { $("msgAcceso").textContent = e.message; }).then(function () { $("btEntrar").disabled = false; });
   };
   $("inCodigo").addEventListener("keyup", function (ev) { if (ev.key === "Enter") $("btEntrar").click(); });
@@ -927,7 +1098,9 @@
   $("btOtroCorreo").onclick = mostrarAcceso;
   function salir(silencioso) {
     if (S.token && !silencioso) api("webCerrarSesion", S.token).catch(function () {});
-    S.token = null; guardarToken(null); $("menuUsuario").classList.add("oculto"); if (bioActivo()) mostrarDesbloqueo(); else mostrarAcceso();
+    S.token = null; guardarToken(null); $("menuUsuario").classList.add("oculto");
+    if (!silencioso) { CACHE.vaciar(); guardar("gc_cuenta", null); }       // al cerrar sesión no queda ningún dato en el dispositivo
+    if (bioActivo()) mostrarDesbloqueo(); else mostrarAcceso();
   }
   $("btSalir").onclick = function () { salir(false); };
 
@@ -1052,7 +1225,7 @@
         if (r && r.noRegistrada) { guardar("gc_bio", null); guardar("gc_pk", null); $("pasoBio").classList.add("oculto"); $("pasoEmail").classList.remove("oculto"); return; }
         PK.prepararEntrada(); return;
       }
-      $("msgAcceso").textContent = ""; S.token = r.token; guardarToken(r.token); if (r.email) guardar("gc_email", r.email); arrancar();
+      $("msgAcceso").textContent = ""; S.token = r.token; guardarToken(r.token); if (r.email) guardar("gc_email", r.email); arrancar(!!r.email && String(r.email).toLowerCase() === leer("gc_cuenta"));
     }).catch(function (e) { $("msgAcceso").textContent = errorBio(e); PK.prepararEntrada().catch(function () {}); })
       .then(function () { boton.disabled = false; boton.removeAttribute("data-ocupado"); estadoBotonesBio(); });
   }
@@ -1102,27 +1275,46 @@
   };
 
   // ---------- arranque ----------
-  function arrancar() {
+  function arrancar(conCache) {
     cargando(true);
-    api("webInicio", S.token).then(function (ini) {
+    var aplicado = false;
+    function aplicar(ini) {
+      var primera = !S.inicio;
       S.inicio = ini; guardar("gc_logo", ini.logo || null); ponerLogo();
       $("vAcceso").classList.add("oculto"); $("vApp").classList.remove("oculto");
       var u = ini.usuario;
-      $("avatar").textContent = (u.nombre || u.email || "?").trim().charAt(0).toUpperCase();
       $("lblNombre").textContent = u.nombre; $("lblEmail").textContent = u.email; $("lblRol").textContent = u.rol || "";
+      ponerAvatar();
       guardar("gc_nombre", u.nombre || ""); $("btBio").classList.toggle("oculto", !PK.soportado);
       document.querySelectorAll(".soloAdmin").forEach(function (el) { el.classList.toggle("oculto", !u.admin); });
       var tipos = ini.tipos.slice(); ORDEN_TIPOS.forEach(function (t) { if (tipos.indexOf(t) === -1) tipos.push(t); });
       if (PUB_TABS[leer("gc_pub_tab")]) S.pubTab = leer("gc_pub_tab");
       S.tiposTodos = tipos; prepararTabPub();
-      $("tituloRecl").textContent = u.admin ? "Reclamaciones de autoría (todas)" : "Mis reclamaciones de autoría";
-      mostrarVista("inicio");                 // pantalla de bienvenida; las publicaciones se cargan en segundo plano
-      return cargarPubs();
+      if (primera) {
+        try { history.replaceState({ gc: 1, v: "inicio" }, ""); } catch (e) {}
+        mostrarVista("inicio", { sinHistoria: true });     // pantalla de bienvenida; las publicaciones se cargan en segundo plano
+        cargarPubs(conCache).then(precargar);
+      } else if (S.vista === "inicio") pintarInicio();
+    }
+    if (conCache) CACHE.get("webInicio").then(function (x) { if (x && !aplicado && S.token) { aplicado = true; aplicar(x.v); } });
+    api("webInicio", S.token).then(function (ini) {
+      guardar("gc_cuenta", String(ini.usuario.email || "").toLowerCase()); CACHE.set("webInicio", ini);
+      aplicado = true; aplicar(ini);
     }).catch(function (e) { cargando(false); aviso(e.message); if (!S.inicio) mostrarAcceso(); });
   }
-  function cargarPubs() {
-    cargando(true);
-    return api("webListarPublicaciones", S.token).then(function (lista) {
+  // En segundo plano, tras las publicaciones: datos que necesitan los contadores de Revisar (y la ficha personal)
+  function precargar() {
+    setTimeout(function () {
+      if (!S.token || !S.inicio) return;
+      if (GC.docencia && GC.docencia.asegurar) GC.docencia.asegurar();
+      if (S.inicio.usuario.admin && GC.congresos && GC.congresos.asegurar) GC.congresos.asegurar();
+      cargarRecl().then(contarRevision, function () {});
+      if (GC.perfil && GC.perfil.cargarFotoPropia) GC.perfil.cargarFotoPropia();
+    }, 800);
+  }
+  function cargarPubs(usarCache, fresco) {
+    if (!S.pubs.length) cargando(true);
+    return apiCache("webListarPublicaciones", fresco ? [S.token, true] : [S.token], function (lista) {
       S.pubs = lista;
       var fil = {}, pers = {};
       lista.forEach(function (p) { if (p["Filiación La Paz"]) fil[p["Filiación La Paz"]] = 1; personasDe(p).forEach(function (n) { pers[n] = 1; }); });
@@ -1138,8 +1330,9 @@
       opciones($("fDesde"), ks, "Desde…"); opciones($("fHasta"), ks.slice().reverse(), "Hasta…");
       if (leer("gc_ind") === "1") $("indicadores").classList.remove("oculto");
       opciones($("fPersona"), Object.keys(pers).sort(function (a, b) { return a.localeCompare(b, "es"); }), "Todo el Servicio");
-      pintarLista(); contarRevision();
-    }).catch(function (e) { aviso(e.message); }).then(function () { cargando(false); });
+      pintarLista();
+      datosCambiados("pubs");
+    }, usarCache).catch(function (e) { aviso(e.message); }).then(function () { cargando(false); });
   }
 
   // ---------- lista (tabla agrupada como en AppSheet) ----------
@@ -1525,46 +1718,138 @@
   };
 
   // ---------- navegación entre vistas ----------
-  // Módulos (Estudios, Congresos, Docencia…) en archivos aparte: GC.registrar("vista", {secciones, buscar, mostrar, ocultar, placeholder})
-  var GC = window.GC = { mod: {}, S: S, $: $, api: api, esc: esc, aviso: aviso, cargando: cargando, dialogo: dialogo, cerrarDialogo: cerrarDialogo,
+  // Módulos (Estudios, Congresos, Docencia…) en archivos aparte: GC.registrar("vista", {secciones, buscar, mostrar, ocultar, placeholder, bloque, grupo})
+  // Tres bloques: Ciencia (Publicaciones · Congresos y cursos · Estudios · Otros méritos), Docencia (Trabajos · Tutorías · ANECA) y Asistencial.
+  var GC = window.GC = { mod: {}, S: S, $: $, api: api, apiCache: apiCache, cache: CACHE, esc: esc, aviso: aviso, cargando: cargando, dialogo: dialogo, cerrarDialogo: cerrarDialogo,
     bajar: bajar, libroXlsx: libroXlsx, numero: numero, dec: dec, pct: pct, guardar: guardar, leer: leer, esMovil: esMovil,
-    registrar: function (v, m) { GC.mod[v] = m; }, mostrarVista: function (v) { mostrarVista(v); }, cambiarTabPub: function (t) { cambiarTabPub(t); } };
+    registrar: function (v, m) { GC.mod[v] = m; }, mostrarVista: function (v, o) { mostrarVista(v, o); }, cambiarTabPub: function (t) { cambiarTabPub(t); },
+    datosCambiados: function (m) { datosCambiados(m); }, ponerAvatar: function () { ponerAvatar(); }, abrirPublicacion: function (id) { mostrarVista("pubs"); abrirFicha(id); },
+    pub: { confirmada: confirmada, personasDe: personasDe, papeles: papeles, anoDe: anoDe, mejorCuartil: mejorCuartil, mejorDecil: mejorDecil, primerFI: primerFI,
+           tabDe: tabDe, cuentaJCR: cuentaJCR, indexada: indexada },
+    verPubsDe: function (n) {          // Publicaciones de una persona, todos los años
+      mostrarVista("pubs");
+      if (Array.prototype.some.call($("fPersona").options || [], function (o) { return o.value === n; })) $("fPersona").value = n;
+      S.ano = ""; S.anoAuto = false; pintarLista();
+    } };
+  var CIENCIA = [["pubs", "Publicaciones", "fa-book"], ["congresos", "Congresos y cursos", "fa-people-group"], ["estudios", "Estudios", "fa-flask"], ["meritos", "Otros méritos", "fa-award"]];
+  function bloqueDe(v) { return v === "pubs" ? "ciencia" : (GC.mod[v] && GC.mod[v].bloque) || ""; }
+  function grupoDe(v) { return (GC.mod[v] && GC.mod[v].grupo) || v; }
+  // barra del bloque Ciencia en la cabecera de cada una de sus secciones
+  (function () {
+    var html = '<nav class="bloque-bar"><span class="bloque-nom"><i class="fa-solid fa-microscope"></i> Ciencia</span>' +
+      CIENCIA.map(function (x) { return '<button data-bvista="' + x[0] + '"><i class="fa-solid ' + x[2] + '"></i> ' + x[1] + "</button>"; }).join("") + "</nav>";
+    ["vistaPubs", "vistaCongresos", "vistaCalendario", "vistaEstudios", "vistaPacientes", "vistaDocencia"].forEach(function (id) { var s = $(id); if (s) s.insertAdjacentHTML("afterbegin", html); });
+    document.addEventListener("click", function (ev) { var b = ev.target.closest && ev.target.closest("[data-bvista]"); if (b) mostrarVista(b.getAttribute("data-bvista")); });
+    document.addEventListener("click", function (ev) { var b = ev.target.closest && ev.target.closest("[data-tvista]"); if (b && S.vista !== b.getAttribute("data-tvista")) mostrarVista(b.getAttribute("data-tvista")); });
+  })();
   var textoPorVista = {};
-  function mostrarVista(v) {
+  function mostrarVista(v, opc) {
+    opc = opc || {};
+    if (v === "recl") { REV.tab = "autoria"; v = "revision"; }
+    if (v === "ciencia") { v = leer("gc_ciencia") || "pubs"; if (v !== "pubs" && !GC.mod[v]) v = "pubs"; }
     var anterior = S.vista;
     if (anterior) textoPorVista[anterior] = $("fTexto").value;
     if (anterior && anterior !== v && GC.mod[anterior] && GC.mod[anterior].ocultar) GC.mod[anterior].ocultar();
-    Object.keys(GC.mod).forEach(function (k) { (GC.mod[k].secciones || []).forEach(function (id) { $(id).classList.toggle("oculto", k !== v); }); });
+    var visibles = (GC.mod[v] && GC.mod[v].secciones) || [];          // varias vistas pueden compartir sección (Docencia / Otros méritos)
+    Object.keys(GC.mod).forEach(function (k) { (GC.mod[k].secciones || []).forEach(function (id) { $(id).classList.toggle("oculto", visibles.indexOf(id) === -1); }); });
     if (anterior !== v) $("fTexto").value = textoPorVista[v] || "";
     S.vista = v;
-    var vMenu = v === "calendario" ? "congresos" : v;          // el calendario es una pestaña de Congresos y Cursos
+    var bloque = bloqueDe(v), grupo = grupoDe(v);
+    if (bloque === "ciencia") guardar("gc_ciencia", v);
     if (document.body && document.body.classList) document.body.classList.toggle("en-inicio", v === "inicio");
-    document.querySelectorAll("[data-vista]").forEach(function (b) { b.classList.toggle("activo", b.getAttribute("data-vista") === vMenu); });
-    $("btMas").classList.toggle("activo", ["revision", "recl", "info", "memoria", "pacientes"].indexOf(v) !== -1);
+    var tabDoc = leer("gc_doc_tab") || "trabajos";
+    document.querySelectorAll("[data-vista]").forEach(function (b) {
+      var a = b.getAttribute("data-vista"), t = b.getAttribute("data-tab");
+      var on = b.closest(".inicio-bloques, .inicio-grid") ? false : t ? (v === a && t === tabDoc) : (a === v || a === grupo || (a === bloque && !b.classList.contains("sub")));
+      b.classList.toggle("activo", on);
+    });
+    document.querySelectorAll("[data-bvista]").forEach(function (b) { b.classList.toggle("activo", b.getAttribute("data-bvista") === grupo); });
+    $("btMas").classList.toggle("activo", ["info", "memoria", "perfil", "asistencial"].indexOf(v) !== -1);
     $("vistaPubs").classList.toggle("oculto", v !== "pubs");
     $("vistaRevision").classList.toggle("oculto", v !== "revision");
-    $("vistaRecl").classList.toggle("oculto", v !== "recl");
     $("vistaProx").classList.toggle("oculto", !(MODULOS[v] || v === "info"));
     if (v !== "pubs" && v !== "revision") cerrarFicha();
     $("fTexto").placeholder = GC.mod[v] ? (GC.mod[v].placeholder || "Buscar") : (v === "pubs" ? "Buscar Publicaciones" : "Buscar Publicaciones (desde cualquier vista)");
     $("cajon").classList.add("oculto"); $("panelFiltros").classList.add("oculto");
     if (MODULOS[v]) {
       $("tituloProx").textContent = MODULOS[v][0];
-      $("textoProx").innerHTML = '<i class="fa-solid ' + MODULOS[v][1] + '"></i><p><b>' + esc(MODULOS[v][0]) + '</b> se incorporará a la web en la versión ' +
-        MODULOS[v][2] + '.</p><p>Mientras tanto, sigue usándolo en AppSheet: los datos son los mismos.</p>';
+      $("textoProx").innerHTML = '<i class="fa-solid ' + MODULOS[v][1] + '"></i>' + (v === "asistencial" ?
+        "<p><b>Bloque Asistencial</b></p><p>Tendrá una estructura integral similar a la de LYA2. Está en fase de diseño con el Servicio y se incorporará en una próxima versión.</p>" :
+        "<p><b>" + esc(MODULOS[v][0]) + "</b> se incorporará a la web en la versión " + MODULOS[v][2] + ".</p><p>Reunirá en un documento la actividad de todos los bloques (Ciencia, Docencia y Asistencial).</p>");
     }
     if (v === "info") {
       $("tituloProx").textContent = "Acerca de";
-      $("textoProx").innerHTML = '<span class="hueco-logo" data-tam="64"></span><p><b>Gestión Científica CGyD-GITIC</b> · versión web 0.4</p>' +
+      $("textoProx").innerHTML = '<span class="hueco-logo" data-tam="64"></span><p><b>Gestión Científica CGyAD-GITIC</b> · versión web ' + VERSION_WEB + '</p>' +
         '<p>Servicio de Cirugía General y del Aparato Digestivo · Hospital Universitario La Paz · IdiPAZ</p>' +
-        '<p class="tenue">Los datos se guardan en las mismas hojas de Google que usa AppSheet.<br>Dudas o errores: escribe al administrador del Servicio.</p>';
+        '<p class="tenue">Los datos se guardan en las hojas de Google del Servicio. Para ir más rápido, este dispositivo guarda una copia de lo último que has consultado; se borra al cerrar sesión.<br>Dudas o errores: escribe al administrador del Servicio.</p>';
       ponerLogo();
     }
     if (v === "revision") pintarRevision();
-    if (v === "recl") pintarReclamaciones();
     if (GC.mod[v] && GC.mod[v].mostrar) GC.mod[v].mostrar();
+    if (!opc.sinHistoria && S.inicio) {
+      var st = history.state || {};
+      if (!st.gc || st.v !== v || st.f) { try { history.pushState({ gc: 1, v: v }, ""); } catch (e) {} }
+    }
   }
-  document.querySelectorAll("[data-vista]").forEach(function (b) { b.addEventListener("click", function () { mostrarVista(b.getAttribute("data-vista")); }); });
+  document.querySelectorAll("[data-vista]").forEach(function (b) { b.addEventListener("click", function () {
+    var v = b.getAttribute("data-vista"), t = b.getAttribute("data-tab");
+    if (t) guardar("gc_doc_tab", t);
+    mostrarVista(v);
+    if (t && GC.docencia && GC.docencia.cambiarTab) GC.docencia.cambiarTab(t);
+  }); });
+  function datosCambiados(m) {
+    if (!S.inicio) return;
+    contarRevision();
+    if (S.vista === "revision") pintarRevision();
+    if (S.vista === "perfil" && GC.perfil && GC.perfil.refrescar) GC.perfil.refrescar(m);
+  }
+  function ponerAvatar() {
+    var u = S.inicio && S.inicio.usuario, a = $("avatar"); if (!u || !a) return;
+    if (S.foto) { a.textContent = ""; a.style.backgroundImage = "url(" + S.foto + ")"; a.classList.add("con-foto"); }
+    else { a.style.backgroundImage = ""; a.classList.remove("con-foto"); a.textContent = (u.nombre || u.email || "?").trim().charAt(0).toUpperCase(); }
+  }
+  // ---------- atrás: botón del navegador / Android y gesto desde el borde izquierdo (iPhone con la app instalada) ----------
+  var HIST = { ignorar: false };
+  var FICHAS = [["panelFicha", function () { cerrarFicha(); }], ["panelFichaEst", "btCerrarFichaEst"], ["panelFichaCon", "btCerrarFichaCon"], ["panelFichaDoc", "btCerrarFichaDoc"]];
+  function fichaAbierta() { return FICHAS.filter(function (f) { var e = $(f[0]); return e && !e.classList.contains("oculto") && !(f[0] === "panelFicha" && S.vista !== "pubs" && S.vista !== "revision"); })[0]; }
+  function dialogoAbierto() { return ["dlgForm", "dlgAlta"].filter(function (id) { return $(id) && !$(id).classList.contains("oculto"); })[0]; }
+  window.addEventListener("popstate", function (ev) {
+    if (HIST.ignorar) { HIST.ignorar = false; return; }
+    if (!S.inicio) return;
+    var st = ev.state || {};
+    var dlg = dialogoAbierto();
+    if (dlg) { if (dlg === "dlgForm") cerrarDialogo(); else $(dlg).classList.add("oculto"); try { history.pushState({ gc: 1, v: S.vista, f: fichaAbierta() ? 1 : 0 }, ""); } catch (e) {} return; }
+    var f = fichaAbierta();
+    if (f) { if (typeof f[1] === "function") f[1](); else if ($(f[1])) $(f[1]).click(); if (!st.v || st.v === S.vista) return; }
+    var v = st.gc && st.v ? st.v : "inicio";
+    if (v !== S.vista) mostrarVista(v, { sinHistoria: true });
+  });
+  function alCambiarFicha() {                  // al abrir unos detalles se añade un paso al historial; al cerrarlos con su botón, se quita
+    var abierta = !!fichaAbierta(), st = history.state || {};
+    if (!S.inicio) return;
+    if (abierta && st.gc && !st.f) { try { history.pushState({ gc: 1, v: S.vista, f: 1 }, ""); } catch (e) {} }
+    else if (!abierta && st.gc && st.f && st.v === S.vista) { HIST.ignorar = true; history.back(); setTimeout(function () { HIST.ignorar = false; }, 600); }
+  }
+  function atras() { if (history.state && history.state.gc && history.length > 1) history.back(); else if (S.vista !== "inicio") mostrarVista("inicio"); }
+  (function gestoAtras() {
+    var ua = navigator.userAgent || "", ios = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    var instalada = window.navigator.standalone === true || (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches);
+    if (!ios || !instalada || !document.addEventListener) return;     // en Safari y en Android el gesto «atrás» del sistema ya usa el historial
+    var x0 = null, y0 = 0, ind = document.createElement("div");
+    ind.className = "gesto-atras"; ind.innerHTML = '<i class="fa-solid fa-chevron-left"></i>'; document.body.appendChild(ind);
+    document.addEventListener("touchstart", function (e) { var t = e.touches[0]; if (e.touches.length === 1 && t.clientX <= 22 && S.inicio) { x0 = t.clientX; y0 = t.clientY; } else x0 = null; }, { passive: true });
+    document.addEventListener("touchmove", function (e) {
+      if (x0 === null) return;
+      var t = e.touches[0], dx = t.clientX - x0, dy = Math.abs(t.clientY - y0);
+      if (dy > 50 && dy > dx) { x0 = null; ind.style.opacity = 0; return; }
+      ind.style.opacity = Math.max(0, Math.min(1, dx / 80)); ind.style.transform = "translate(" + Math.max(0, Math.min(dx, 80)) / 2 + "px, -50%)";
+    }, { passive: true });
+    document.addEventListener("touchend", function (e) {
+      if (x0 === null) return;
+      var dx = e.changedTouches[0].clientX - x0; x0 = null; ind.style.opacity = 0; ind.style.transform = "";
+      if (dx > 70) atras();
+    }, { passive: true });
+  })();
   // ---------- pantalla de inicio (bienvenida) ----------
   function pintarInicio() {
     if (!S.inicio) return;
@@ -1584,28 +1869,74 @@
     function actualizar() {
       var abierta = ids.some(function (id) { var e = document.getElementById(id); return e && !e.classList.contains("oculto"); });
       if (document.body && document.body.classList) document.body.classList.toggle("ficha-abierta", abierta);
+      alCambiarFicha();
     }
     if (window.MutationObserver) ids.forEach(function (id) { var e = document.getElementById(id); if (e) new MutationObserver(actualizar).observe(e, { attributes: true, attributeFilter: ["class"] }); });
     actualizar();
   })();
   $("btMenu").onclick = function () { $("cajon").classList.toggle("oculto"); };
   $("btMas").onclick = function () { $("cajon").classList.toggle("oculto"); };
-  $("btIrRevision").onclick = function () { mostrarVista("revision"); };
-  $("btSync").onclick = function () { cargarPubs().then(function () { if (S.vista === "revision") pintarRevision(); if (S.vista === "recl") pintarReclamaciones(); aviso("Datos actualizados"); }); };
+  $("btSync").onclick = function () {
+    var p = [cargarPubs(false, true)];
+    if (S.vista === "revision") { p.push(cargarRecl()); if (GC.docencia && GC.docencia.datos()) p.push(GC.docencia.recargar()); }
+    Promise.all(p).then(function () { if (S.vista === "revision") pintarRevision(); contarRevision(); aviso("Datos actualizados"); });
+  };
   $("avatar").onclick = function (ev) { ev.stopPropagation(); $("menuUsuario").classList.toggle("oculto"); };
   document.addEventListener("click", function (ev) {
     if (!ev.target.closest("#menuUsuario") && !ev.target.closest("#avatar")) $("menuUsuario").classList.add("oculto");
     if (!ev.target.closest("#cajon") && !ev.target.closest("#btMenu") && !ev.target.closest("#btMas")) $("cajon").classList.add("oculto");
   });
 
-  // ---------- revisión y reclamaciones ----------
-  function cargarRecl() { return api("webMisReclamaciones", S.token).then(function (l) { S.recl = l; return l; }); }
+  // ---------- Revisar: pendientes y reclamaciones de autoría, por secciones según el rol ----------
+  // Administradores: publicaciones por confirmar · reclamaciones de autoría · docencia y méritos por validar · solicitudes de días · propuestas IA.
+  // Resto: mis reclamaciones · mis registros de docencia y méritos sin validar o rechazados · mis solicitudes de días.
+  var REV = { tab: null };
+  S.reclCargadas = false;
+  function cargarRecl() { return api("webMisReclamaciones", S.token).then(function (l) { S.recl = l; S.reclCargadas = true; return l; }); }
+  function pendientePub(p) { return estadoDe(p) === "Pendiente de Confirmación"; }
+  function revSecciones() {
+    return S.inicio.usuario.admin ?
+      [["pubs", "Publicaciones", "fa-book"], ["autoria", "Autoría", "fa-user-check"], ["docencia", "Docencia y méritos", "fa-user-graduate"],
+       ["dias", "Días de congreso", "fa-calendar-days"], ["ia", "Propuestas IA", "fa-wand-magic-sparkles"]] :
+      [["autoria", "Mis reclamaciones", "fa-user-check"], ["docencia", "Mis registros", "fa-user-graduate"], ["dias", "Mis solicitudes de días", "fa-calendar-days"]];
+  }
+  var NOMBRE_TABLA = { trabajos: "Trabajo dirigido", tutorias: "Tutoría", meritos: "Otros méritos", aneca: "Acreditación ANECA" };
+  function revDocencia() {            // [{tabla, t, r}] — null si aún no se ha cargado Docencia
+    var D = GC.docencia && GC.docencia.datos(); if (!D) return null;
+    var admin = S.inicio.usuario.admin, V = GC.docencia.VAL, out = [];
+    ["trabajos", "tutorias", "meritos"].forEach(function (tabla) { (D[tabla] || []).forEach(function (r) {
+      var ok = admin ? r.estadoVal === V.pend : (r.mio || r.implicado) && r.estadoVal !== V.ok;
+      if (ok) out.push({ tabla: tabla, t: tabla === "meritos" && r.tipo === GC.docencia.ANECA ? "aneca" : tabla, r: r });
+    }); });
+    return out.sort(function (a, b) { return String(b.r.fechaRegistro || "").localeCompare(String(a.r.fechaRegistro || "")); });
+  }
+  function revDias() {
+    var C = GC.congresos && GC.congresos.datos(); if (!C) return null;
+    var u = S.inicio.usuario, sols = (C.dias && C.dias.solicitudes) || [];
+    var hoy = new Date(), lim = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate() - 60).toISOString().substring(0, 10);
+    return sols.filter(function (x) {
+      if (u.admin) return x.estado === "Pendiente";
+      return x.persona === u.nombre && (x.estado === "Pendiente" || (x.dias || []).some(function (d) { return d >= lim; }));
+    }).sort(function (a, b) { return String((b.dias || [])[0] || "").localeCompare(String((a.dias || [])[0] || "")); });
+  }
+  function revIA() { var C = GC.congresos && GC.congresos.datos(); return C ? C.congresos.filter(function (x) { return x.iaEstado === "Con propuestas"; }) : null; }
+  function revCuentas() {
+    var admin = S.inicio.usuario.admin, doc = revDocencia(), dias = revDias(), ia = revIA(), V = GC.docencia && GC.docencia.VAL;
+    return {
+      pubs: S.pubs.filter(pendientePub).length,
+      autoria: S.reclCargadas ? S.recl.filter(function (r) { return r.Estado === "Pendiente"; }).length : null,
+      docencia: doc === null ? null : admin ? doc.length : doc.filter(function (x) { return x.r.estadoVal === V.no; }).length,
+      dias: dias === null ? null : admin ? dias.length : 0,
+      ia: ia === null ? null : ia.length
+    };
+  }
   function contarRevision() {
-    if (!S.inicio.usuario.admin) return;
-    cargarRecl().then(function (l) {
-      var n = S.pubs.filter(function (p) { return estadoDe(p) === "Pendiente de Confirmación"; }).length + l.filter(function (r) { return r.Estado === "Pendiente"; }).length;
-      ["cntRevision", "cntRevisionRiel", "cntRevisionCajon", "cntRevisionInicio"].forEach(function (id) { $(id).textContent = n ? String(n) : ""; $(id).classList.toggle("oculto", !n); });
-    }).catch(function () {});
+    if (!S.inicio) return;
+    var k = revCuentas(), admin = S.inicio.usuario.admin;
+    // contador: lo que requiere una acción (administradores: todo lo pendiente; resto: registros rechazados que hay que corregir)
+    var n = admin ? (k.pubs || 0) + (k.autoria || 0) + (k.docencia || 0) + (k.dias || 0) + (k.ia || 0) : (k.docencia || 0);
+    ["cntRevisionRiel", "cntRevisionCajon", "cntRevisionInicio", "cntRevisionInferior"].forEach(function (id) { if ($(id)) { $(id).textContent = n ? String(n) : ""; $(id).classList.toggle("oculto", !n); } });
+    revSecciones().forEach(function (s) { var e = $("cntRev_" + s[0]); if (e) e.textContent = k[s[0]] === null || k[s[0]] === undefined ? "" : String(k[s[0]]); });
   }
   function itemPub(p) {
     return '<div class="item-lista" data-id="' + esc(p.ID_Articulo) + '"><div class="t">' + esc(p["Título del artículo"] || "(sin título · " + (p.PMID || p.DOI) + ")") +
@@ -1627,26 +1958,83 @@
     api("webResolverReclamacion", S.token, id, dec).then(function (r) { aviso(r.mensaje, 5000); return cargarRecl(); })
       .then(function () { pintarRevision(); contarRevision(); }).catch(function (e) { aviso(e.message, 6000); }).then(function () { cargando(false); });
   }
+  function fechaCorta(iso) { var p = String(iso || "").split("-"); return p.length === 3 ? p[2] + "/" + p[1] + "/" + p[0] : String(iso || ""); }
+  function cargandoHtml(txt) { return '<p class="tenue" style="padding:10px 2px"><i class="fa-solid fa-spinner fa-spin"></i> ' + esc(txt) + "</p>"; }
+  function vacioHtml(txt) { return '<div class="rev-vacio"><i class="fa-regular fa-circle-check"></i> ' + esc(txt) + "</div>"; }
   function pintarRevision() {
-    var pend = S.pubs.filter(function (p) { return estadoDe(p) === "Pendiente de Confirmación"; });
-    $("listaPendientes").innerHTML = pend.map(itemPub).join("") || '<p class="tenue">No hay publicaciones pendientes.</p>';
-    $("listaPendientes").onclick = clicLista;
-    $("listaReclPend").innerHTML = '<p class="tenue">Cargando…</p>';
-    cargarRecl().then(function (l) {
-      var c = $("listaReclPend"), p = l.filter(function (r) { return r.Estado === "Pendiente"; });
-      c.innerHTML = p.map(function (r) { return tarjetaRecl(r, true); }).join("") || '<p class="tenue">No hay reclamaciones pendientes.</p>';
-      enlazarRecl(c);
-    }).catch(function (e) { aviso(e.message); });
+    if (!S.inicio) return;
+    var secs = revSecciones(), admin = S.inicio.usuario.admin;
+    if (!REV.tab || !secs.some(function (s) { return s[0] === REV.tab; })) {
+      var k0 = revCuentas(); REV.tab = (secs.filter(function (s) { return k0[s[0]]; })[0] || secs[0])[0];
+    }
+    $("tituloRev").textContent = admin ? "Revisar · pendientes del Servicio" : "Revisar · mis registros y reclamaciones";
+    $("pestRev").innerHTML = secs.map(function (s) { return '<button data-rtab="' + s[0] + '"' + (s[0] === REV.tab ? ' class="activo"' : "") + '><i class="fa-solid ' + s[2] + '"></i> ' +
+      esc(s[1]) + ' <span id="cntRev_' + s[0] + '"></span></button>'; }).join("");
+    contarRevision();
+    var cu = $("cuerpoRev"), t = REV.tab, h = [];
+    if (t === "pubs") {
+      var pend = S.pubs.filter(pendientePub);
+      h.push('<p class="rev-ayuda">Publicaciones añadidas o detectadas que esperan confirmación. Ábrelas para revisarlas y confirmarlas.</p>');
+      h.push(pend.length ? '<div class="lista-simple" id="revPubs">' + pend.map(itemPub).join("") + "</div>" : vacioHtml("No hay publicaciones pendientes."));
+      cu.innerHTML = h.join("");
+      if ($("revPubs")) $("revPubs").onclick = clicLista;
+    } else if (t === "autoria") {
+      if (!S.reclCargadas) { cu.innerHTML = cargandoHtml("Cargando reclamaciones…"); cargarRecl().then(pintarRevision, function (e) { aviso(e.message); }); return; }
+      if (admin) {
+        var pr = S.recl.filter(function (r) { return r.Estado === "Pendiente"; }), rs = S.recl.filter(function (r) { return r.Estado !== "Pendiente"; }).slice(0, 15);
+        h.push('<h3 class="rev-sub">Pendientes de resolver</h3>' + (pr.map(function (r) { return tarjetaRecl(r, true); }).join("") || vacioHtml("No hay reclamaciones pendientes.")));
+        if (rs.length) h.push('<h3 class="rev-sub">Resueltas recientemente</h3>' + rs.map(function (r) { return tarjetaRecl(r, false); }).join(""));
+      } else {
+        h.push('<p class="rev-ayuda">Para reclamar una publicación en la que figuras, ábrela en Ciencia → Publicaciones y pulsa «Reclamar autoría».</p>');
+        h.push(S.recl.map(function (r) { return tarjetaRecl(r, false); }).join("") || vacioHtml("No tienes reclamaciones."));
+      }
+      cu.innerHTML = h.join(""); enlazarRecl(cu);
+    } else if (t === "docencia") {
+      var l = revDocencia();
+      if (l === null) { cu.innerHTML = cargandoHtml("Cargando Docencia y méritos…"); if (GC.docencia) GC.docencia.asegurar().then(pintarRevision); return; }
+      var V = GC.docencia.VAL;
+      h.push('<p class="rev-ayuda">' + (admin ? "Registros de trabajos dirigidos, tutorías, acreditaciones y otros méritos pendientes de validar. Ábrelos para validarlos o rechazarlos (los de la lista filtrada se pueden validar todos a la vez desde su sección)." :
+        "Tus registros que aún no están validados. Si alguno se ha rechazado, ábrelo, corrígelo según la nota y guárdalo: volverá a quedar pendiente.") + "</p>");
+      var grupos = [["no", "Rechazados: hay que corregirlos"], ["pend", "Pendientes de validación"]];
+      grupos.forEach(function (g) {
+        var items = l.filter(function (x) { return x.r.estadoVal === V[g[0]]; }); if (!items.length) return;
+        if (!admin) h.push('<h3 class="rev-sub">' + g[1] + "</h3>");
+        h.push('<div class="lista-simple">' + items.map(function (x) {
+          var r = x.r, per = (r.personas || []).join(", ");
+          return '<div class="item-lista" data-rdoc="' + esc(x.tabla) + "|" + esc(r.id) + '"><div class="t">' + esc(GC.docencia.titulo(x.t, r) || "(sin título)") + "</div>" +
+            '<div class="m"><span class="et">' + esc(NOMBRE_TABLA[x.t]) + "</span> " + esc([r.tipo, per, r.anio].filter(Boolean).join(" · ")) + "</div>" +
+            (r.estadoVal === V.no ? '<div class="m mensaje">Rechazado' + (r.notaVal ? ": «" + esc(r.notaVal) + "»" : "") + "</div>" : admin && r.registradoPor ? '<div class="m tenue">Registrado por ' + esc(r.registradoPor) + (r.fechaRegistro ? " · " + esc(fechaCorta(r.fechaRegistro)) : "") + "</div>" : "") + "</div>";
+        }).join("") + "</div>");
+      });
+      if (!l.length) h.push(vacioHtml(admin ? "No hay registros pendientes de validar." : "Todos tus registros están validados."));
+      cu.innerHTML = h.join("");
+      cu.querySelectorAll("[data-rdoc]").forEach(function (e) { e.onclick = function () { var x = e.getAttribute("data-rdoc").split("|"); GC.docencia.abrirRegistro(x[0], x.slice(1).join("|")); }; });
+    } else if (t === "dias" || t === "ia") {
+      var ld = t === "dias" ? revDias() : revIA();
+      if (ld === null) { cu.innerHTML = cargandoHtml("Cargando Congresos y cursos…"); if (GC.congresos) GC.congresos.asegurar().then(pintarRevision); return; }
+      if (t === "dias") {
+        h.push('<p class="rev-ayuda">' + (admin ? "Solicitudes de días por congreso pendientes de aprobar. Se resuelven en Congresos y cursos → Calendario y días." :
+          "Tus solicitudes de días por congreso (pendientes y de los dos últimos meses en adelante).") + "</p>");
+        h.push(ld.length ? '<div class="lista-simple">' + ld.map(function (x) {
+          var cls = x.estado === "Aprobada" ? "ok" : x.estado === "Pendiente" ? "pend" : "falta";
+          return '<div class="item-lista" data-rdia="' + esc((x.dias || [])[0] || "") + '"><div class="t">' + esc(x.nombreCongreso || "(congreso)") + "</div>" +
+            '<div class="m"><span class="et ' + cls + '">' + esc(x.estado) + "</span> " + esc([admin ? x.persona : "", (x.dias || []).map(fechaCorta).join(", "),
+              (x.computables || []).length + " día" + ((x.computables || []).length === 1 ? "" : "s") + " computable" + ((x.computables || []).length === 1 ? "" : "s")].filter(Boolean).join(" · ")) + "</div>" +
+            (x.comentarioAdmin ? '<div class="m tenue">«' + esc(x.comentarioAdmin) + "»</div>" : "") + "</div>";
+        }).join("") + "</div>" : vacioHtml(admin ? "No hay solicitudes de días pendientes." : "No tienes solicitudes de días recientes."));
+        cu.innerHTML = h.join("");
+        cu.querySelectorAll("[data-rdia]").forEach(function (e) { e.onclick = function () { GC.congresos.irCalendario(e.getAttribute("data-rdia")); }; });
+      } else {
+        h.push('<p class="rev-ayuda">Congresos en los que la verificación con IA ha propuesto cambios (fechas, ciudad, web…). Ábrelos para aceptarlos o descartarlos.</p>');
+        h.push(ld.length ? '<div class="lista-simple">' + ld.map(function (x) {
+          return '<div class="item-lista" data-rcon="' + esc(x.id) + '"><div class="t">' + esc(x.nombre) + '</div><div class="m">' + esc([x.anio, x.ciudad, x.iaFecha ? "revisado " + x.iaFecha : ""].filter(Boolean).join(" · ")) + "</div></div>";
+        }).join("") + "</div>" : vacioHtml("No hay propuestas de la IA pendientes."));
+        cu.innerHTML = h.join("");
+        cu.querySelectorAll("[data-rcon]").forEach(function (e) { e.onclick = function () { GC.congresos.abrir(e.getAttribute("data-rcon")); }; });
+      }
+    }
   }
-  function pintarReclamaciones() {
-    $("listaRecl").innerHTML = '<p class="tenue">Cargando…</p>';
-    cargarRecl().then(function (l) {
-      var c = $("listaRecl");
-      c.innerHTML = l.map(function (r) { return tarjetaRecl(r, false); }).join("") ||
-        '<p class="tenue">No hay reclamaciones. Para reclamar una publicación en la que figuras, ábrela en Publicaciones y pulsa «Reclamar autoría».</p>';
-      enlazarRecl(c);
-    }).catch(function (e) { aviso(e.message); });
-  }
+  $("pestRev").addEventListener("click", function (ev) { var b = ev.target.closest("[data-rtab]"); if (b) { REV.tab = b.getAttribute("data-rtab"); pintarRevision(); } });
 
   // ---------- descargar la lista filtrada ----------
   var ETIQ_EXPORT = { "Revista": "Revista / Libro", "Personas Servicio": "Personas del Servicio", "ID_Articulo": "ID_Articulo" };
@@ -1697,7 +2085,7 @@
   function nombreArchivo(ext) {
     var hoy = new Date(), f = hoy.getFullYear() + "-" + ("0" + (hoy.getMonth() + 1)).slice(-2) + "-" + ("0" + hoy.getDate()).slice(-2);
     var extra = [S.ano, $("fPersona").value, $("fMias").checked ? S.inicio.usuario.nombre : ""].filter(Boolean).join("_");
-    return ("Publicaciones_CGyD_" + f + (extra ? "_" + extra : "")).normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^\w\-]+/g, "_") + "." + ext;
+    return ("Publicaciones_CGyAD_" + f + (extra ? "_" + extra : "")).normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^\w\-]+/g, "_") + "." + ext;
   }
   function bajar(contenido, tipo, nombre) {
     var url = URL.createObjectURL(new Blob([contenido], { type: tipo })), a = document.createElement("a");
@@ -1860,7 +2248,7 @@
     var kIx = cols.indexOf("Ranking") + 1 || cols.length;
     cols.splice(kIx, 0, "Indexación JCR"); cab.splice(kIx, 0, "Indexación JCR");
     var datos = filas.map(function (p) { return cols.map(function (c) { return c === "Indexación JCR" ? indexacionTxt(p) : p[c]; }); });
-    var info = [["Gestión Científica CGyD-GITIC · Publicaciones"], ["Generado", new Date().toLocaleString("es-ES")], ["Por", S.inicio.usuario.nombre],
+    var info = [["Gestión Científica CGyAD-GITIC · Publicaciones"], ["Generado", new Date().toLocaleString("es-ES")], ["Por", S.inicio.usuario.nombre],
                 ["Publicaciones", filas.length], ["Filtros", descripcionFiltros()]];
     var k = S.indicadores;
     var firmaXl = [["Primer autor/a", k && k.primero], ["Último autor/a", k && k.ultimo], ["Correspondencia", k && k.corr], ["1º, último o corresp.", k && k.lider], ["En grupo colaborativo", k && k.grupo]];
@@ -1963,7 +2351,7 @@
   if (!leer("gc_bio") && leer("gc_token")) { /* versión anterior: la sesión seguía en localStorage */ }
   S.token = leerToken();
   if (leer("gc_email")) $("inEmail").value = leer("gc_email");
-  if (S.token) arrancar(); else if (bioActivo() && PK.soportado) mostrarDesbloqueo(); else mostrarAcceso();
+  if (S.token) arrancar(true); else if (bioActivo() && PK.soportado) mostrarDesbloqueo(); else mostrarAcceso();
 })();
 </script>
 
@@ -1982,11 +2370,12 @@
 
   // ---------- carga ----------
   function cargar() {
-    G.cargando(true);
-    ES.cargando = G.api("webListarEstudios", G.S.token).then(function (r) {
+    if (!ES.datos) G.cargando(true);
+    ES.cargando = G.apiCache("webListarEstudios", [G.S.token], function (r) {
       ES.datos = r; prepararFiltros(); pintar(); if (G.S.vista === "pacientes") pintarPacientes();
       if (ES.sel) abrirFicha(ES.sel, true);
-    }).catch(function (e) { G.aviso(e.message, 6000); }).then(function () { G.cargando(false); ES.cargando = null; });
+      G.datosCambiados("estudios");
+    }, !ES.datos).catch(function (e) { G.aviso(e.message, 6000); }).then(function () { G.cargando(false); ES.cargando = null; });
     return ES.cargando;
   }
   function opc(sel, valores, primero) {
@@ -2510,7 +2899,7 @@
   $("btDescEst").onclick = function () {
     if (!ES.datos) return;
     var l = ES.orden.map(estudio).filter(Boolean), k = indicadores(l);
-    var info = [["Gestión Científica CGyD-GITIC · Estudios del Servicio"], ["Generado", new Date().toLocaleString("es-ES")], ["Por", G.S.inicio.usuario.nombre],
+    var info = [["Gestión Científica CGyAD-GITIC · Estudios del Servicio"], ["Generado", new Date().toLocaleString("es-ES")], ["Por", G.S.inicio.usuario.nombre],
       ["Filtros", descripcionFiltros()], [""], ["Estudios", k.n], ["Activos", k.activos], ["Finalizados", k.finalizados], ["Propios", k.propios], ["Internos", k.internos],
       ["Externos nacionales", k.extNac], ["Externos internacionales", k.extInt], ["Con financiación", k.conFin], ["Con financiación pública", k.finPub], ["Con financiación privada", k.finPriv],
       ["Cuantía concedida (€)", Math.round(k.cuantia * 100) / 100], ["Pacientes incluidos (total)", k.pacientes]].concat(k.periodo ? [["Pacientes en el periodo", k.pacPeriodo]] : [])
@@ -2518,24 +2907,26 @@
     G.bajar(G.libroXlsx([
       { nombre: "Estudios", filas: filasEstudiosXlsx(l), anchos: [18, 60, 30, 28, 24, 32, 14, 30, 14, 20, 20, 10, 12, 10, 12, 16, 12, 14, 26, 16], cabecera: true },
       { nombre: "Pacientes por año", filas: filasRegistrosXlsx(l), anchos: [18, 60, 8, 12, 16], cabecera: true },
-      { nombre: "Información", filas: info, anchos: [30, 80] }]), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", nombreArchivo("Estudios_CGyD"));
+      { nombre: "Información", filas: info, anchos: [30, 80] }]), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", nombreArchivo("Estudios_CGyAD"));
     G.aviso("Descargados " + l.length + " estudios.");
   };
   $("btDescPac").onclick = function () {
     if (!ES.datos) return;
     G.bajar(G.libroXlsx([{ nombre: "Pacientes por año", filas: filasRegistrosXlsx(ES.datos.estudios), anchos: [18, 60, 8, 12, 16], cabecera: true }]),
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", nombreArchivo("Pacientes_por_anio_CGyD"));
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", nombreArchivo("Pacientes_por_anio_CGyAD"));
   };
 
   // ---------- registro de las vistas ----------
   function asegurarDatos(fn) { if (ES.datos) fn(); else if (ES.cargando) ES.cargando.then(fn); else cargar().then(fn); }
-  G.registrar("estudios", { secciones: ["vistaEstudios"], placeholder: "Buscar Estudios del Servicio",
+  G.registrar("estudios", { secciones: ["vistaEstudios"], placeholder: "Buscar Estudios del Servicio", bloque: "ciencia",
     mostrar: function () { asegurarDatos(pintar); }, buscar: pintar, ocultar: function () { $("panelFiltrosEst").classList.add("oculto"); } });
-  G.registrar("pacientes", { secciones: ["vistaPacientes"], placeholder: "Buscar estudio en Pacientes por Año",
+  G.registrar("pacientes", { secciones: ["vistaPacientes"], placeholder: "Buscar estudio en Pacientes por Año", bloque: "ciencia", grupo: "estudios",
     mostrar: function () { asegurarDatos(pintarPacientes); }, buscar: pintarPacientes, ocultar: function () {} });
   // la ficha del estudio se cierra al salir de Estudios / Pacientes
   ["estudios", "pacientes"].forEach(function (v) { var o = G.mod[v].ocultar; G.mod[v].ocultar = function () { o(); cerrarFicha(); }; });
   $("btSync").addEventListener("click", function () { if (G.S.vista === "estudios" || G.S.vista === "pacientes") cargar(); });
+  G.estudios = { asegurar: function () { return new Promise(function (ok) { asegurarDatos(function () { ok(ES.datos); }); }); }, datos: function () { return ES.datos; },
+    abrir: function (id) { G.mostrarVista("estudios"); asegurarDatos(function () { abrirFicha(id); }); } };
 })();
 </script>
 
@@ -2558,11 +2949,12 @@
 
   // ---------- carga ----------
   function cargar() {
-    G.cargando(true);
-    CN.cargando = G.api("webListarCongresos", G.S.token).then(function (r) {
+    if (!CN.datos) G.cargando(true);
+    CN.cargando = G.apiCache("webListarCongresos", [G.S.token], function (r) {
       CN.datos = r; prepararFiltros(); pintar(); if (CN.sel) abrirFicha(CN.sel);
       if (G.S.vista === "calendario") pintarCalendario(); else contadorPendientes();
-    }).catch(function (e) { G.aviso(e.message, 6000); }).then(function () { G.cargando(false); CN.cargando = null; });
+      G.datosCambiados("congresos");
+    }, !CN.datos).catch(function (e) { G.aviso(e.message, 6000); }).then(function () { G.cargando(false); CN.cargando = null; });
     return CN.cargando;
   }
   function opc(sel, valores, primero) {
@@ -3099,7 +3491,7 @@
     l.forEach(function (c) { c.aportaciones.forEach(function (a) { if (!aportDe(a, p)) return;
       filasA.push([c.anio || "", c.nombre, fecha(c.inicio), c.ciudad, c.pais, c.ambito, a.tipo, a.titulo, a.ponente, a.autores.join(", "), a.autores.filter(esServicio).join(", "), a.autores.filter(function (n) { return !esServicio(n); }).join(", "), a.estudio ? estudioTxt(a.estudio) : "",
         a.premio ? "Sí" : "No", a.detallePremio, a.tieneCertificado ? "Sí" : "No", a.obs]); }); });
-    var info = [["Gestión Científica CGyD-GITIC · Congresos y Cursos"], ["Generado", new Date().toLocaleString("es-ES")], ["Por", G.S.inicio.usuario.nombre],
+    var info = [["Gestión Científica CGyAD-GITIC · Congresos y Cursos"], ["Generado", new Date().toLocaleString("es-ES")], ["Por", G.S.inicio.usuario.nombre],
       ["Filtros", descripcionFiltros()], ["Indicadores de", k.persona || "todo el Servicio"], [""], ["Actividades", k.n], ["Congresos", k.congresos], ["Cursos / talleres", k.cursos],
       ["Otras actividades", k.otros], ["Internacionales", k.int], ["Nacionales", k.nac], ["Locales / regionales", k.loc], ["Organizadas por el Servicio", k.org], ["Asistencias", k.asist],
       ["Trabajos presentados (sin moderaciones ni pendientes)", k.trab], ["Ponencias invitadas", k.inv], ["Comunicaciones orales", k.oral], ["Pósteres", k.poster],
@@ -3107,7 +3499,7 @@
     G.bajar(G.libroXlsx([
       { nombre: "Congresos y cursos", filas: filasC, anchos: [7, 18, 50, 34, 12, 11, 16, 14, 11, 11, 10, 26, 30, 40, 9, 36, 9, 30, 14, 12], cabecera: true },
       { nombre: "Trabajos presentados", filas: filasA, anchos: [7, 44, 11, 16, 14, 12, 22, 60, 24, 40, 36, 30, 40, 9, 30, 10, 30], cabecera: true },
-      { nombre: "Información", filas: info, anchos: [44, 60] }]), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", nombreArchivo("Congresos_CGyD", "xlsx"));
+      { nombre: "Información", filas: info, anchos: [44, 60] }]), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", nombreArchivo("Congresos_CGyAD", "xlsx"));
     G.aviso("Descargadas " + l.length + " actividades y " + (filasA.length - 1) + " trabajos.");
   };
 
@@ -3301,7 +3693,7 @@
     var hoy = CN.datos.hoy;
     if (c.plazoAbstracts && c.plazoAbstracts >= hoy) evs.push(ev("abs-" + c.id, c.plazoAbstracts, c.plazoAbstracts, "Fecha límite de abstracts · " + c.nombre, c.web || ""));
     if (c.plazoInscripcion && c.plazoInscripcion >= hoy) evs.push(ev("ins-" + c.id, c.plazoInscripcion, c.plazoInscripcion, "Fin inscripción reducida · " + c.nombre, c.web || ""));
-    G.bajar(["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//CGyD-GITIC//Congresos//ES", "CALSCALE:GREGORIAN"].concat(evs, ["END:VCALENDAR"]).join("\r\n") + "\r\n",
+    G.bajar(["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//CGyAD-GITIC//Congresos//ES", "CALSCALE:GREGORIAN"].concat(evs, ["END:VCALENDAR"]).join("\r\n") + "\r\n",
       "text/calendar;charset=utf-8", "Congreso_" + normTxt(c.nombre).replace(/ /g, "_").substring(0, 40).replace(/_+$/, "") + ".ics");
     G.aviso("Abre el archivo .ics para añadirlo a tu calendario." + (evs.length > 1 ? " Incluye los plazos." : ""));
   }
@@ -3456,39 +3848,51 @@
 
   // ---------- registro de la vista ----------
   function asegurarDatos(fn) { if (CN.datos) fn(); else if (CN.cargando) CN.cargando.then(fn); else cargar().then(fn); }
-  G.registrar("congresos", { secciones: ["vistaCongresos"], placeholder: "Buscar Congresos y Cursos",
+  G.registrar("congresos", { secciones: ["vistaCongresos"], placeholder: "Buscar Congresos y Cursos", bloque: "ciencia",
     mostrar: function () { asegurarDatos(pintar); }, buscar: pintar, ocultar: function () { $("panelFiltrosCon").classList.add("oculto"); cerrarFicha(); } });
-  G.registrar("calendario", { secciones: ["vistaCalendario"], placeholder: "Buscar persona o congreso en el calendario",
+  G.registrar("calendario", { secciones: ["vistaCalendario"], placeholder: "Buscar persona o congreso en el calendario", bloque: "ciencia", grupo: "congresos",
     mostrar: function () { asegurarDatos(pintarCalendario); }, buscar: pintarCalendario, ocultar: function () {} });
   $("btSync").addEventListener("click", function () { if (G.S.vista === "congresos" || G.S.vista === "calendario") cargar(); });
-  // administradores: el contador de solicitudes pendientes se carga al entrar en la web
-  (function esperar(n) { setTimeout(function () {
-    if (G.S.inicio && G.S.inicio.usuario) { if (G.S.inicio.usuario.admin && !CN.datos && !CN.cargando) cargar(); }
-    else if (n < 20) esperar(n + 1);
-  }, 3000); })(0);
-  G.congresos = { textoCicyt: textoCicyt, textoBibtex: textoBibtex, aportacionesCvn: aportacionesCvn, indicadores: indicadores };   // para pruebas
+  // (los contadores de Revisar se cargan desde Web_Cliente al entrar en la web)
+  G.congresos = { textoCicyt: textoCicyt, textoBibtex: textoBibtex, aportacionesCvn: aportacionesCvn, indicadores: indicadores,
+    asegurar: function () { return new Promise(function (ok) { asegurarDatos(function () { ok(CN.datos); }); }); }, datos: function () { return CN.datos; },
+    abrir: function (id) { G.mostrarVista("congresos"); asegurarDatos(function () { abrirFicha(id); }); },
+    irCalendario: function (iso) { if (iso) { CAL.anio = Number(iso.substring(0, 4)); CAL.mes = Number(iso.substring(5, 7)) - 1; } G.mostrarVista("calendario"); },
+    saldo: function (p, a) { return CN.datos ? saldo(p, a) : null; }, limite: function () { return CN.datos ? DD().limite : 15; } };
 })();
 </script>
 
-<script>
+  <script>
 // ===== Docencia (web v0.4): trabajos dirigidos, tutorías y otros méritos — usa las utilidades comunes de Web_Cliente (window.GC) =====
 (function () {
   "use strict";
   var G = window.GC, $ = G.$, esc = G.esc;
-  var DC = { datos: null, tab: "trabajos", sel: null, orden: [], cargando: null };
+  var DC = { datos: null, tab: "trabajos", modo: "docencia", sel: null, orden: [], cargando: null };
+  var ANECA = "Acreditación (ANECA, ACAP…)";
+  // Dos modos sobre la misma vista: «docencia» (bloque Docencia) y «ciencia» (Ciencia → Otros méritos). Las acreditaciones ANECA son
+  // filas de Otros_Meritos con ese tipo: se muestran en Docencia y se excluyen de «Otros méritos».
+  var MODOS = { docencia: ["trabajos", "tutorias", "aneca"], ciencia: ["meritos"] };
+  function tabsModo() { return MODOS[DC.modo]; }
+  function srv(t) { return t === "aneca" ? "meritos" : t; }            // tabla en el servidor
   var VAL = { pend: "Pendiente de validación", ok: "Validado", no: "Rechazado" };
   var TABS = { trabajos: { nombre: "Trabajos dirigidos", uno: "trabajo", varios: "trabajos" },
                tutorias: { nombre: "Tutorías", uno: "tutoría", varios: "tutorías" },
-               meritos: { nombre: "Otros méritos", uno: "mérito", varios: "méritos" } };
+               meritos: { nombre: "Otros méritos", uno: "mérito", varios: "méritos" },
+               aneca: { nombre: "Acreditaciones ANECA", uno: "acreditación", varios: "acreditaciones" } };
   var MESES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
   function fTxt(s) { if (!s) return ""; var p = String(s).split("-"); return p.length === 3 ? Number(p[2]) + " " + MESES[Number(p[1]) - 1] + " " + p[0] : s; }
   function fCorta(s) { if (!s) return ""; var p = String(s).split("-"); return p.length === 3 ? p[2] + "/" + p[1] + "/" + p[0] : s; }
   function normTxt(s) { return String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9 ]/g, " ").replace(/\s+/g, " ").trim(); }
-  function lista(t) { return (DC.datos && DC.datos[t]) || []; }
+  function listaTabla(t) { return (DC.datos && DC.datos[t]) || []; }          // tabla completa (memoria / CVN)
+  function lista(t) {
+    if (t === "aneca") return listaTabla("meritos").filter(function (r) { return r.tipo === ANECA; });
+    if (t === "meritos") return listaTabla("meritos").filter(function (r) { return r.tipo !== ANECA; });
+    return listaTabla(t);
+  }
   function registro(t, id) { return lista(t).filter(function (r) { return r.id === id; })[0]; }
   function enCurso(t, r) {
     if (t === "trabajos") return r.estado === "En curso";
-    if (t === "meritos" && r.enCurso) return true;
+    if ((t === "meritos" || t === "aneca") && r.enCurso) return true;
     return !r.fin || r.fin >= DC.datos.hoy;
   }
   function estadoDe(t, r) { return t === "trabajos" ? r.estado : enCurso(t, r) ? "En curso" : "Finalizado"; }
@@ -3498,11 +3902,12 @@
 
   // ---------- carga ----------
   function cargar() {
-    G.cargando(true);
-    DC.cargando = G.api("webListarDocencia", G.S.token).then(function (r) {
-      DC.datos = r; prepararFiltros(); pintar();
+    if (!DC.datos) G.cargando(true);
+    DC.cargando = G.apiCache("webListarDocencia", [G.S.token], function (r) {
+      DC.datos = r; if (G.S.vista === "docencia" || G.S.vista === "meritos") { prepararFiltros(); pintar(); }
       if (DC.sel && registro(DC.tab, DC.sel)) abrirFicha(DC.sel); else if (DC.sel) cerrarFicha();
-    }).catch(function (e) { G.aviso(e.message, 7000); }).then(function () { G.cargando(false); DC.cargando = null; });
+      G.datosCambiados("docencia");
+    }, !DC.datos).catch(function (e) { G.aviso(e.message, 7000); }).then(function () { G.cargando(false); DC.cargando = null; });
     return DC.cargando;
   }
   function opc(sel, valores, primero) {
@@ -3513,13 +3918,19 @@
   function prepararFiltros() {
     var t = DC.tab, E = DC.datos.enums, l = lista(t), pers = {}, anos = {};
     l.forEach(function (r) { r.personas.forEach(function (n) { pers[n] = 1; }); r.anios.forEach(function (y) { anos[y] = 1; }); });
-    opc($("fdTipo"), t === "trabajos" ? E.tipoTrabajo : t === "tutorias" ? E.tipoTutoria : E.tipoMerito, "Todos los tipos");
+    opc($("fdTipo"), t === "trabajos" ? E.tipoTrabajo : t === "tutorias" ? E.tipoTutoria : t === "aneca" ? [ANECA] : E.tipoMerito.filter(function (x) { return x !== ANECA; }), "Todos los tipos");
     opc($("fdEstado"), t === "trabajos" ? E.estadoTrabajo : ["En curso", "Finalizado"], "Cualquiera");
     opc($("fdPersona"), Object.keys(pers).sort(function (a, b) { return a.localeCompare(b, "es"); }), "Todo el Servicio");
     var ks = Object.keys(anos).sort();
     opc($("fdDesde"), ks, "Desde…"); opc($("fdHasta"), ks.slice().reverse(), "Hasta…");
     $("lblFdPersona").textContent = t === "trabajos" ? "Director/a o tutor/a del Servicio" : t === "tutorias" ? "Tutor/a del Servicio" : "Persona del Servicio";
-    document.querySelectorAll("#pestDoc [data-tdoc]").forEach(function (b) { b.classList.toggle("activo", b.getAttribute("data-tdoc") === t); });
+    marcarPestanas();
+  }
+  function marcarPestanas() {
+    var ts = tabsModo();
+    document.querySelectorAll("#pestDoc [data-tdoc]").forEach(function (b) { var k = b.getAttribute("data-tdoc");
+      b.classList.toggle("activo", k === DC.tab); b.classList.toggle("oculto", ts.indexOf(k) === -1); });
+    $("pestDoc").classList.toggle("oculto", ts.length < 2);
   }
   function pasa(t, r, soloComunes) {
     var txt = normTxt($("fTexto").value), per = $("fdPersona").value, d = Number($("fdDesde").value) || null, h = Number($("fdHasta").value) || null, v = $("fdVal").value;
@@ -3573,10 +3984,10 @@
     var cuenta = {}; l.forEach(function (r) { var g = r.anio || "Sin fecha"; cuenta[g] = (cuenta[g] || 0) + 1; });
     var html = [], grupo = null, admin = G.S.inicio.usuario.admin;
     if (admin && $("fdVal").value !== "pend") {
-      var np = ["trabajos", "tutorias", "meritos"].map(function (k) { return lista(k).filter(function (r) { return r.estadoVal === VAL.pend; }).length; });
-      var tot = np[0] + np[1] + np[2];
-      if (tot) html.push('<div class="aviso-pend"><i class="fa-solid fa-list-check"></i> <b>' + tot + "</b> pendiente" + (tot === 1 ? "" : "s") + " de validación (" +
-        ["trabajos", "tutorías", "méritos"].map(function (n, i) { return np[i] + " " + n; }).join(" · ") + ') <button class="bt-texto" id="btVerPendDoc">Revisar</button></div>');
+      var ts = tabsModo(), np = ts.map(function (k) { return lista(k).filter(function (r) { return r.estadoVal === VAL.pend; }).length; });
+      var tot = np.reduce(function (s, x) { return s + x; }, 0);
+      if (tot) html.push('<div class="aviso-pend"><i class="fa-solid fa-list-check"></i> <b>' + tot + "</b> pendiente" + (tot === 1 ? "" : "s") + " de validación" +
+        (ts.length > 1 ? " (" + ts.map(function (k, i) { return np[i] + " " + TABS[k].varios; }).join(" · ") + ")" : "") + ' <button class="bt-texto" id="btVerPendDoc">Ver</button></div>');
     }
     if (admin && $("fdVal").value === "pend" && l.length > 1) html.push('<div class="aviso-pend"><button class="bt-texto verde" id="btValidarTodosDoc"><i class="fa-solid fa-check-double"></i> Validar los ' + l.length + " de la lista</button></div>");
     l.forEach(function (r) {
@@ -3585,25 +3996,25 @@
       var marcas = (t === "trabajos" || !enCurso(t, r) ? "" : '<span class="et">En curso</span>') + (t === "trabajos" ? etEstado(t, r) : "") + etVal(r) +
                    (r.mencion ? '<span class="et ok">Mención internacional</span>' : "") + (r.tieneDocumento ? ' <i class="fa-solid fa-paperclip tenue" title="Con documento"></i>' : "");
       html.push('<div class="deck' + (DC.sel === r.id ? " sel" : "") + '" data-doc="' + esc(r.id) + '"><div class="cuerpo-deck"><div class="t" title="' + esc(tituloDe(t, r)) + '">' + esc(tituloDe(t, r)) +
-        '</div><div class="m">' + esc(lineaDeck(t, r)) + "</div>" + (t !== "meritos" && t !== "tutorias" && r.personas.length ? '<div class="m tenue">' + esc(personasTxt(r)) + "</div>" : "") +
+        '</div><div class="m">' + esc(lineaDeck(t, r)) + "</div>" + (t === "trabajos" && r.personas.length ? '<div class="m tenue">' + esc(personasTxt(r)) + "</div>" : "") +
         (marcas ? '<div class="m">' + marcas + "</div>" : "") + '</div><div class="lado"><span class="cod">' + esc(ladoDeck(t, r)) + "</span>" +
         (r.puedeEditar ? '<button class="bt-icono" data-editar="' + esc(r.id) + '" title="Editar"><i class="fa-regular fa-pen-to-square"></i></button>' : "") + "</div></div>");
     });
     if (!l.length) html.push('<p class="tenue" style="padding:14px">' + (lista(t).length ? "No hay " + TABS[t].varios + " con estos filtros." :
-      "Aún no hay " + TABS[t].varios + " registrados. Pulsa <b>Añadir</b> para registrar el primero.") + "</p>");
+      "Aún no hay " + TABS[t].varios + (t === "aneca" || t === "tutorias" ? " registradas" : " registrados") + ". Pulsa <b>Añadir</b> para registrar " + (t === "aneca" || t === "tutorias" ? "la primera" : "el primero") + ".") + "</p>");
     $("listaDoc").innerHTML = html.join("");
     $("resumenDoc").textContent = resumen(t, l);
-    ["trabajos", "tutorias", "meritos"].forEach(function (k) { $("cntDoc_" + k).textContent = filtrada(k, true).length; });
+    tabsModo().forEach(function (k) { if ($("cntDoc_" + k)) $("cntDoc_" + k).textContent = filtrada(k, true).length; });
     $("btFiltrosDoc").style.color = filtrosActivos() ? "var(--rojo)" : "";
     $("btIndDoc").style.color = $("indicadoresDoc").classList.contains("oculto") ? "" : "var(--rojo)";
     if (!$("indicadoresDoc").classList.contains("oculto")) pintarIndicadores(t, l);
     if ($("btVerPendDoc")) $("btVerPendDoc").onclick = function () {
-      $("fdVal").value = "pend"; var k = ["trabajos", "tutorias", "meritos"].filter(function (x) { return lista(x).some(function (r) { return r.estadoVal === VAL.pend; }); });
+      $("fdVal").value = "pend"; var k = tabsModo().filter(function (x) { return lista(x).some(function (r) { return r.estadoVal === VAL.pend; }); });
       if (k.length && k.indexOf(DC.tab) === -1) cambiarTab(k[0]); else pintar(); };
     if ($("btValidarTodosDoc")) $("btValidarTodosDoc").onclick = function () {
       var ids = DC.orden.slice();
       G.dialogo("Validar " + ids.length + " registros", "<p>Se validarán los <b>" + ids.length + "</b> " + TABS[t].varios + " pendientes de la lista. Quien los registró recibirá el aviso en el resumen de las 8:00.</p>",
-        "Validar todos", function () { accion(G.api("webValidarDocencia", G.S.token, t, ids, VAL.ok, "")); }); };
+        "Validar todos", function () { accion(G.api("webValidarDocencia", G.S.token, srv(t), ids, VAL.ok, "")); }); };
     if (DC.sel) navegacion();
   }
   function cuentaPor(l, f) { var c = {}; l.forEach(function (r) { var k = f(r); if (k) c[k] = (c[k] || 0) + 1; }); return c; }
@@ -3618,7 +4029,7 @@
         l.filter(function (r) { return /^Rotante/.test(r.tipo); }).length + " rotantes · " + l.filter(function (r) { return enCurso(t, r); }).length + " en curso";
     }
     var cm = cuentaPor(l, function (r) { return r.tipo; }), top = Object.keys(cm).sort(function (a, b) { return cm[b] - cm[a]; }).slice(0, 3);
-    return l.length + " méritos" + (top.length ? " · " + top.map(function (k) { return cm[k] + " " + k.toLowerCase(); }).join(" · ") : "");
+    return l.length + " " + TABS[t].varios + (top.length ? " · " + top.map(function (k) { return cm[k] + " " + k.toLowerCase(); }).join(" · ") : "");
   }
   function pintarIndicadores(t, l) {
     var tile = function (n, lab, s, cls) { return '<div class="ind' + (cls ? " " + cls : "") + '"><div class="n">' + n + '</div><div class="l">' + esc(lab) + "</div>" + (s ? '<div class="s">' + esc(s) + "</div>" : "") + "</div>"; };
@@ -3652,8 +4063,22 @@
     var idd = it.getAttribute("data-doc");
     if (DC.sel === idd && !$("panelFichaDoc").classList.contains("oculto")) cerrarFicha(); else abrirFicha(idd);    // segundo clic: cierra
   });
-  function cambiarTab(t) { DC.tab = t; cerrarFicha(); $("fdTipo").value = ""; $("fdEstado").value = ""; prepararFiltros(); pintar(); G.guardar("gc_doc_tab", t); }
-  document.querySelectorAll("#pestDoc [data-tdoc]").forEach(function (b) { b.onclick = function () { cambiarTab(b.getAttribute("data-tdoc")); }; });
+  function cambiarTab(t) {
+    if (!TABS[t]) return;
+    if (tabsModo().indexOf(t) === -1) fijarModo(t === "meritos" ? "ciencia" : "docencia");
+    DC.tab = t; cerrarFicha(); $("fdTipo").value = ""; $("fdEstado").value = "";
+    if (DC.modo === "docencia") G.guardar("gc_doc_tab", t);
+    if (!DC.datos) { marcarPestanas(); return; }
+    prepararFiltros(); pintar();
+  }
+  function fijarModo(m) {
+    if (DC.modo !== m) { DC.modo = m; cerrarFicha(); ["fdTipo", "fdEstado", "fdVal"].forEach(function (id) { $(id).value = ""; }); }
+    if (tabsModo().indexOf(DC.tab) === -1) { var g = G.leer("gc_doc_tab"); DC.tab = m === "ciencia" ? "meritos" : (MODOS.docencia.indexOf(g) !== -1 ? g : "trabajos"); }
+    $("tituloDoc").textContent = m === "ciencia" ? "Otros méritos" : "Docencia";
+    $("vistaDocencia").classList.toggle("modo-ciencia", m === "ciencia");
+    marcarPestanas();
+  }
+  $("pestDoc").addEventListener("click", function (ev) { var b = ev.target.closest("[data-tdoc]"); if (b) cambiarTab(b.getAttribute("data-tdoc")); });
   ["fdTipo", "fdEstado", "fdPersona", "fdDesde", "fdHasta", "fdVal", "fdMios"].forEach(function (id) { $(id).addEventListener("change", pintar); });
   $("btFiltrosDoc").onclick = function () { $("panelFiltrosDoc").classList.toggle("oculto"); };
   $("btCerrarFiltrosDoc").onclick = function () { $("panelFiltrosDoc").classList.add("oculto"); };
@@ -3688,11 +4113,11 @@
   function enlace(u) { return u ? '<a href="' + esc(u) + '" target="_blank" rel="noopener">' + esc(u) + "</a>" : ""; }
   function pintarFicha(t, r) {
     var admin = G.S.inicio.usuario.admin, acc = [];
-    $("tituloFichaDoc").textContent = t === "trabajos" ? "Detalles del " + (r.tipo === "Tesis doctoral" ? "trabajo (tesis)" : r.tipo || "trabajo") : t === "tutorias" ? "Detalles de la tutoría" : "Detalles del mérito";
+    $("tituloFichaDoc").textContent = t === "trabajos" ? "Detalles del " + (r.tipo === "Tesis doctoral" ? "trabajo (tesis)" : r.tipo || "trabajo") : t === "tutorias" ? "Detalles de la tutoría" : t === "aneca" ? "Detalles de la acreditación" : "Detalles del mérito";
     if (admin && r.estadoVal !== VAL.ok) acc.push('<button class="accion verde" id="acValidarDoc"><i class="fa-solid fa-check"></i>Validar</button>');
     if (admin && r.estadoVal !== VAL.no) acc.push('<button class="accion" id="acRechazarDoc"><i class="fa-solid fa-xmark"></i>Rechazar</button>');
     if (r.tieneDocumento) acc.push('<button class="accion" id="acVerDoc"><i class="fa-solid fa-file-arrow-down"></i>Ver documento</button>');
-    if (r.puedeEditar) acc.push('<button class="accion" id="acSubirDoc"><i class="fa-solid fa-upload"></i>' + (r.tieneDocumento ? "Sustituir documento" : t === "meritos" ? "Subir justificante" : "Subir documento") + "</button>");
+    if (r.puedeEditar) acc.push('<button class="accion" id="acSubirDoc"><i class="fa-solid fa-upload"></i>' + (r.tieneDocumento ? "Sustituir documento" : t !== "trabajos" && t !== "tutorias" ? "Subir justificante" : "Subir documento") + "</button>");
     if (r.enlace) acc.push('<button class="accion" id="acEnlaceDoc"><i class="fa-solid fa-link"></i>' + (t === "trabajos" ? "TESEO / repositorio" : "Enlace") + "</button>");
     var estado = (r.estadoVal === VAL.pend ? '<span class="et pend">Pendiente de validación por un administrador</span>' : r.estadoVal === VAL.no ? '<span class="et falta">Rechazado</span>' : '<span class="et ok">Validado</span>');
     var cuerpo = "";
@@ -3717,7 +4142,7 @@
     $("fichaDoc").innerHTML = '<div class="col"><div class="tarjeta">' + (acc.length ? '<div class="acciones-redondas" style="margin-bottom:12px">' + acc.join("") + "</div>" : "") +
       '<p style="margin:0 0 10px">' + estado + "</p>" + cuerpo + "</div>" + (val ? '<div class="tarjeta">' + val + "</div>" : "") + "</div>";
     var on = function (id, fn) { if ($(id)) $(id).onclick = fn; };
-    on("acValidarDoc", function () { accion(G.api("webValidarDocencia", G.S.token, t, r.id, VAL.ok, ""), false); });
+    on("acValidarDoc", function () { accion(G.api("webValidarDocencia", G.S.token, srv(t), r.id, VAL.ok, ""), false); });
     on("acRechazarDoc", function () { dialogoRechazo(t, r); });
     on("acVerDoc", function () { verDocumento(t, r); });
     on("acSubirDoc", function () { subirDocumento(t, r); });
@@ -3730,14 +4155,14 @@
       '<label for="txtRechDoc">Motivo (se incluye en el correo a quien lo registró)</label><textarea id="txtRechDoc" rows="3" placeholder="p. ej. falta la fecha de defensa o el justificante">' + esc(r.estadoVal === VAL.no ? r.notaVal : "") + "</textarea>" +
       '<p class="mensaje" id="msgRechDoc"></p>', "Rechazar", function () {
         var m = $("txtRechDoc").value.trim(); if (!m) { $("msgRechDoc").textContent = "Escribe el motivo."; return; }
-        accion(G.api("webValidarDocencia", G.S.token, t, r.id, VAL.no, m));
+        accion(G.api("webValidarDocencia", G.S.token, srv(t), r.id, VAL.no, m));
       });
   }
   $("btEditarDoc").onclick = function () { var r = registro(DC.tab, DC.sel); if (r) formulario(DC.tab, r); };
   $("btBorrarDoc").onclick = function () {
     var t = DC.tab, r = registro(t, DC.sel); if (!r) return;
     G.dialogo("Eliminar " + TABS[t].uno, "<p>¿Eliminar «" + esc(tituloDe(t, r)) + "»?</p><p class=\"tenue\">" + (r.tieneDocumento ? "El documento se conserva en Drive. " : "") + "Esta acción no se puede deshacer.</p>",
-      "Eliminar", function () { accion(G.api("webEliminarDocencia", G.S.token, t, r.id)).then(function (x) { if (x && x.ok) cerrarFicha(); }); });
+      "Eliminar", function () { accion(G.api("webEliminarDocencia", G.S.token, srv(t), r.id)).then(function (x) { if (x && x.ok) cerrarFicha(); }); });
   };
   function accion(promesa, cerrar) {
     G.cargando(true);
@@ -3751,7 +4176,7 @@
   // ---------- documentos ----------
   function verDocumento(t, r) {
     G.aviso("Preparando el documento…", 3000); G.cargando(true);
-    G.api("webDescargarArchivoDocencia", G.S.token, t, r.id).then(function (x) {
+    G.api("webDescargarArchivoDocencia", G.S.token, srv(t), r.id).then(function (x) {
       var bin = atob(x.base64), bytes = new Uint8Array(bin.length);
       for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
       G.bajar(bytes, x.mime || "application/octet-stream", x.nombre);
@@ -3766,7 +4191,7 @@
     var inp = document.createElement("input"); inp.type = "file"; inp.accept = ".pdf,.doc,.docx,.odt,.jpg,.jpeg,.png";
     inp.onchange = function () {
       var f = inp.files && inp.files[0]; if (!f) return;
-      leerArchivo(f).then(function (x) { G.aviso("Subiendo «" + x.nombre + "»…", 5000); return accion(G.api("webSubirArchivoDocencia", G.S.token, t, r.id, x.nombre, x.tipo, x.b64), false); })
+      leerArchivo(f).then(function (x) { G.aviso("Subiendo «" + x.nombre + "»…", 5000); return accion(G.api("webSubirArchivoDocencia", G.S.token, srv(t), r.id, x.nombre, x.tipo, x.b64), false); })
         .catch(function (e) { G.aviso(e.message, 7000); });
     };
     inp.click();
@@ -3895,11 +4320,17 @@
         '<div class="ayuda">Residentes MIR: un registro por residente y curso (R1, R2…).</div>' +
         '<label for="duObs">Observaciones</label><textarea id="duObs" rows="2">' + esc(r.obs || "") + "</textarea>";
     } else {
-      titulo = nuevo ? "Añadir mérito" : "Editar mérito";
+      var esAneca = t === "aneca";
+      titulo = esAneca ? (nuevo ? "Añadir acreditación" : "Editar acreditación") : (nuevo ? "Añadir mérito" : "Editar mérito");
+      var ents = esAneca ? ["ANECA", "Fundación para el Conocimiento madri+d", "ACAP (Agencia de Calidad, Acreditación y Prospectiva de Madrid)", "AQU Catalunya", "ACSUCYL", "ACSUG", "DEVA (Andalucía)"]
+        .concat(D.sugerencias.entidades.filter(function (x) { return !/ANECA|madri\+d|ACAP/i.test(x); })) : D.sugerencias.entidades;
       html = '<label for="dmPersona">Persona del Servicio *</label>' + personaSel("dmPersona", r.persona || yo) + '<div class="ayuda" id="ayPersDoc"></div>' +
-        '<label for="dmTipo">Tipo *</label>' + sel("dmTipo", E.tipoMerito, r.tipo, "Elige…") +
-        '<label for="dmTitulo">Título / Descripción *</label><textarea id="dmTitulo" rows="2">' + esc(r.titulo || "") + "</textarea>" +
-        '<label for="dmEntidad">Entidad</label>' + inp("dmEntidad", r.entidad, ' list="dlDmEnt"') + dl("dlDmEnt", D.sugerencias.entidades) +
+        (esAneca ? '<input type="hidden" id="dmTipo" value="' + esc(ANECA) + '">' :
+          '<label for="dmTipo">Tipo *</label>' + sel("dmTipo", E.tipoMerito.filter(function (x) { return x !== ANECA; }), r.tipo, "Elige…") +
+          '<div class="ayuda">Las acreditaciones ANECA / ACAP se registran en <b>Docencia → Acreditaciones ANECA</b>.</div>') +
+        '<label for="dmTitulo">' + (esAneca ? "Figura acreditada *" : "Título / Descripción *") + '</label><textarea id="dmTitulo" rows="2"' +
+          (esAneca ? ' placeholder="Profesor Contratado Doctor, Profesor Titular de Universidad, Catedrático…"' : "") + ">" + esc(r.titulo || "") + "</textarea>" +
+        '<label for="dmEntidad">' + (esAneca ? "Agencia" : "Entidad") + '</label>' + inp("dmEntidad", r.entidad || (esAneca && nuevo ? "ANECA" : ""), ' list="dlDmEnt"') + dl("dlDmEnt", ents) +
         '<label for="dmAmbito">Ámbito</label>' + sel("dmAmbito", E.ambito, r.ambito, "—") +
         '<div class="fila-rango"><div style="flex:1"><label for="dmInicio">Fecha (de inicio) *</label>' + inp("dmInicio", r.inicio, ' type="date"') + "</div>" +
         '<div style="flex:1" id="bqDmFin"><label for="dmFin">Fecha de fin</label>' + inp("dmFin", r.fin, ' type="date"') + "</div></div>" +
@@ -3941,7 +4372,7 @@
     } else {
       var vis3 = function () { $("bqDmFin").classList.toggle("oculto", $("dmEnCurso").checked); };
       $("dmEnCurso").addEventListener("change", vis3); vis3();
-      ["dmInicio", "dmFin", "dmEnCurso", "dmPersona"].forEach(function (id) { $(id).addEventListener("change", function () { refrescarPersonas("meritos"); }); });
+      ["dmInicio", "dmFin", "dmEnCurso", "dmPersona"].forEach(function (id) { $(id).addEventListener("change", function () { refrescarPersonas(t); }); });
     }
     refrescarPersonas(t);
   }
@@ -3979,9 +4410,9 @@
     if ((d.fin && d.inicio && d.fin < d.inicio) || (d.defensa && d.inicio && d.defensa < d.inicio)) return void ($("msgDoc").textContent = "La fecha final es anterior a la de inicio.");
     var f = nuevo && $("dcArchivo") && $("dcArchivo").files && $("dcArchivo").files[0];
     $("dlgAceptar").disabled = true; $("msgDoc").textContent = "Guardando…";
-    G.api("webGuardarDocencia", G.S.token, t, d).then(function (res) {
+    G.api("webGuardarDocencia", G.S.token, srv(t), d).then(function (res) {
       if (!res || !res.ok) { $("msgDoc").textContent = (res && res.mensaje) || "No se pudo guardar."; return; }
-      var sigue = f ? leerArchivo(f).then(function (x) { return G.api("webSubirArchivoDocencia", G.S.token, t, res.id, x.nombre, x.tipo, x.b64); })
+      var sigue = f ? leerArchivo(f).then(function (x) { return G.api("webSubirArchivoDocencia", G.S.token, srv(t), res.id, x.nombre, x.tipo, x.b64); })
         .then(function (s) { return s && s.ok ? "" : " " + ((s && s.mensaje) || ""); }, function (e) { return " El documento no se pudo subir: " + e.message; }) : Promise.resolve("");
       return sigue.then(function (extra) {
         G.cerrarDialogo(); G.aviso(res.mensaje + extra, 8000);
@@ -4013,21 +4444,21 @@
   }
   $("btDescDoc").onclick = function () {
     if (!DC.datos) return;
-    var hojas = ["trabajos", "tutorias", "meritos"].map(function (t) {
+    var hojas = tabsModo().map(function (t) {
       var l = filtrada(t, true).sort(function (a, b) { return (b.anio || 0) - (a.anio || 0); });
       return { nombre: TABS[t].nombre, filas: filasXlsx(t, l), anchos: t === "trabajos" ? [7, 14, 12, 12, 26, 60, 30, 30, 32, 26, 22, 12, 12, 18, 10, 30, 30, 20, 26, 10] :
         t === "tutorias" ? [7, 30, 28, 24, 26, 10, 30, 12, 12, 30, 20, 26, 10] : [7, 24, 30, 60, 30, 14, 12, 12, 8, 30, 30, 20, 26, 10], cabecera: true, n: l.length };
     });
-    var info = [["Gestión Científica CGyD-GITIC · Docencia"], ["Generado", new Date().toLocaleString("es-ES")], ["Por", G.S.inicio.usuario.nombre], ["Filtros", descripcionFiltros()],
-      ["Nota", "Tipo y estado se aplican solo a la pestaña «" + TABS[DC.tab].nombre + "»; el resto de filtros, a las tres."], [""]]
+    var info = [["Gestión Científica CGyAD-GITIC · " + (DC.modo === "ciencia" ? "Otros méritos" : "Docencia")], ["Generado", new Date().toLocaleString("es-ES")], ["Por", G.S.inicio.usuario.nombre], ["Filtros", descripcionFiltros()],
+      ["Nota", "Tipo y estado se aplican solo a la pestaña «" + TABS[DC.tab].nombre + "»; el resto de filtros, a todas las hojas."], [""]]
       .concat(hojas.map(function (h) { return [h.nombre, h.n]; }));
-    G.bajar(G.libroXlsx(hojas.concat([{ nombre: "Información", filas: info, anchos: [26, 90] }])), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", nombreArchivo("Docencia_CGyD"));
+    G.bajar(G.libroXlsx(hojas.concat([{ nombre: "Información", filas: info, anchos: [26, 90] }])), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", nombreArchivo(DC.modo === "ciencia" ? "Otros_meritos_CGyAD" : "Docencia_CGyAD"));
     G.aviso("Descargados " + hojas.map(function (h) { return h.n + " " + h.nombre.toLowerCase(); }).join(", ") + ".", 6000);
   };
   function seccionesMemoria(per, d, h, soloVal) {
     var enRango = function (r) { return r.anios.some(function (y) { return (!d || y >= d) && (!h || y <= h); }); };
     var ok = function (r) { return (!soloVal || r.estadoVal === VAL.ok) && r.estadoVal !== VAL.no && (!per || r.personas.indexOf(per) !== -1) && enRango(r); };
-    var tr = lista("trabajos").filter(ok), tu = lista("tutorias").filter(ok), me = lista("meritos").filter(ok);
+    var tr = lista("trabajos").filter(ok), tu = lista("tutorias").filter(ok), me = listaTabla("meritos").filter(ok);
     var defEn = function (r) { return r.estado === "Defendido" && (!d || r.anio >= d) && (!h || r.anio <= h); };
     var porFecha = function (a, b) { return String(b.defensa || b.inicio || "").localeCompare(String(a.defensa || a.inicio || "")); };
     var S = [];
@@ -4073,7 +4504,7 @@
   $("btMemDoc").onclick = function () {
     if (!DC.datos) return;
     var admin = G.S.inicio.usuario.admin, yo = G.S.inicio.usuario.nombre, anos = {};
-    ["trabajos", "tutorias", "meritos"].forEach(function (t) { lista(t).forEach(function (r) { r.anios.forEach(function (y) { anos[y] = 1; }); }); });
+    ["trabajos", "tutorias", "meritos"].forEach(function (t) { listaTabla(t).forEach(function (r) { r.anios.forEach(function (y) { anos[y] = 1; }); }); });
     var ks = Object.keys(anos).sort(), y = String(DC.datos.anioActual - 1);
     var html = '<p class="tenue" style="margin-top:0">Texto para la <b>memoria anual</b> (IdiPAZ / HULP) o para copiar al <b>Editor CVN</b> de la FECYT ' +
       "(«Actividad docente → Dirección de tesis doctorales y/o trabajos fin de estudios»). El Editor CVN no importa este apartado: copia cada trabajo campo a campo.</p>" +
@@ -4104,15 +4535,280 @@
 
   // ---------- registro de la vista ----------
   function asegurarDatos(fn) { if (DC.datos) fn(); else if (DC.cargando) DC.cargando.then(fn); else cargar().then(fn); }
-  G.registrar("docencia", { secciones: ["vistaDocencia"], placeholder: "Buscar en Docencia (título, alumno/a, persona…)",
-    mostrar: function () {
-      var t = G.leer("gc_doc_tab"); if (TABS[t] && !DC.datos) DC.tab = t;
+  function mostrarModo(m) {
+    return function () {
+      fijarModo(m);
       if (G.leer("gc_ind_doc") === "1") $("indicadoresDoc").classList.remove("oculto");
-      asegurarDatos(function () { prepararFiltros(); pintar(); });
-    },
-    buscar: pintar, ocultar: function () { $("panelFiltrosDoc").classList.add("oculto"); cerrarFicha(); } });
-  $("btSync").addEventListener("click", function () { if (G.S.vista === "docencia") cargar(); });
-  G.docencia = { textoMemoria: textoMemoria, seccionesMemoria: seccionesMemoria, filasXlsx: filasXlsx, anioResidencia: anioResidencia, cambiarTab: cambiarTab };   // para pruebas
+      asegurarDatos(function () { if (DC.datos && G.S.vista === (m === "ciencia" ? "meritos" : "docencia")) { prepararFiltros(); pintar(); } });
+    };
+  }
+  var ocultarDoc = function () { $("panelFiltrosDoc").classList.add("oculto"); cerrarFicha(); };
+  G.registrar("docencia", { secciones: ["vistaDocencia"], placeholder: "Buscar en Docencia (título, alumno/a, persona…)", bloque: "docencia",
+    mostrar: mostrarModo("docencia"), buscar: pintar, ocultar: ocultarDoc });
+  G.registrar("meritos", { secciones: ["vistaDocencia"], placeholder: "Buscar en Otros méritos", bloque: "ciencia",
+    mostrar: mostrarModo("ciencia"), buscar: pintar, ocultar: ocultarDoc });
+  $("btSync").addEventListener("click", function () { if (G.S.vista === "docencia" || G.S.vista === "meritos") cargar(); });
+  // Para Revisar y la ficha personal: datos (cargándolos si hace falta), apertura de un registro y estado de validación
+  function asegurar() { return new Promise(function (ok) { asegurarDatos(function () { ok(DC.datos); }); }); }
+  function abrirRegistro(tabla, id) {
+    var r = listaTabla(tabla).filter(function (x) { return x.id === id; })[0]; if (!r) return;
+    var t = tabla === "meritos" && r.tipo === ANECA ? "aneca" : tabla;
+    G.mostrarVista(t === "meritos" ? "meritos" : "docencia");
+    asegurarDatos(function () { cambiarTab(t); abrirFicha(id); });
+  }
+  G.docencia = { textoMemoria: textoMemoria, seccionesMemoria: seccionesMemoria, filasXlsx: filasXlsx, anioResidencia: anioResidencia, cambiarTab: cambiarTab,
+    asegurar: asegurar, datos: function () { return DC.datos; }, abrirRegistro: abrirRegistro, ANECA: ANECA, VAL: VAL, recargar: cargar,
+    titulo: function (t, r) { return tituloDe(t, r); }, lista: lista };
+})();
+</script>
+
+  <script>
+// ===== Ficha personal (web v0.5): datos de Personal_Investigador, foto de perfil y métricas de todos los bloques =====
+(function () {
+  "use strict";
+  var G = window.GC, $ = G.$, esc = G.esc;
+  var PF = { persona: null, datos: {}, fotos: {}, cargandoFicha: {} };
+  var MES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+  function fTxt(s) { var p = String(s || "").split("-"); return p.length === 3 ? Number(p[2]) + " " + MES[Number(p[1]) - 1] + " " + p[0] : String(s || ""); }
+  function yo() { return G.S.inicio.usuario.nombre; }
+  function admin() { return !!G.S.inicio.usuario.admin; }
+  function iniciales(n) { return String(n || "?").trim().split(/\s+/).filter(Boolean).slice(0, 2).map(function (x) { return x.charAt(0).toUpperCase(); }).join(""); }
+  function tile(n, lab, s, cls) { return '<div class="ind' + (cls ? " " + cls : "") + '"><div class="n">' + n + '</div><div class="l">' + esc(lab) + "</div>" + (s ? '<div class="s">' + esc(s) + "</div>" : "") + "</div>"; }
+  function dec1(x) { return (Math.round(x * 10) / 10).toLocaleString("es-ES", { minimumFractionDigits: 1, maximumFractionDigits: 1 }); }
+
+  // ---------- periodo de las métricas ----------
+  function periodo() {
+    var v = $("pfAnios").value, y = new Date().getFullYear();
+    if (v === "5") return [y - 4, y, "últimos 5 años (" + (y - 4) + "–" + y + ")"];
+    if (/^\d{4}$/.test(v)) return [Number(v), Number(v), "año " + v];
+    return [null, null, "toda la trayectoria"];
+  }
+  function enRango(a, per) { a = Number(a) || 0; return (!per[0] || a >= per[0]) && (!per[1] || a <= per[1]); }
+  function solapa(ini, fin, per) {              // ISO inicio/fin frente al periodo [desde, hasta] en años
+    var a = Number(String(ini || "").substring(0, 4)) || null, b = Number(String(fin || "").substring(0, 4)) || new Date().getFullYear();
+    if (!a) return !per[0];
+    return (!per[1] || a <= per[1]) && (!per[0] || b >= per[0]);
+  }
+  (function () {
+    var y = new Date().getFullYear(), o = ['<option value="">Toda la trayectoria</option>', '<option value="5">Últimos 5 años</option>'];
+    for (var a = y; a >= y - 12; a--) o.push('<option value="' + a + '">' + a + "</option>");
+    $("pfAnios").innerHTML = o.join("");
+    $("pfAnios").value = G.leer("gc_pf_anios") || "";
+    $("pfAnios").onchange = function () { G.guardar("gc_pf_anios", this.value); pintar(); };
+  })();
+
+  // ---------- datos personales y foto ----------
+  function cargarFicha(n) {
+    if (PF.cargandoFicha[n]) return PF.cargandoFicha[n];
+    PF.cargandoFicha[n] = G.apiCache("webFichaPersonal", [G.S.token, n], function (r) { PF.datos[n] = r; if (PF.persona === n && G.S.vista === "perfil") pintar(); }, !PF.datos[n], "ficha:" + n)
+      .catch(function (e) { PF.datos[n] = { error: e.message }; if (PF.persona === n) pintar(); }).then(function () { PF.cargandoFicha[n] = null; });
+    return PF.cargandoFicha[n];
+  }
+  function cargarFoto(n) {
+    return G.apiCache("webFotoPersona", [G.S.token, n], function (r) {
+      PF.fotos[n] = (r && r.foto) || "";
+      if (n === yo()) { G.S.foto = PF.fotos[n]; G.ponerAvatar(); }
+      if (PF.persona === n && G.S.vista === "perfil") pintarFoto();
+    }, PF.fotos[n] === undefined, "foto:" + n).catch(function () {});
+  }
+  function pintarFoto() {
+    var n = PF.persona, f = PF.fotos[n], c = $("pfFoto"); if (!c) return;
+    c.innerHTML = (f ? '<img src="' + esc(f) + '" alt="Foto de ' + esc(n) + '">' : '<span class="pf-ini">' + esc(iniciales(n)) + "</span>") +
+      (n === yo() || admin() ? '<button class="pf-cambiar" id="pfCambiar" title="Cambiar la foto"><i class="fa-solid fa-camera"></i></button>' : "");
+    if ($("pfCambiar")) $("pfCambiar").onclick = function () { $("pfArchivo").value = ""; $("pfArchivo").click(); };
+    if ($("pfQuitar")) $("pfQuitar").classList.toggle("oculto", !f);
+  }
+  // Reduce la imagen en el propio dispositivo (cuadrada, 400 px, JPEG) antes de subirla
+  function reducir(file) {
+    return new Promise(function (ok, ko) {
+      var rd = new FileReader();
+      rd.onerror = function () { ko(new Error("No se pudo leer la imagen.")); };
+      rd.onload = function () {
+        var img = new Image();
+        img.onerror = function () { ko(new Error("Formato de imagen no admitido. Usa una foto JPG o PNG.")); };
+        img.onload = function () {
+          var L = 400, s = Math.min(img.naturalWidth || img.width, img.naturalHeight || img.height), cv = document.createElement("canvas");
+          cv.width = L; cv.height = L;
+          var cx = cv.getContext("2d"), sx = ((img.naturalWidth || img.width) - s) / 2, sy = ((img.naturalHeight || img.height) - s) / 2;
+          cx.fillStyle = "#fff"; cx.fillRect(0, 0, L, L); cx.drawImage(img, sx, sy, s, s, 0, 0, L, L);
+          ok(cv.toDataURL("image/jpeg", 0.85));
+        };
+        img.src = rd.result;
+      };
+      rd.readAsDataURL(file);
+    });
+  }
+  $("pfArchivo").addEventListener("change", function () {
+    var f = this.files && this.files[0], n = PF.persona; if (!f || !n) return;
+    if (!/^image\//.test(f.type || "image/")) { G.aviso("Elige una imagen (JPG o PNG)."); return; }
+    G.cargando(true);
+    reducir(f).then(function (url) {
+      return G.api("webSubirFotoPerfil", G.S.token, n, url.split(",")[1], "image/jpeg").then(function (r) {
+        if (!r || !r.ok) { G.aviso((r && r.mensaje) || "No se pudo guardar la foto.", 6000); return; }
+        PF.fotos[n] = r.foto || url; G.cache.set("foto:" + n, { ok: true, foto: PF.fotos[n] });
+        if (n === yo()) { G.S.foto = PF.fotos[n]; G.ponerAvatar(); }
+        pintarFoto(); G.aviso(r.mensaje || "Foto actualizada.");
+      });
+    }).catch(function (e) { G.aviso(e.message, 6000); }).then(function () { G.cargando(false); });
+  });
+  function quitarFoto() {
+    var n = PF.persona;
+    G.dialogo("Quitar la foto", "<p>¿Quitar la foto de perfil de <b>" + esc(n) + "</b>? El archivo se mueve a la papelera de Drive.</p>", "Quitar", function () {
+      G.cargando(true);
+      G.api("webBorrarFotoPerfil", G.S.token, n).then(function (r) {
+        G.cerrarDialogo(); PF.fotos[n] = ""; G.cache.set("foto:" + n, { ok: true, foto: "" });
+        if (n === yo()) { G.S.foto = ""; G.ponerAvatar(); }
+        pintarFoto(); G.aviso((r && r.mensaje) || "Foto quitada.");
+      }).catch(function (e) { G.aviso(e.message, 6000); }).then(function () { G.cargando(false); });
+    });
+  }
+
+  // ---------- métricas ----------
+  function hIndex(citas) { var c = citas.slice().sort(function (a, b) { return b - a; }), h = 0; while (h < c.length && c[h] >= h + 1) h++; return h; }
+  function metricasPubs(n, per) {
+    var P = G.pub, l = (G.S.pubs || []).filter(function (p) { return P.confirmada(p) && P.personasDe(p).indexOf(n) !== -1 && enRango(P.anoDe(p), per); });
+    var art = l.filter(function (p) { return P.tabDe(p) === "articulos"; }), jcr = art.filter(function (p) { return P.cuentaJCR(p) && P.indexada(p); });
+    var m = { total: l.length, art: art.length, libros: l.filter(function (p) { return P.tabDe(p) === "libros"; }).length, abs: l.filter(function (p) { return P.tabDe(p) === "abstracts"; }).length,
+      jcr: jcr.length, q1: jcr.filter(function (p) { return P.mejorCuartil(p) === "Q1"; }).length, d1: jcr.filter(function (p) { return P.mejorDecil(p) === "D1"; }).length,
+      fi: jcr.reduce(function (s, p) { return s + (P.primerFI(p) || 0); }, 0), primero: 0, ultimo: 0, corr: 0, citas: 0, porAno: {} };
+    var cit = [];
+    art.forEach(function (p) {
+      var r = P.papeles(p, n); if (r.primero) m.primero++; if (r.ultimo) m.ultimo++; if (r.corr) m.corr++;
+      var c = parseInt(p["Citas Totales"], 10) || 0; m.citas += c; cit.push(c);
+      var a = P.anoDe(p); if (/^\d{4}$/.test(a)) m.porAno[a] = (m.porAno[a] || 0) + 1;
+    });
+    m.h = hIndex(cit);
+    return m;
+  }
+  function metricasCongresos(n, per) {
+    var C = G.congresos && G.congresos.datos(); if (!C) return null;
+    var m = { asist: 0, org: 0, aport: 0, ponente: 0, premios: 0 };
+    C.congresos.forEach(function (c) {
+      if (!enRango(c.anio, per)) return;
+      if (c.asistentes.indexOf(n) !== -1) m.asist++;
+      if (c.organizadores.indexOf(n) !== -1) m.org++;
+      (c.aportaciones || []).forEach(function (a) {
+        var mia = (a.autoresServicio || []).indexOf(n) !== -1 || a.ponente === n || (a.autores || []).indexOf(n) !== -1; if (!mia) return;
+        m.aport++; if (a.ponente === n) m.ponente++; if (a.premio) m.premios++;
+      });
+    });
+    var y = new Date().getFullYear(), q = G.congresos.saldo(n, y);
+    if (q) { m.diasAprob = q.aprobados; m.diasPend = q.pendientes; m.limite = G.congresos.limite(); }
+    return m;
+  }
+  function metricasEstudios(n, per) {
+    var E = G.estudios && G.estudios.datos(); if (!E) return null;
+    var l = (E.estudios || E || []).filter ? (E.estudios || E) : [];
+    var m = { ip: 0, ipLocal: 0, colab: 0, activos: 0, pacientes: 0 };
+    l.forEach(function (e) {
+      var rol = (e.ip || []).indexOf(n) !== -1 ? "ip" : (e.ipLocal || []).indexOf(n) !== -1 ? "ipLocal" : (e.colab || []).indexOf(n) !== -1 ? "colab" : ""; if (!rol) return;
+      if (!solapa(e.inicio, e.fin, per)) return;
+      m[rol]++; if (/^Activo/.test(e.estado || "")) m.activos++;
+      if (rol !== "colab") m.pacientes += Number(e.totalPacientes) || 0;
+    });
+    return m;
+  }
+  function metricasDocencia(n, per) {
+    var D = G.docencia && G.docencia.datos(); if (!D) return null;
+    var V = G.docencia.VAL, ok = function (r) { return r.estadoVal !== V.no && r.personas.indexOf(n) !== -1 && r.anios.some(function (y) { return enRango(y, per); }); };
+    var tr = (D.trabajos || []).filter(ok), tu = (D.tutorias || []).filter(ok), me = (D.meritos || []).filter(ok);
+    var def = function (tipo) { return tr.filter(function (r) { return r.tipo === tipo && r.estado === "Defendido"; }).length; };
+    var aneca = me.filter(function (r) { return r.tipo === G.docencia.ANECA; }), otros = me.filter(function (r) { return r.tipo !== G.docencia.ANECA; });
+    var porTipo = {}; otros.forEach(function (r) { porTipo[r.tipo] = (porTipo[r.tipo] || 0) + 1; });
+    return { tesis: def("Tesis doctoral"), tfm: def("TFM"), tfg: def("TFG"), enCurso: tr.filter(function (r) { return r.estado === "En curso"; }).length,
+      tutorias: tu.length, mir: tu.filter(function (r) { return r.tipo === D.mir; }).length, otros: otros.length, porTipo: porTipo, aneca: aneca,
+      pend: tr.concat(tu, me).filter(function (r) { return r.estadoVal === V.pend; }).length };
+  }
+  function barras(porAno, per) {
+    var y = new Date().getFullYear(), hasta = per[1] || y, desde = per[0] || hasta - 9; if (hasta - desde > 14) desde = hasta - 14;
+    var anos = []; for (var a = desde; a <= hasta; a++) anos.push(a);
+    var max = Math.max.apply(null, anos.map(function (a) { return porAno[a] || 0; }).concat([1]));
+    return '<div class="pf-barras">' + anos.map(function (a) { var v = porAno[a] || 0;
+      return '<div class="pf-barra" title="' + a + ": " + v + ' artículos"><span class="v">' + (v || "") + '</span><span class="b" style="height:' + Math.round(v / max * 100) + '%"></span><span class="a">' + String(a).slice(2) + "</span></div>"; }).join("") + "</div>";
+  }
+  var CARGANDO = '<p class="tenue"><i class="fa-solid fa-spinner fa-spin"></i> Cargando…</p>';
+
+  // ---------- pintado ----------
+  function pintar() {
+    if (!G.S.inicio || G.S.vista !== "perfil") return;
+    var n = PF.persona || yo(), per = periodo(), d = PF.datos[n], h = [];
+    $("tituloPerfil").textContent = n === yo() ? "Mi ficha personal" : "Ficha personal";
+    var campos = "";
+    if (!d) campos = CARGANDO;
+    else if (d.error) campos = '<p class="mensaje">' + esc(d.error) + "</p>";
+    else {
+      var cf = function (et, v, html) { return v ? '<div class="pf-campo"><span class="et-campo">' + esc(et) + '</span><span class="valor">' + (html ? v : esc(v)) + "</span></div>" : ""; };
+      var orcid = d.orcid ? '<a href="https://orcid.org/' + esc(String(d.orcid).replace(/^https?:\/\/orcid\.org\//, "")) + '" target="_blank" rel="noopener">' + esc(d.orcid) + "</a>" : "";
+      campos = cf("Nombre completo", d.nombreCompleto) + cf("Cargo", d.cargo) + cf("Rol en la web", d.rol) + cf("Estado", d.estado) +
+        cf("Correo", d.email) + cf("Correo alternativo", d.emailAlt) + cf("ORCID", orcid, true) + cf("ID investigador", d.id) +
+        cf("En el Servicio desde", fTxt(d.alta)) + cf("Fecha de baja", fTxt(d.baja)) +
+        '<p class="ayuda">Los datos personales salen de Personal_Investigador. Si alguno no es correcto, pídeselo a un administrador.</p>';
+    }
+    h.push('<div class="pf-cab"><div class="pf-foto" id="pfFoto"></div><div class="pf-datos"><h2 class="pf-nombre">' + esc(n) + "</h2>" +
+      ((n === yo() || admin()) ? '<button class="bt-texto" id="pfQuitar"><i class="fa-regular fa-trash-can"></i> Quitar foto</button>' : "") + campos + "</div></div>");
+    h.push('<p class="pf-per">Métricas de <b>' + esc(per[2]) + '</b> · solo registros confirmados o validados (no se cuentan los rechazados).</p>');
+    // Ciencia
+    var mp = metricasPubs(n, per), mc = metricasCongresos(n, per), me = metricasEstudios(n, per);
+    h.push('<section class="pf-bloque"><h3><i class="fa-solid fa-microscope"></i> Ciencia</h3>');
+    h.push('<div class="pf-sub">Publicaciones <button class="bt-texto" id="pfVerPubs">Ver la lista</button></div><div class="indicadores pf-ind">' +
+      tile(mp.art, "artículos", mp.libros || mp.abs ? "+ " + mp.libros + " libros/capítulos · " + mp.abs + " abstracts" : "") +
+      tile(mp.jcr, "indexados JCR", mp.art ? Math.round(mp.jcr / mp.art * 100) + " % de los artículos" : "") +
+      tile(mp.q1, "en Q1", mp.jcr ? Math.round(mp.q1 / mp.jcr * 100) + " % de los indexados" : "", "destacado") + tile(mp.d1, "en D1") +
+      tile(dec1(mp.fi), "FI acumulado", mp.jcr ? "medio " + dec1(mp.fi / mp.jcr) : "") +
+      tile(mp.primero, "primer/a autor/a") + tile(mp.ultimo, "último/a autor/a") + tile(mp.corr, "autor/a de correspondencia") +
+      tile(mp.citas.toLocaleString("es-ES"), "citas", "índice h " + mp.h + " (con estos artículos)") + "</div>");
+    if (mp.art) h.push('<div class="pf-sub">Artículos por año</div>' + barras(mp.porAno, per));
+    h.push('<div class="pf-sub">Congresos y cursos</div>' + (mc ? '<div class="indicadores pf-ind">' + tile(mc.asist, "asistencias") + tile(mc.aport, "comunicaciones y pósteres", mc.ponente ? mc.ponente + " como ponente" : "") +
+      tile(mc.premios, "premios") + tile(mc.org, "organizados") +
+      (mc.limite !== undefined ? tile(mc.diasAprob + " / " + mc.limite, "días de congreso " + new Date().getFullYear(), mc.diasPend ? mc.diasPend + " pendientes de aprobar" : "") : "") + "</div>" : CARGANDO));
+    h.push('<div class="pf-sub">Estudios</div>' + (me ? '<div class="indicadores pf-ind">' + tile(me.ip, "como IP") + tile(me.ipLocal, "como IP local") + tile(me.colab, "como colaborador/a") +
+      tile(me.activos, "activos ahora") + tile(me.pacientes.toLocaleString("es-ES"), "pacientes incluidos", "estudios en los que es IP o IP local") + "</div>" : CARGANDO));
+    h.push("</section>");
+    // Docencia (+ otros méritos, que son de Ciencia pero comparten tabla)
+    var md = metricasDocencia(n, per);
+    h.push('<section class="pf-bloque"><h3><i class="fa-solid fa-user-graduate"></i> Docencia</h3>');
+    if (!md) h.push(CARGANDO);
+    else {
+      h.push('<div class="indicadores pf-ind">' + tile(md.tesis, "tesis dirigidas", "defendidas") + tile(md.tfm, "TFM dirigidos", "defendidos") + tile(md.tfg, "TFG dirigidos", "defendidos") +
+        tile(md.enCurso, "trabajos en curso") + tile(md.tutorias, "tutorías", md.mir + " de residentes MIR") + "</div>");
+      h.push('<div class="pf-sub">Acreditaciones ANECA</div>' + (md.aneca.length ? '<ul class="pf-lista">' + md.aneca.map(function (r) {
+        return "<li><b>" + esc(r.titulo) + "</b> · " + esc([r.entidad, fTxt(r.inicio)].filter(Boolean).join(" · ")) + (r.estadoVal === G.docencia.VAL.pend ? ' <span class="et pend">pendiente de validar</span>' : "") + "</li>"; }).join("") + "</ul>" :
+        '<p class="tenue">Sin acreditaciones registradas.</p>'));
+      var tipos = Object.keys(md.porTipo).sort(function (a, b) { return md.porTipo[b] - md.porTipo[a]; });
+      h.push("</section>");
+      h.push('<section class="pf-bloque"><h3><i class="fa-solid fa-award"></i> Otros méritos</h3>' + (tipos.length ? '<div class="indicadores pf-ind">' +
+        tipos.map(function (t) { return tile(md.porTipo[t], t); }).join("") + "</div>" : '<p class="tenue">Sin otros méritos registrados en este periodo.</p>'));
+      if (md.pend) h.push('<p class="ayuda">' + md.pend + " registro" + (md.pend === 1 ? "" : "s") + " pendiente" + (md.pend === 1 ? "" : "s") + " de validación (incluidos arriba).</p>");
+    }
+    h.push("</section>");
+    h.push('<section class="pf-bloque"><h3><i class="fa-solid fa-stethoscope"></i> Asistencial</h3><p class="tenue">Se añadirá cuando esté el bloque Asistencial.</p></section>');
+    $("cuerpoPerfil").innerHTML = h.join("");
+    pintarFoto();
+    if ($("pfQuitar")) $("pfQuitar").onclick = quitarFoto;
+    $("pfVerPubs").onclick = function () { G.verPubsDe(n); };
+  }
+  function prepararPersonas() {
+    var s = $("pfPersona");
+    if (!admin()) { s.classList.add("oculto"); return; }
+    s.classList.remove("oculto");
+    var l = (G.S.inicio.personas || []).slice(); if (l.indexOf(yo()) === -1) l.unshift(yo());
+    s.innerHTML = l.map(function (n) { return '<option value="' + esc(n) + '">' + esc(n) + (n === yo() ? " (yo)" : "") + "</option>"; }).join("");
+    s.value = PF.persona || yo();
+  }
+  $("pfPersona").onchange = function () { abrirPersona(this.value); };
+  $("btImprimirPerfil").onclick = function () { window.print(); };
+  function abrirPersona(n) {
+    PF.persona = n || yo();
+    cargarFicha(PF.persona); cargarFoto(PF.persona);
+    pintar();
+    if (G.congresos && G.congresos.asegurar) G.congresos.asegurar();
+    if (G.estudios && G.estudios.asegurar) G.estudios.asegurar();
+    if (G.docencia && G.docencia.asegurar) G.docencia.asegurar();
+  }
+  G.registrar("perfil", { secciones: ["vistaPerfil"], placeholder: "Buscar Publicaciones (desde cualquier vista)",
+    mostrar: function () { prepararPersonas(); abrirPersona(PF.persona || yo()); }, ocultar: function () {} });
+  G.perfil = { refrescar: function () { pintar(); }, cargarFotoPropia: function () { if (G.S.inicio) cargarFoto(yo()); }, abrir: function (n) { PF.persona = n; G.mostrarVista("perfil"); },
+    metricasPubs: metricasPubs, hIndex: hIndex };
 })();
 </script>
 
