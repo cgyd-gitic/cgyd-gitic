@@ -550,6 +550,32 @@
   /* selector de tamaño en «Mi cuenta» */
   .menu-et { display:block; font-size:12px; color:var(--tenue); margin:4px 0 4px; }
   .menu-sel { width:100%; margin-bottom:10px; }
+
+  /* ===== v0.6: Memoria IdiPAZ (G75) ===== */
+  .mm-cuerpo { padding:10px 14px 90px; overflow:auto; background:#f6f7f9; flex:1; }
+  .mm-estado { font-size:12px; margin-right:4px; white-space:nowrap; }
+  .mm-resumen { display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:12px; }
+  .mm-card { display:flex; flex-direction:column; align-items:flex-start; gap:4px; text-align:left; background:#fff; border:1px solid var(--borde); border-radius:10px; padding:14px; cursor:pointer; color:var(--texto); }
+  .mm-card:hover { border-color:var(--rojo); }
+  .mm-card i { color:var(--rojo); font-size:18px; margin-bottom:4px; }
+  .mm-card b { font-size:14.5px; font-weight:500; } .mm-card span { font-size:12.5px; color:var(--tenue); } .mm-card .et { margin-top:4px; }
+  .mm-tabla-env { background:#fff; border:1px solid var(--borde); border-radius:10px; overflow:auto; }
+  .mm-tabla { width:100%; border-collapse:collapse; font-size:12.5px; }
+  .mm-tabla th { text-align:left; font-weight:500; background:#eef4f6; color:#1f4e5a; padding:7px 8px; border-bottom:1px solid var(--borde); white-space:nowrap; position:sticky; top:0; }
+  .mm-tabla td { padding:6px 8px; border-bottom:1px solid #eef0f2; vertical-align:top; max-width:420px; overflow-wrap:anywhere; }
+  .mm-tabla tr:last-child td { border-bottom:none; }
+  .mm-tabla input, .mm-tabla select { font-size:12.5px; padding:3px 6px; min-width:70px; width:100%; box-sizing:border-box; }
+  .mm-tabla .mm-sub { margin-top:4px; }
+  .mm-comp td { min-width:90px; } .mm-comp td:first-child { min-width:230px; }
+  .mm-inactivo td { opacity:.5; }
+  .mm-avisos .et { font-size:10.5px; margin:0 2px 2px 0; display:inline-block; }
+  .mm-quitar { color:var(--tenue); } .mm-quitar:hover { color:var(--rojo); }
+  .mm-obj { background:#fff; border:1px solid var(--borde); border-radius:10px; padding:14px; display:flex; flex-direction:column; gap:6px; max-width:1100px; }
+  .mm-obj label { font-size:12px; font-weight:500; color:#1f4e5a; letter-spacing:.04em; margin-top:6px; }
+  .mm-obj textarea { width:100%; font-family:inherit; font-size:13.5px; line-height:1.45; }
+  .mm-otras { margin-top:12px; background:#fff; border:1px solid var(--borde); border-radius:10px; padding:10px 14px; }
+  .mm-otras summary { cursor:pointer; color:var(--tenue); font-size:13px; }
+  @media (max-width: 899px) { .mm-cuerpo { padding:8px 8px 90px; } #vistaMemoria .barra-vista h2 { display:none; } .mm-estado { display:none; } }
 </style>
 
 </head>
@@ -621,7 +647,7 @@
       <hr>
       <button data-vista="revision" data-tip="Revisar"><i class="fa-solid fa-list-check"></i><span class="contador" id="cntRevisionRiel"></span></button>
       <button data-vista="perfil" data-tip="Mi ficha personal"><i class="fa-solid fa-id-badge"></i></button>
-      <button data-vista="memoria" data-tip="Memoria IdiPAZ/HULP"><i class="fa-solid fa-file-lines"></i></button>
+      <button data-vista="memoria" data-tip="Memoria IdiPAZ (G75)" class="soloAdmin"><i class="fa-solid fa-file-lines"></i></button>
       <button data-vista="info" data-tip="Acerca de"><i class="fa-solid fa-circle-info"></i></button>
     </nav>
 
@@ -643,7 +669,7 @@
       <hr>
       <button data-vista="revision"><i class="fa-solid fa-list-check"></i>Revisar <span class="contador" id="cntRevisionCajon"></span></button>
       <button data-vista="perfil"><i class="fa-solid fa-id-badge"></i>Mi ficha personal</button>
-      <button data-vista="memoria"><i class="fa-solid fa-file-lines"></i>Memoria IdiPAZ/HULP</button>
+      <button data-vista="memoria" class="soloAdmin"><i class="fa-solid fa-file-lines"></i>Memoria IdiPAZ (G75)</button>
       <button data-vista="info"><i class="fa-solid fa-circle-info"></i>Acerca de</button>
     </div>
 
@@ -693,9 +719,9 @@
               <span class="ti-ir" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
               <div class="pop-info oculto" role="dialog"></div>
             </div>
-            <div class="tarjeta-inicio mini proximo" data-ir="memoria" tabindex="0" role="button" aria-label="Memoria IdiPAZ/HULP">
+            <div class="tarjeta-inicio mini soloAdmin" data-ir="memoria" tabindex="0" role="button" aria-label="Memoria IdiPAZ">
               <div class="ti-cab"><span class="ti-ico"><i class="fa-solid fa-file-lines"></i></span>
-                <div class="ti-tit"><h3>Memoria IdiPAZ/HULP</h3><button class="info-bt" data-info="memoria" aria-label="¿Qué se registra en Memoria IdiPAZ/HULP?" title="¿Qué se registra aquí?"><i class="fa-solid fa-circle-info"></i></button><span class="et ti-prox">Próximamente</span></div></div>
+                <div class="ti-tit"><h3>Memoria IdiPAZ</h3><button class="info-bt" data-info="memoria" aria-label="¿Qué incluye la Memoria IdiPAZ?" title="¿Qué se registra aquí?"><i class="fa-solid fa-circle-info"></i></button></div></div>
               
               <span class="ti-ir" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
               <div class="pop-info oculto" role="dialog"></div>
@@ -772,6 +798,18 @@
         </div>
         <div class="perfil-cuerpo" id="cuerpoPerfil"></div>
         <input type="file" id="pfArchivo" accept="image/*" class="oculto">
+      </section>
+
+      <section class="panel panel-lista oculto" id="vistaMemoria">
+        <div class="barra-vista">
+          <h2>Memoria IdiPAZ · G75</h2>
+          <select id="mmAnio" title="Año de la memoria"></select>
+          <span class="tenue mm-estado" id="mmEstado"></span>
+          <button class="bt" id="mmGuardar" disabled><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+          <button class="bt-rojo" id="mmExcel"><i class="fa-solid fa-file-excel"></i> Descargar Excel G75</button>
+        </div>
+        <div class="pestanas" id="pestMem"></div>
+        <div class="mm-cuerpo" id="cuerpoMem"></div>
       </section>
 
       <!-- Módulos aún no migrados / Acerca de -->
@@ -1046,7 +1084,6 @@
   var ORDEN_TIPOS = ["Original", "Revisión", "Caso clínico", "Carta al Editor", "Comentario", "Editorial", "Guía clínica",
                      "Documento de consenso", "Capítulo de libro", "Libro", "Abstract de congreso", "Otros"];
   var MODULOS = {   // bloques aún no disponibles en la web
-    memoria: ["Memoria IdiPAZ/HULP", "fa-file-lines", "0.6"],
     asistencial: ["Asistencial", "fa-stethoscope", ""]
   };
   var VERSION_WEB = "0.5.1";
@@ -1109,10 +1146,11 @@
 
   // ---------- tamaño de la interfaz: automático según el ancho de la ventana (pantallas grandes) o elegido en «Mi cuenta» ----------
   // Se amplía toda la página (letra, campos y tarjetas) manteniendo al menos 1000 px de ancho útil para que la estructura no se rompa.
-  var ESCALAS = [["auto", "Automático (según la pantalla)"], ["0.9", "90 %"], ["1", "100 %"], ["1.1", "110 %"], ["1.25", "125 %"], ["1.4", "140 %"], ["1.6", "160 %"]];
+  var ESCALAS = [["1.1", "110 % (predeterminado)"], ["auto", "Automático (según la pantalla)"], ["0.9", "90 %"], ["1", "100 %"], ["1.25", "125 %"], ["1.4", "140 %"], ["1.6", "160 %"]];
+  function escalaPref() { var w = window.innerWidth || 1280; return leer("gc_escala") || (w < 900 ? "1" : "1.1"); }     // en el móvil, 100 % salvo que se elija otro
   function escalaAuto(w) { return w < 1500 ? 1 : Math.min(1.6, Math.round(w / 1500 * 20) / 20); }
   function aplicarEscala() {
-    var pref = leer("gc_escala") || "auto", w = window.innerWidth || 1280, h = window.innerHeight || 800;
+    var pref = escalaPref(), w = window.innerWidth || 1280, h = window.innerHeight || 800;
     var f = pref === "auto" ? (w < 900 ? 1 : escalaAuto(w)) : (Number(pref) || 1);
     f = Math.max(0.8, Math.min(f, Math.max(1, w / (w >= 900 ? 1000 : 320))));
     f = Math.round(f * 100) / 100;
@@ -1126,8 +1164,8 @@
   (function () {
     var s = $("selEscala"); if (!s) return;
     s.innerHTML = ESCALAS.map(function (x) { return '<option value="' + x[0] + '">' + x[1] + "</option>"; }).join("");
-    s.value = leer("gc_escala") || "auto";
-    s.onchange = function () { guardar("gc_escala", s.value === "auto" ? null : s.value); aplicarEscala(); aviso("Tamaño: " + s.options[s.selectedIndex].text + (S.escala ? " (" + Math.round(S.escala * 100) + " %)" : ""), 2500); };
+    s.value = escalaPref();
+    s.onchange = function () { guardar("gc_escala", s.value); aplicarEscala(); aviso("Tamaño: " + s.options[s.selectedIndex].text + (S.escala ? " (" + Math.round(S.escala * 100) + " %)" : ""), 2500); };
     window.addEventListener("resize", aplicarEscala);
     aplicarEscala();
   })();
@@ -1654,6 +1692,7 @@
   function cambiarTabPub(t) {
     if (!PUB_TABS[t] || t === S.pubTab) return;
     S.pubTab = t; S.anoAuto = true; guardar("gc_pub_tab", t); prepararTabPub(); cerrarFicha(); pintarLista();
+    subCambiado();
   }
   document.querySelectorAll("#pestPub [data-tpub]").forEach(function (b) { b.onclick = function () { cambiarTabPub(b.getAttribute("data-tpub")); }; });
 
@@ -1961,6 +2000,7 @@
     bajar: bajar, libroXlsx: libroXlsx, numero: numero, dec: dec, pct: pct, guardar: guardar, leer: leer, esMovil: esMovil,
     registrar: function (v, m) { GC.mod[v] = m; }, mostrarVista: function (v, o) { mostrarVista(v, o); }, cambiarTabPub: function (t) { cambiarTabPub(t); },
     datosCambiados: function (m) { datosCambiados(m); }, ponerAvatar: function () { ponerAvatar(); }, abrirPublicacion: function (id) { mostrarVista("pubs"); abrirFicha(id); },
+    zip: function (a) { return zip(a); },
     pub: { confirmada: confirmada, personasDe: personasDe, papeles: papeles, anoDe: anoDe, mejorCuartil: mejorCuartil, mejorDecil: mejorDecil, primerFI: primerFI,
            tabDe: tabDe, cuentaJCR: cuentaJCR, indexada: indexada },
     verPubsDe: function (n) {          // Publicaciones de una persona, todos los años
@@ -2025,14 +2065,14 @@
     if (GC.mod[v] && GC.mod[v].mostrar) GC.mod[v].mostrar();
     if (!opc.sinHistoria && S.inicio) {
       var st = history.state || {};
-      if (!st.gc || st.v !== v || st.f) { try { history.pushState({ gc: 1, v: v }, ""); } catch (e) {} }
+      if (!st.gc || st.v !== v || st.f) { try { history.pushState({ gc: 1, v: v, sub: subActual(v) }, ""); } catch (e) {} }
     }
   }
   document.querySelectorAll("[data-vista]").forEach(function (b) { b.addEventListener("click", function () {
     var v = b.getAttribute("data-vista"), t = b.getAttribute("data-tab");
     if (t) guardar("gc_doc_tab", t);
     mostrarVista(v);
-    if (t && GC.docencia && GC.docencia.cambiarTab) GC.docencia.cambiarTab(t);
+    if (t && GC.docencia && GC.docencia.cambiarTab) GC.docencia.cambiarTab(t, true);
   }); });
   function datosCambiados(m) {
     if (!S.inicio) return;
@@ -2055,7 +2095,7 @@
     asistencial: "Actividad asistencial del Servicio. Está en diseño: tendrá una estructura integral similar a la de LYA2.",
     revision: "Lo que está pendiente: publicaciones por confirmar, reclamaciones de autoría, registros de docencia y méritos por validar y solicitudes de días de congreso. Cada persona ve lo suyo; los administradores, todo.",
     perfil: "Tus datos de Personal_Investigador, tu foto y tus métricas de todos los bloques, por periodos y listas para imprimir.",
-    memoria: "Próximamente: la memoria anual IdiPAZ/HULP generada con los datos de todos los bloques."
+    memoria: "Memoria anual del grupo IdiPAZ G75: reúne de la web publicaciones, estancias, proyectos, tesis, ensayos y patentes de los miembros del grupo, y descarga el Excel que pide IdiPAZ. Solo administradores."
   };
   (function () {
     var car = $("carrusel"); if (!car) return;
@@ -2116,7 +2156,28 @@
   })();
   $("btMiFicha").onclick = function () { $("menuUsuario").classList.add("oculto"); mostrarVista("perfil"); };
   // ---------- atrás: botón del navegador / Android y gesto desde el borde izquierdo (iPhone con la app instalada) ----------
-  var HIST = { ignorar: false };
+  var HIST = { ignorar: false, aplicando: false };
+  // Pestañas dentro de una sección (Artículos/Libros/Abstracts, Trabajos/Tutorías/Rotantes/ANECA, secciones de Revisar): también son un paso del historial
+  function subActual(v) {
+    if (v === "pubs") return S.pubTab || "";
+    if ((v === "docencia" || v === "meritos") && GC.docencia && GC.docencia.tabActual) return GC.docencia.tabActual() || "";
+    if (v === "revision") return REV.tab || "";
+    if (v === "memoria" && GC.memoria) return GC.memoria.tab() || "";
+    return "";
+  }
+  function aplicarSub(v, sub) {
+    if (v === "pubs" && PUB_TABS[sub]) cambiarTabPub(sub);
+    else if ((v === "docencia" || v === "meritos") && GC.docencia && GC.docencia.cambiarTab) GC.docencia.cambiarTab(sub);
+    else if (v === "revision") { REV.tab = sub; pintarRevision(); }
+    else if (v === "memoria" && GC.memoria) GC.memoria.cambiarTab(sub);
+  }
+  function subCambiado(reemplazar) {        // reemplazar: salto directo a una pestaña (desde Inicio, el menú o Revisar), sin paso intermedio
+    if (!S.inicio || HIST.aplicando) return;
+    var st = history.state || {}, sub = subActual(S.vista);
+    if (st.gc && st.v === S.vista && (st.sub || "") === sub) return;
+    try { if (reemplazar && st.gc && st.v === S.vista && !st.f) history.replaceState({ gc: 1, v: S.vista, sub: sub }, ""); else history.pushState({ gc: 1, v: S.vista, sub: sub }, ""); } catch (e) {}
+  }
+  GC.subCambiado = subCambiado;
   var FICHAS = [["panelFicha", function () { cerrarFicha(); }], ["panelFichaEst", "btCerrarFichaEst"], ["panelFichaCon", "btCerrarFichaCon"], ["panelFichaDoc", "btCerrarFichaDoc"]];
   function fichaAbierta() { return FICHAS.filter(function (f) { var e = $(f[0]); return e && !e.classList.contains("oculto") && !(f[0] === "panelFicha" && S.vista !== "pubs" && S.vista !== "revision"); })[0]; }
   function dialogoAbierto() { return ["dlgForm", "dlgAlta"].filter(function (id) { return $(id) && !$(id).classList.contains("oculto"); })[0]; }
@@ -2124,17 +2185,25 @@
     if (HIST.ignorar) { HIST.ignorar = false; return; }
     if (!S.inicio) return;
     var st = ev.state || {};
-    var dlg = dialogoAbierto();
-    if (dlg) { if (dlg === "dlgForm") cerrarDialogo(); else $(dlg).classList.add("oculto"); try { history.pushState({ gc: 1, v: S.vista, f: fichaAbierta() ? 1 : 0 }, ""); } catch (e) {} return; }
+    var dlg = dialogoAbierto(), reponer = function () { try { history.pushState({ gc: 1, v: S.vista, sub: subActual(S.vista), f: fichaAbierta() ? 1 : 0 }, ""); } catch (e) {} };
+    if (dlg) { if (dlg === "dlgForm") cerrarDialogo(); else $(dlg).classList.add("oculto"); reponer(); return; }
+    if (!$("cajon").classList.contains("oculto")) { $("cajon").classList.add("oculto"); reponer(); return; }          // primero se cierra el menú
+    var panel = ["panelFiltros", "panelFiltrosEst", "panelFiltrosCon", "panelFiltrosDoc"].filter(function (id) { return $(id) && !$(id).classList.contains("oculto"); })[0];
+    if (panel) { $(panel).classList.add("oculto"); reponer(); return; }                                                  // … o los filtros
     var f = fichaAbierta();
     if (f) { if (typeof f[1] === "function") f[1](); else if ($(f[1])) $(f[1]).click(); if (!st.v || st.v === S.vista) return; }
-    var v = st.gc && st.v ? st.v : "inicio";
-    if (v !== S.vista) mostrarVista(v, { sinHistoria: true });
+    var v = st.gc && st.v ? st.v : "inicio", cambio = false;
+    HIST.aplicando = true;
+    try {
+      if (v !== S.vista) { mostrarVista(v, { sinHistoria: true }); cambio = true; }
+      if (st.sub && subActual(v) !== st.sub) { aplicarSub(v, st.sub); cambio = true; }
+    } finally { HIST.aplicando = false; }
+    if (!cambio && !f && v !== "inicio" && history.length > 1) history.back();          // paso sin cambios visibles: se salta
   });
   function alCambiarFicha() {                  // al abrir unos detalles se añade un paso al historial; al cerrarlos con su botón, se quita
     var abierta = !!fichaAbierta(), st = history.state || {};
     if (!S.inicio) return;
-    if (abierta && st.gc && !st.f) { try { history.pushState({ gc: 1, v: S.vista, f: 1 }, ""); } catch (e) {} }
+    if (abierta && st.gc && !st.f) { try { history.pushState({ gc: 1, v: S.vista, sub: subActual(S.vista), f: 1 }, ""); } catch (e) {} }
     else if (!abierta && st.gc && st.f && st.v === S.vista) { HIST.ignorar = true; history.back(); setTimeout(function () { HIST.ignorar = false; }, 600); }
   }
   function atras() { if (history.state && history.state.gc && history.length > 1) history.back(); else if (S.vista !== "inicio") mostrarVista("inicio"); }
@@ -2356,7 +2425,7 @@
       }
     }
   }
-  $("pestRev").addEventListener("click", function (ev) { var b = ev.target.closest("[data-rtab]"); if (b) { REV.tab = b.getAttribute("data-rtab"); pintarRevision(); } });
+  $("pestRev").addEventListener("click", function (ev) { var b = ev.target.closest("[data-rtab]"); if (b) { REV.tab = b.getAttribute("data-rtab"); pintarRevision(); subCambiado(); } });
 
   // ---------- descargar la lista filtrada ----------
   var ETIQ_EXPORT = { "Revista": "Revista / Libro", "Personas Servicio": "Personas del Servicio", "ID_Articulo": "ID_Articulo" };
@@ -4397,11 +4466,12 @@
     var idd = it.getAttribute("data-doc");
     if (DC.sel === idd && !$("panelFichaDoc").classList.contains("oculto")) cerrarFicha(); else abrirFicha(idd);    // segundo clic: cierra
   });
-  function cambiarTab(t) {
+  function cambiarTab(t, reemplazar) {
     if (!TABS[t]) return;
     if (tabsModo().indexOf(t) === -1) fijarModo(t === "meritos" ? "ciencia" : "docencia");
     DC.tab = t; cerrarFicha(); $("fdTipo").value = ""; $("fdEstado").value = "";
     if (DC.modo === "docencia") G.guardar("gc_doc_tab", t);
+    if (G.subCambiado) G.subCambiado(reemplazar);
     if (!DC.datos) { marcarPestanas(); return; }
     prepararFiltros(); pintar();
   }
@@ -5007,11 +5077,11 @@
     var r = listaTabla(tabla).filter(function (x) { return x.id === id; })[0]; if (!r) return;
     var t = tabla === "meritos" && r.tipo === ANECA ? "aneca" : tabla === "tutorias" && ROTANTE.test(r.tipo) ? "rotantes" : tabla;
     G.mostrarVista(t === "meritos" ? "meritos" : "docencia");
-    asegurarDatos(function () { cambiarTab(t); abrirFicha(id); });
+    asegurarDatos(function () { cambiarTab(t, true); abrirFicha(id); });
   }
   G.docencia = { textoMemoria: textoMemoria, seccionesMemoria: seccionesMemoria, filasXlsx: filasXlsx, anioResidencia: anioResidencia, cambiarTab: cambiarTab,
     asegurar: asegurar, datos: function () { return DC.datos; }, abrirRegistro: abrirRegistro, ANECA: ANECA, VAL: VAL, recargar: cargar,
-    titulo: function (t, r) { return tituloDe(t, r); }, lista: lista, ROTANTE: ROTANTE };
+    titulo: function (t, r) { return tituloDe(t, r); }, lista: lista, ROTANTE: ROTANTE, tabActual: function () { return DC.tab; } };
 })();
 </script>
 
@@ -5274,6 +5344,465 @@
     mostrar: function () { prepararPersonas(); abrirPersona(PF.persona || yo()); }, ocultar: function () {} });
   G.perfil = { refrescar: function () { pintar(); }, cargarFotoPropia: function () { if (G.S.inicio) cargarFoto(yo()); }, abrir: function (n) { PF.persona = n; G.mostrarVista("perfil"); },
     metricasPubs: metricasPubs, hIndex: hIndex };
+})();
+</script>
+
+  <script>
+// ===== Memoria IdiPAZ del grupo G75 (web v0.6, solo administradores): prepara y descarga el Excel anual con las 9 hojas de IdiPAZ =====
+(function () {
+  "use strict";
+  var G = window.GC, $ = G.$, esc = G.esc;
+  var MM = { anio: null, datos: null, aj: null, sucio: false, tab: "resumen", cargando: null };
+  var HOJAS = [["resumen", "Resumen", "fa-list-check"], ["comp", "Composición", "fa-users"], ["obj", "Objetivos y líneas", "fa-bullseye"], ["pubs", "Publicaciones", "fa-book"],
+    ["estancias", "Estancias", "fa-plane"], ["proyectos", "Proyectos", "fa-coins"], ["tesis", "Tesis, TFM y TFG", "fa-graduation-cap"], ["redes", "Redes y CIBER", "fa-diagram-project"],
+    ["ensayos", "Ensayos clínicos", "fa-flask"], ["patentes", "Patentes", "fa-lightbulb"]];
+  var MESES_EN = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  var UNIV_CIUDAD = { "Universidad Autónoma de Madrid": "Madrid", "UAM": "Madrid", "Universidad Complutense de Madrid": "Madrid", "Universidad Francisco de Vitoria": "Pozuelo de Alarcón",
+    "Universidad Europea de Madrid": "Madrid", "Universidad CEU San Pablo": "Madrid", "Universidad Rey Juan Carlos": "Madrid", "Universidad de Alcalá": "Alcalá de Henares",
+    "Universidad Politécnica de Madrid": "Madrid", "Universidad de Barcelona": "Barcelona" };
+  var SN = ["", "SI", "NO"];
+  function admin() { return !!(G.S.inicio && G.S.inicio.usuario.admin); }
+  function txt(v) { return v === null || v === undefined ? "" : String(v); }
+  function anioDe(iso) { var m = String(iso || "").match(/^(\d{4})/); return m ? Number(m[1]) : null; }
+  function fDot(iso) { var p = String(iso || "").split("-"); return p.length === 3 ? p[2] + "." + p[1] + "." + p[0] : txt(iso); }
+  function fBarra(iso) { var p = String(iso || "").split("-"); return p.length === 3 ? p[2] + "/" + p[1] + "/" + p[0] : txt(iso); }
+  function solapa(ini, fin, enCurso, y) { var a = anioDe(ini) || Number(ini) || null, b = enCurso ? 9999 : (anioDe(fin) || Number(fin) || a); return !!a && a <= y && (b || 9999) >= y; }
+  function norm(s) { return String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z ]/g, " ").replace(/\s+/g, " ").trim(); }
+
+  // ---------- miembros del año y coincidencias ----------
+  function miembrosAnio() {
+    var y = MM.anio;
+    return (MM.datos.miembros || []).filter(function (m) { return (!m.desde || Number(m.desde) <= y) && (!m.hasta || Number(m.hasta) >= y); });
+  }
+  function mapaPersonas() { var o = {}; miembrosAnio().forEach(function (m) { if (m.persona) o[m.persona] = m; }); return o; }
+  function nombreMiembro(persona) { var m = mapaPersonas()[persona]; return m ? m.nombre : persona; }
+  function firmas() {                 // firmas de los miembros sin enlace con Personal_Investigador («Muñoz-Luque J; Muñoz Luque, J»)
+    var out = []; miembrosAnio().forEach(function (m) { if (!m.persona && m.firma) String(m.firma).split(";").forEach(function (f) { f = norm(f); if (f) out.push([f, m]); }); }); return out;
+  }
+  function aj(clave) { MM.aj[clave] = MM.aj[clave] || {}; return MM.aj[clave]; }
+  function excl(hoja) { var e = aj("excluir"); e[hoja] = e[hoja] || []; return e[hoja]; }
+  function extra(hoja, id) { var x = aj("extra"); x[hoja] = x[hoja] || {}; x[hoja][id] = x[hoja][id] || {}; return x[hoja][id]; }
+  function valorExtra(hoja, id, k, def) { var x = (MM.aj.extra || {})[hoja]; var v = x && x[id] ? x[id][k] : undefined; return v === undefined || v === null ? (def || "") : v; }
+  function datosEstudios() { var E = G.estudios && G.estudios.datos(); return E ? (E.estudios || []) : null; }
+  function datosDocencia() { return G.docencia && G.docencia.datos(); }
+  function implicaMiembro(lista) { var mp = mapaPersonas(); return (lista || []).some(function (n) { return !!mp[n]; }); }
+  function ipAuto(m) {
+    var E = datosEstudios() || [];
+    return E.some(function (e) { return /pública/i.test(e.financiacion || "") && solapa(e.inicio, e.fin, !e.fin, MM.anio) && ((e.ip || []).indexOf(m.persona) !== -1 || (e.ipLocal || []).indexOf(m.persona) !== -1); });
+  }
+
+  // ---------- construcción de cada hoja: { cab, filas: [{ id, vals, avisos, editable: {col: [clave, tipo, opciones]} }] } ----------
+  function hComp() {
+    var filas = miembrosAnio().map(function (m) {
+      var ip = m.ipCompetitivo === "SI" || m.ipCompetitivo === "NO" ? m.ipCompetitivo : (ipAuto(m) ? "SI" : "NO");
+      var av = []; if (!m.euraxess) av.push("EURAXESS"); if (!m.asistencial) av.push("carga asistencial"); if (!m.cuidados) av.push("investigación en cuidados"); if (!(m.orcid || m.orcidPersonal)) av.push("ORCID");
+      return { id: m.id, vals: [m.orcid || m.orcidPersonal, m.nombre, m.cargo, m.centro, m.euraxess, m.asistencial, m.cuidados, ip], avisos: av.length ? ["Falta: " + av.join(", ")] : [] };
+    });
+    return { cab: ["Orcid", "NOMBRE", "CARGO", "CENTRO", "CLASIFICACIÓN EURAXESS (R1, R2, R3, R4)*", "CARGA ASISTENCIAL\n(SI/NO)", "INVESTIGACIÓN EN CUIDADOS DE LA SALUD (SI/NO) **", "PROYECTOS COMPETITIVOS COMO IP (SI/NO)"], filas: filas };
+  }
+  var TIPO_WOS = { "Original": "Article", "Revisión": "Review", "Caso clínico": "Article", "Carta al Editor": "Letter", "Comentario": "Editorial Material", "Editorial": "Editorial Material",
+    "Guía clínica": "Article", "Documento de consenso": "Article", "Capítulo de libro": "Book Chapter", "Libro": "Book", "Abstract de congreso": "Meeting Abstract", "Otros": "Article" };
+  function candidatosPubs() {
+    var P = G.pub, mp = mapaPersonas(), fi = firmas(), y = String(MM.anio), out = [];
+    (G.S.pubs || []).forEach(function (p) {
+      if (!P.confirmada(p) || P.anoDe(p) !== y) return;
+      var quien = P.personasDe(p).filter(function (n) { return !!mp[n]; }).map(function (n) { return mp[n].nombre; });
+      var aut = norm(p.Autores);
+      fi.forEach(function (f) { if (aut.indexOf(f[0]) !== -1 && quien.indexOf(f[1].nombre) === -1) quien.push(f[1].nombre); });
+      out.push({ p: p, quien: quien });
+    });
+    return out;
+  }
+  function incluidaPub(c) {
+    var id = c.p.ID_Articulo, inc = (aj("incluir").pubs || []).indexOf(id) !== -1, ex = excl("pubs").indexOf(id) !== -1;
+    return inc || (!ex && c.quien.length && G.pub.tabDe(c.p) !== "abstracts");
+  }
+  function paginas(v) { var s = txt(v).trim(), m = s.match(/^([A-Za-z]?\d+)\s*[-–]\s*([A-Za-z]?\d+)$/); return m ? [m[1], m[2]] : ["", s]; }
+  function correspondencia(p) { var m = txt(p["Fuente Correspondencia"]).match(/corresponde a:\s*(.+)$/i); return m ? m[1].trim() : ""; }
+  function filaPub(p, c) {
+    var pg = paginas(p["Páginas"]), oa = txt(p["Tipo Open Access"]).toLowerCase();
+    return [p.Autores, p["Título del artículo"], p.Revista, TIPO_WOS[p["Tipo de Artículo"]] || "Article", "", correspondencia(p), txt(p["Citas Totales"]), txt(p.ISSN),
+      txt(p["Fecha publicación"]), G.pub.anoDe(p), txt(p["Volúmen"]), txt(p["Número"]), pg[0], pg[1], txt(p.PMID), txt(p.DOI), oa === "closed" ? "" : oa];
+  }
+  function hPubs() {
+    var filas = candidatosPubs().filter(incluidaPub).map(function (c) {
+      var f = c.p["Filiación La Paz"], av = [];
+      if (!c.quien.length) av.push("Añadida a mano (sin miembros del grupo detectados)");
+      if (/No consta|Otro centro/.test(f || "")) av.push("Filiación: " + f);
+      return { id: c.p.ID_Articulo, vals: filaPub(c.p), avisos: av, quien: c.quien, p: c.p };
+    });
+    return { cab: ["AUTORES", "TITULO", "REVISTA", "TIPO DE DOCUMENTO", "DIRRECCIÓN", "REPRINT ADRESS", "CITAS", "SN", "PD", "PY", "VL", "IS", "BP", "EP", "PMID", "DOI", "OPEN ACCES"], filas: filas };
+  }
+  function partirLugar(s) {           // «Pittsburgh (EE. UU.)» o «Groningen, Holanda» → [ciudad, país]
+    s = txt(s).trim(); var m = s.match(/^(.*?)\s*\(([^)]+)\)\s*$/); if (m) return [m[1], m[2]];
+    var k = s.lastIndexOf(","); return k > 0 ? [s.substring(0, k).trim(), s.substring(k + 1).trim()] : [s, ""];
+  }
+  function meritos(tipo) { var D = datosDocencia(); if (!D) return null; return (D.meritos || []).filter(function (r) { return r.tipo === tipo && r.estadoVal !== G.docencia.VAL.no; }); }
+  function hEstancias() {
+    var l = meritos("Estancia en otro centro"); if (!l) return null;
+    var mp = mapaPersonas();
+    return { cab: ["INVESTIGADOR", "CENTRO RECEPTOR", "FECHA INICIO", "FECHA FIN", "CIUDAD", "PAIS"],
+      filas: l.filter(function (r) { return mp[r.persona] && solapa(r.inicio, r.fin, r.enCurso, MM.anio) && excl("estancias").indexOf(r.id) === -1; }).map(function (r) {
+        var lg = partirLugar(r.detalle), ci = valorExtra("estancias", r.id, "ciudad", lg[0]), pa = valorExtra("estancias", r.id, "pais", lg[1]);
+        return { id: r.id, vals: [nombreMiembro(r.persona), r.entidad, fDot(r.inicio), r.enCurso ? "" : fDot(r.fin), ci, pa], avisos: !pa ? ["Falta el país"] : [],
+          editable: { 4: ["ciudad", "txt"], 5: ["pais", "txt"] } };
+      }) };
+  }
+  function nombreFirma(persona) { var m = mapaPersonas()[persona]; return m && m.completo ? m.completo.toUpperCase() : String(persona).toUpperCase(); }
+  function hProyectos() {
+    var E = datosEstudios(); if (!E) return null;
+    return { cab: ["CODE", "TITLE", "MINÚCULAS AUTOR", "", "", "", "TIPO PROYECTO", "MANAGEMENT CENTRE"],
+      filas: E.filter(function (e) { return /pública/i.test(e.financiacion || "") && solapa(e.inicio, e.fin, !e.fin, MM.anio) && implicaMiembro([].concat(e.ip || [], e.ipLocal || [], e.colab || [])) && excl("proyectos").indexOf(e.id) === -1; })
+        .map(function (e) {
+          var ips = [].concat(e.ip || [], e.ipLocal || []).filter(function (n, i, a) { return a.indexOf(n) === i; });
+          var ini = valorExtra("proyectos", e.id, "inicio", e.inicio ? "01/01/" + e.inicio : ""), fin = valorExtra("proyectos", e.id, "fin", e.fin ? "31/12/" + e.fin : "");
+          var av = []; if (!e.codigo) av.push("Sin código de convocatoria"); if (!e.entidad) av.push("Sin financiador");
+          return { id: e.id, vals: [valorExtra("proyectos", e.id, "codigo", e.codigo), e.titulo, ips.map(nombreFirma).join("; "), e.entidad, ini, fin, valorExtra("proyectos", e.id, "tipo", ""), valorExtra("proyectos", e.id, "centro", "FIBHULP")],
+            avisos: av, editable: { 0: ["codigo", "txt"], 4: ["inicio", "txt"], 5: ["fin", "txt"], 6: ["tipo", "txt"], 7: ["centro", "txt"] } };
+        }) };
+  }
+  var BLOQUES_TESIS = [["Tesis doctoral", "Doctoral Theses"], ["TFM", "Master Theses"], ["TFG", "Final Degree Theses"]];
+  function hTesis() {
+    var D = datosDocencia(); if (!D) return null;
+    var mp = mapaPersonas();
+    var l = (D.trabajos || []).filter(function (r) { return r.estado === "Defendido" && anioDe(r.defensa) === MM.anio && r.estadoVal !== G.docencia.VAL.no &&
+      [].concat(r.directores || [], r.tutor ? [r.tutor] : []).some(function (n) { return !!mp[n]; }) && excl("tesis").indexOf(r.id) === -1; });
+    return { cab: ["", "", "DIRECTOR", "AUTOR", "TITULO", "UNIVERSIDAD", "CIUDAD", "FECHA DE LECTURA", "AÑO", "MENCIÓN INTERNACIONAL", "PROYECTO FINANCIADOR", "EUROPEAN MENTION (SI/NO)", "POSICIÓN ACTUAL"],
+      filas: l.map(function (r) {
+        var tesis = r.tipo === "Tesis doctoral", dirs = (r.directores || []).map(nombreMiembro).concat(r.otrosDirectores ? [r.otrosDirectores] : []);
+        var ci = valorExtra("tesis", r.id, "ciudad", UNIV_CIUDAD[r.universidad] || ""), av = [];
+        if (!ci) av.push("Falta la ciudad");
+        if (tesis && !valorExtra("tesis", r.id, "posicion", "")) av.push("Falta la posición actual");
+        var ed = { 6: ["ciudad", "txt"], 10: ["financiador", "txt"] }; if (tesis) { ed[11] = ["europea", "sel", SN]; ed[12] = ["posicion", "txt"]; }
+        return { id: r.id, bloque: r.tipo, vals: ["", "", dirs.join(", "), r.alumno, r.titulo, r.universidad, ci, fBarra(r.defensa), String(anioDe(r.defensa) || ""),
+          tesis ? (r.mencion ? "SI" : "NO") : "", valorExtra("tesis", r.id, "financiador", ""), tesis ? valorExtra("tesis", r.id, "europea", "") : "", tesis ? valorExtra("tesis", r.id, "posicion", "") : ""],
+          avisos: av, editable: ed };
+      }) };
+  }
+  function textoRed(r) { return [r.ip, r.nombre + " (" + r.acronimo + ")" + (r.fechaFin ? "(" + r.fechaFin + ")" : ""), r.financiador, r.centro].filter(Boolean).join(". "); }
+  function formulaRed(r) { return r.ip + ". " + r.nombre + ". (" + r.acronimo + "). " + r.financiador + ". (" + (r.fechaFin || "") + "). " + r.centro; }
+  function hRedes() {
+    var y = MM.anio;
+    return { cab: ["", "", "CÓDIGO", "ACRÓNIMO", "RETICS", "FINANCIADOR", "INVESTIGADOR PRINCIPAL", "FECHA DE FINALIZACIÓN", "CENTRO DE GESTIÓN"],
+      filas: (MM.datos.redes || []).filter(function (r) { return (!r.desde || Number(r.desde) <= y) && (!r.hasta || Number(r.hasta) >= y); }).map(function (r) {
+        return { id: r.id, bloque: r.tipo === "RETIC" ? "RETIC" : "CIBER", vals: [textoRed(r), formulaRed(r), r.codigo, r.acronimo, r.nombre, r.financiador, r.ip, r.fechaFin, r.centro], avisos: [], red: r }; }) };
+  }
+  function hEnsayos() {
+    var E = datosEstudios(); if (!E) return null;
+    return { cab: ["ENSAYOS CLÍNICOS", "LIBERACIÓN PÚBLICA DE LA BASE DE DATOS BRUTA DEL ESTUDIO (SI/NO)"],
+      filas: E.filter(function (e) { return solapa(e.inicio, e.fin, !e.fin || /^Activo/.test(e.estado || ""), MM.anio) && implicaMiembro([].concat(e.ip || [], e.ipLocal || [], e.colab || [])) && excl("ensayos").indexOf(e.id) === -1; })
+        .map(function (e) { var v = valorExtra("ensayos", e.id, "liberacion", ""); return { id: e.id, vals: [e.titulo, v], avisos: v ? [] : ["Indica SI/NO"], editable: { 1: ["liberacion", "sel", SN] } }; }) };
+  }
+  function fechaEn(iso) { var p = String(iso || "").split("-"); return p.length === 3 ? p[0] + " " + MESES_EN[Number(p[1]) - 1] + " " + Number(p[2]) : txt(iso); }
+  function hPatentes() {
+    var l = meritos("Patente o propiedad intelectual"); if (!l) return null;
+    var mp = mapaPersonas();
+    return { cab: ["INVENTORS", "START-UP (SI/NO)", "LICENCIADA A TERCEROS (SI/NO)"],
+      filas: l.filter(function (r) { return mp[r.persona] && (anioDe(r.inicio) || 0) <= MM.anio && excl("patentes").indexOf(r.id) === -1; }).map(function (r) {
+        var cad = (r.detalle || nombreMiembro(r.persona)) + ", inventors" + (r.entidad ? "; " + r.entidad + ", assignee" : "") + ". " + (r.titulo || "") + "." + (r.referencia ? " " + r.referencia : "") + (r.inicio ? "; " + fechaEn(r.inicio) : "") + ".";
+        var su = valorExtra("patentes", r.id, "startup", ""), li = valorExtra("patentes", r.id, "licencia", "");
+        return { id: r.id, vals: [cad, su, li], avisos: su && li ? [] : ["Indica start-up y licencia"], editable: { 1: ["startup", "sel", SN], 2: ["licencia", "sel", SN] } };
+      }) };
+  }
+  var CONSTR = { comp: hComp, pubs: hPubs, estancias: hEstancias, proyectos: hProyectos, tesis: hTesis, redes: hRedes, ensayos: hEnsayos, patentes: hPatentes };
+
+  // ---------- carga ----------
+  function selAnios() {
+    var y = new Date().getFullYear(), s = $("mmAnio"), o = [];
+    for (var a = y; a >= y - 6; a--) o.push('<option value="' + a + '">' + a + "</option>");
+    s.innerHTML = o.join(""); s.value = String(MM.anio || (y - 1));
+  }
+  function cargar(anio) {
+    MM.anio = Number(anio); $("cuerpoMem").innerHTML = '<p class="tenue" style="padding:14px"><i class="fa-solid fa-spinner fa-spin"></i> Cargando la memoria ' + MM.anio + "…</p>";
+    G.cargando(true);
+    MM.cargando = Promise.all([G.api("webMemoria", G.S.token, MM.anio), G.estudios ? G.estudios.asegurar() : null, G.docencia ? G.docencia.asegurar() : null]).then(function (r) {
+      MM.datos = r[0]; MM.aj = JSON.parse(JSON.stringify(r[0].memoria.ajustes || {})); MM.obj = { objetivos: r[0].memoria.objetivos, lineas: r[0].memoria.lineas };
+      marcarSucio(false); pintar();
+    }).catch(function (e) { $("cuerpoMem").innerHTML = '<p class="mensaje" style="padding:14px">' + esc(e.message) + "</p>"; }).then(function () { G.cargando(false); MM.cargando = null; });
+    return MM.cargando;
+  }
+  function marcarSucio(s) {
+    MM.sucio = s; $("mmGuardar").disabled = !s;
+    $("mmEstado").textContent = s ? "Cambios sin guardar" : (MM.datos && MM.datos.memoria.fecha ? "Guardado " + MM.datos.memoria.fecha : "");
+  }
+  function guardar() {
+    G.cargando(true);
+    return G.api("webGuardarMemoria", G.S.token, MM.anio, { objetivos: MM.obj.objetivos, lineas: MM.obj.lineas, ajustes: MM.aj }).then(function (r) {
+      G.aviso(r.mensaje, 4000); MM.datos.memoria.fecha = new Date().toLocaleString("es-ES"); marcarSucio(false);
+    }).catch(function (e) { G.aviso(e.message, 7000); }).then(function () { G.cargando(false); });
+  }
+
+  // ---------- pintado ----------
+  function pintarPestanas() {
+    var cuenta = {};
+    Object.keys(CONSTR).forEach(function (k) { var h = CONSTR[k](); cuenta[k] = h ? h.filas.length : ""; });
+    cuenta.obj = MM.obj.objetivos || MM.obj.lineas ? "✓" : "";
+    $("pestMem").innerHTML = HOJAS.map(function (x) { return '<button data-mtab="' + x[0] + '"' + (x[0] === MM.tab ? ' class="activo"' : "") + '><i class="fa-solid ' + x[2] + '"></i> ' + esc(x[1]) +
+      (cuenta[x[0]] !== undefined && cuenta[x[0]] !== "" ? " <span>" + cuenta[x[0]] + "</span>" : "") + "</button>"; }).join("");
+  }
+  function tablaHoja(clave, h, opc) {
+    opc = opc || {};
+    if (!h) return '<p class="tenue"><i class="fa-solid fa-spinner fa-spin"></i> Cargando…</p>';
+    var cols = opc.cols || h.cab.map(function (c, i) { return i; }).filter(function (i) { return h.cab[i] || (h.filas[0] && h.filas[0].editable && h.filas[0].editable[i]); });
+    var html = ['<div class="mm-tabla-env"><table class="mm-tabla"><thead><tr>' + (opc.sinQuitar ? "" : "<th></th>") + cols.map(function (i) { return "<th>" + esc(h.cab[i] || "") + "</th>"; }).join("") + "<th></th></tr></thead><tbody>"];
+    h.filas.forEach(function (f) {
+      html.push('<tr data-id="' + esc(f.id) + '">' + (opc.sinQuitar ? "" : '<td><button class="bt-icono mm-quitar" data-quitar="' + esc(f.id) + '" title="Quitar de la memoria"><i class="fa-solid fa-xmark"></i></button></td>') +
+        cols.map(function (i) {
+          var ed = f.editable && f.editable[i], v = f.vals[i];
+          if (ed) return "<td>" + (ed[1] === "sel" ? '<select data-ex="' + ed[0] + '">' + ed[2].map(function (o) { return '<option value="' + o + '"' + (o === v ? " selected" : "") + ">" + (o || "—") + "</option>"; }).join("") + "</select>"
+            : '<input data-ex="' + ed[0] + '" value="' + esc(v) + '">') + "</td>";
+          return '<td title="' + esc(v) + '">' + esc(String(v || "").length > 140 ? String(v).substring(0, 140) + "…" : v) + "</td>";
+        }).join("") + '<td class="mm-avisos">' + (f.avisos || []).map(function (a) { return '<span class="et falta">' + esc(a) + "</span>"; }).join(" ") + "</td></tr>");
+    });
+    html.push("</tbody></table></div>");
+    if (!h.filas.length) html = ['<p class="tenue">No hay filas para ' + MM.anio + ".</p>"];
+    var ex = excl(clave);
+    if (!opc.sinQuitar && ex.length) html.push('<p class="ayuda">' + ex.length + " fila" + (ex.length === 1 ? "" : "s") + ' quitada' + (ex.length === 1 ? "" : "s") + ' a mano. <button class="bt-texto" data-restaurar="' + clave + '">Volver a incluirlas</button></p>');
+    return html.join("");
+  }
+  function enlazarTabla(clave) {
+    var cu = $("cuerpoMem");
+    cu.querySelectorAll("[data-quitar]").forEach(function (b) { b.onclick = function () { excl(clave).push(b.getAttribute("data-quitar")); if (clave === "pubs") { var inc = aj("incluir").pubs || []; var k = inc.indexOf(b.getAttribute("data-quitar")); if (k !== -1) inc.splice(k, 1); } marcarSucio(true); pintar(); }; });
+    cu.querySelectorAll("[data-restaurar]").forEach(function (b) { b.onclick = function () { aj("excluir")[clave] = []; marcarSucio(true); pintar(); }; });
+    cu.querySelectorAll("[data-ex]").forEach(function (e) { e.addEventListener("change", function () { var id = e.closest("tr").getAttribute("data-id"); extra(clave, id)[e.getAttribute("data-ex")] = e.value.trim(); marcarSucio(true); pintarPestanas(); }); });
+  }
+  var AYUDA = {
+    estancias: "Estancias de los miembros del grupo que coinciden con el año (Ciencia → Otros méritos → «Estancia en otro centro»). Ciudad y país salen de «Ciudad y país»; corrígelos aquí si hace falta.",
+    proyectos: "Estudios con financiación pública activos en el año en los que participa algún miembro del grupo (Ciencia → Estudios). Fechas, tipo y centro gestor se completan aquí.",
+    tesis: "Tesis, TFM y TFG defendidos en el año con director/a o tutor/a del grupo (Docencia → Trabajos dirigidos). Ciudad, proyecto financiador, mención europea y posición actual se completan aquí.",
+    ensayos: "Estudios activos en el año en los que participa algún miembro del grupo (Ciencia → Estudios). Indica si la base de datos bruta se ha liberado públicamente.",
+    patentes: "Patentes y registros de los miembros del grupo hasta el año (Ciencia → Otros méritos → «Patente o propiedad intelectual»).",
+    redes: "CIBER y RETIC a los que pertenece el grupo. Se guardan en la pestaña IdiPAZ_Redes; indica el periodo si ya no está activo."
+  };
+  function pintar() {
+    if (!MM.datos) return;
+    pintarPestanas();
+    var cu = $("cuerpoMem"), t = MM.tab, h = [];
+    if (t === "resumen") {
+      h.push('<p class="rev-ayuda">Memoria <b>' + MM.anio + "</b> del grupo G75 · " + miembrosAnio().length + " miembros. Revisa cada hoja, completa lo que falta y pulsa <b>Guardar</b>; después, <b>Descargar Excel G75</b>.</p>");
+      h.push('<div class="mm-resumen">' + HOJAS.slice(1).map(function (x) {
+        var hh = x[0] === "obj" ? null : CONSTR[x[0]](), n = x[0] === "obj" ? (MM.obj.objetivos ? 1 : 0) + (MM.obj.lineas ? 1 : 0) : hh ? hh.filas.length : null;
+        var av = hh ? hh.filas.filter(function (f) { return f.avisos && f.avisos.length; }).length : (x[0] === "obj" && (!MM.obj.objetivos || !MM.obj.lineas) ? 1 : 0);
+        return '<button class="mm-card" data-ir="' + x[0] + '"><i class="fa-solid ' + x[2] + '"></i><b>' + esc(x[1]) + "</b><span>" + (n === null ? "cargando…" : x[0] === "obj" ? n + " de 2 apartados" : n + " fila" + (n === 1 ? "" : "s")) + "</span>" +
+          (av ? '<span class="et falta">' + av + (x[0] === "obj" ? " por completar" : " con datos por completar") + "</span>" : n ? '<span class="et ok">completo</span>' : "") + "</button>";
+      }).join("") + "</div>");
+      cu.innerHTML = h.join("");
+      cu.querySelectorAll("[data-ir]").forEach(function (b) { b.onclick = function () { MM.tab = b.getAttribute("data-ir"); pintar(); if (G.subCambiado) G.subCambiado(); }; });
+      return;
+    }
+    if (t === "comp") return pintarComp();
+    if (t === "obj") return pintarObj();
+    if (t === "pubs") return pintarPubs();
+    if (t === "redes") return pintarRedes();
+    h.push('<p class="rev-ayuda">' + esc(AYUDA[t] || "") + "</p>" + tablaHoja(t, CONSTR[t]()));
+    cu.innerHTML = h.join(""); enlazarTabla(t);
+  }
+  function pintarComp() {
+    var cu = $("cuerpoMem"), M = MM.datos.miembros, y = MM.anio, P = MM.datos.personal;
+    var sel = function (k, v, ops) { return '<select data-m="' + k + '">' + ops.map(function (o) { return '<option value="' + esc(o) + '"' + (o === v ? " selected" : "") + ">" + esc(o || "—") + "</option>"; }).join("") + "</select>"; };
+    var inp = function (k, v, ph, w) { return '<input data-m="' + k + '" value="' + esc(v || "") + '"' + (ph ? ' placeholder="' + esc(ph) + '"' : "") + (w ? ' style="width:' + w + '"' : "") + ">"; };
+    var filas = M.map(function (m) {
+      var activo = (!m.desde || Number(m.desde) <= y) && (!m.hasta || Number(m.hasta) >= y), ip = ipAuto(m) ? "SI" : "NO";
+      return '<tr data-mid="' + esc(m.id) + '"' + (activo ? "" : ' class="mm-inactivo"') + "><td>" + inp("nombre", m.nombre) + '<div class="mm-sub">' + sel("persona", m.persona, [""].concat(P)) + "</div>" +
+        (!m.persona ? '<div class="mm-sub">' + inp("firma", m.firma, "Firma en publicaciones (p. ej. Muñoz-Luque J)") + "</div>" : "") + "</td>" +
+        "<td>" + inp("orcid", m.orcid, m.orcidPersonal || "0000-…", "150px") + "</td><td>" + inp("cargo", m.cargo) + "</td><td>" + inp("centro", m.centro) + "</td>" +
+        "<td>" + sel("euraxess", m.euraxess, ["", "R1", "R2", "R3", "R4"]) + "</td><td>" + sel("asistencial", m.asistencial, SN) + "</td><td>" + sel("cuidados", m.cuidados, SN) + "</td>" +
+        "<td>" + sel("ipCompetitivo", m.ipCompetitivo || "Auto", ["Auto", "SI", "NO"]) + '<div class="mm-sub tenue">auto: ' + ip + "</div></td>" +
+        "<td>" + inp("desde", m.desde, "año", "64px") + " – " + inp("hasta", m.hasta, "año", "64px") + "</td>" +
+        '<td><button class="bt-icono" data-borrar="' + esc(m.id) + '" title="Eliminar del grupo"><i class="fa-regular fa-trash-can"></i></button></td></tr>';
+    }).join("");
+    cu.innerHTML = '<p class="rev-ayuda">Miembros del grupo G75 (de la <a href="' + esc(MM.datos.url) + '#Composicion" target="_blank" rel="noopener">web de IdiPAZ</a>). Los cambios se guardan al momento en la pestaña IdiPAZ_Composicion. ' +
+      "En gris, los que no estaban en el grupo en " + y + ". «Auto» en proyectos = SI si es IP o IP local de un estudio con financiación pública activo ese año.</p>" +
+      '<div class="mm-tabla-env"><table class="mm-tabla mm-comp"><thead><tr><th>Nombre (IdiPAZ) · persona del Servicio</th><th>ORCID</th><th>Cargo</th><th>Centro</th><th>EURAXESS</th><th>Carga asistencial</th><th>Investigación en cuidados</th><th>Proyectos competitivos como IP</th><th>En el grupo</th><th></th></tr></thead><tbody>' +
+      filas + "</tbody></table></div>" + '<p><button class="bt" id="mmNuevoMiembro"><i class="fa-solid fa-user-plus"></i> Añadir miembro</button></p>' +
+      '<p class="ayuda">* EURAXESS: R1 investigador/a en formación (predoctoral), R2 doctor/a sin independencia, R3 investigador/a establecido/a, R4 investigador/a líder. ** Investigación en cuidados de la salud: enfermería u otras profesiones de cuidados.</p>';
+    cu.querySelectorAll("[data-m]").forEach(function (e) { e.addEventListener("change", function () {
+      var tr = e.closest("tr"), id = tr.getAttribute("data-mid"), m = M.filter(function (x) { return x.id === id; })[0]; if (!m) return;
+      m[e.getAttribute("data-m")] = e.value.trim();
+      G.api("webGuardarMiembro", G.S.token, m).then(function () { G.aviso("Guardado: " + m.nombre, 2000); if (e.getAttribute("data-m") === "persona" || e.getAttribute("data-m") === "desde" || e.getAttribute("data-m") === "hasta") pintar(); else pintarPestanas(); })
+        .catch(function (err) { G.aviso(err.message, 6000); });
+    }); });
+    cu.querySelectorAll("[data-borrar]").forEach(function (b) { b.onclick = function () {
+      var id = b.getAttribute("data-borrar"), m = M.filter(function (x) { return x.id === id; })[0];
+      G.dialogo("Eliminar miembro", "<p>¿Eliminar a <b>" + esc(m.nombre) + "</b> del grupo? Si dejó el grupo, mejor indica el año «hasta» para que siga en las memorias anteriores.</p>", "Eliminar", function () {
+        G.api("webEliminarMiembro", G.S.token, id).then(function () { G.cerrarDialogo(); MM.datos.miembros = M.filter(function (x) { return x.id !== id; }); pintar(); }).catch(function (e) { G.aviso(e.message, 6000); });
+      });
+    }; });
+    $("mmNuevoMiembro").onclick = function () {
+      G.dialogo("Añadir miembro al grupo", '<label for="mmNm">Nombre completo (como en IdiPAZ) *</label><input id="mmNm">' +
+        '<label for="mmNp">Persona del Servicio</label><select id="mmNp"><option value="">— (no está en Personal_Investigador)</option>' + P.map(function (n) { return '<option value="' + esc(n) + '">' + esc(n) + "</option>"; }).join("") + "</select>" +
+        '<label for="mmNc">Cargo</label><input id="mmNc"><label for="mmNd">En el grupo desde (año)</label><input id="mmNd" value="' + y + '" inputmode="numeric">', "Añadir", function () {
+        var d = { nombre: $("mmNm").value.trim(), persona: $("mmNp").value, cargo: $("mmNc").value.trim(), centro: "Hospital Universitario La Paz", desde: $("mmNd").value.trim(), ipCompetitivo: "Auto" };
+        if (!d.nombre) { G.aviso("Escribe el nombre."); return; }
+        G.api("webGuardarMiembro", G.S.token, d).then(function (r) { G.cerrarDialogo(); return cargar(MM.anio); }).catch(function (e) { G.aviso(e.message, 6000); });
+      });
+    };
+  }
+  function pintarObj() {
+    var cu = $("cuerpoMem"), pv = MM.datos.previa;
+    cu.innerHTML = '<p class="rev-ayuda">Texto de la hoja «Objectives and Research lines». Se guarda por año con el botón <b>Guardar</b>.</p>' +
+      '<div class="mm-obj"><label for="mmObj">OBJETIVOS ESTRATÉGICOS</label><textarea id="mmObj" rows="9">' + esc(MM.obj.objetivos) + "</textarea>" +
+      '<label for="mmLin">LÍNEAS DE INVESTIGACIÓN</label><textarea id="mmLin" rows="14">' + esc(MM.obj.lineas) + "</textarea>" +
+      '<div class="botones" style="justify-content:flex-start">' + (pv ? '<button class="bt" id="mmCopiar"><i class="fa-regular fa-copy"></i> Copiar de ' + (MM.anio - 1) + "</button>" : "") +
+      '<button class="bt" id="mmWeb"><i class="fa-solid fa-globe"></i> Líneas de la web de IdiPAZ</button></div></div>';
+    $("mmObj").addEventListener("input", function () { MM.obj.objetivos = this.value; marcarSucio(true); });
+    $("mmLin").addEventListener("input", function () { MM.obj.lineas = this.value; marcarSucio(true); });
+    if ($("mmCopiar")) $("mmCopiar").onclick = function () { MM.obj.objetivos = pv.objetivos; MM.obj.lineas = pv.lineas; marcarSucio(true); pintarObj(); };
+    $("mmWeb").onclick = function () { MM.obj.lineas = MM.datos.lineasWeb; marcarSucio(true); pintarObj(); };
+  }
+  function pintarPubs() {
+    var cu = $("cuerpoMem"), h = hPubs(), cand = candidatosPubs(), fuera = cand.filter(function (c) { return !incluidaPub(c); });
+    cu.innerHTML = '<p class="rev-ayuda">Publicaciones confirmadas de ' + MM.anio + " en las que firma algún miembro del grupo (por «Personas del Servicio» o por su firma, para quien no está en Personal_Investigador). Los abstracts no entran salvo que los añadas. " +
+      "DIRECCIÓN queda vacía: la web no guarda las direcciones de los autores.</p>" +
+      tablaHoja("pubs", h, { cols: [1, 2, 3, 9, 15, 16] }) +
+      (fuera.length ? '<details class="mm-otras"><summary>Otras ' + fuera.length + " publicaciones confirmadas de " + MM.anio + " (sin miembros del grupo o abstracts)</summary>" +
+        fuera.map(function (c) { return '<div class="item-lista"><button class="bt-texto" data-anadir="' + esc(c.p.ID_Articulo) + '"><i class="fa-solid fa-plus"></i> Añadir</button> ' + esc(c.p["Título del artículo"]) +
+          '<div class="m">' + esc([c.p.Revista, c.p["Tipo de Artículo"], c.p["Personas Servicio"]].filter(Boolean).join(" · ")) + "</div></div>"; }).join("") + "</details>" : "");
+    enlazarTabla("pubs");
+    cu.querySelectorAll("[data-anadir]").forEach(function (b) { b.onclick = function () {
+      var id = b.getAttribute("data-anadir"), inc = aj("incluir"); inc.pubs = inc.pubs || []; if (inc.pubs.indexOf(id) === -1) inc.pubs.push(id);
+      var ex = excl("pubs"), k = ex.indexOf(id); if (k !== -1) ex.splice(k, 1); marcarSucio(true); pintar(); }; });
+  }
+  function pintarRedes() {
+    var cu = $("cuerpoMem"), R = MM.datos.redes;
+    var inp = function (k, v, w) { return '<input data-r="' + k + '" value="' + esc(v || "") + '"' + (w ? ' style="width:' + w + '"' : "") + ">"; };
+    cu.innerHTML = '<p class="rev-ayuda">' + esc(AYUDA.redes) + " Los cambios se guardan al momento.</p>" +
+      '<div class="mm-tabla-env"><table class="mm-tabla"><thead><tr><th>Tipo</th><th>Código</th><th>Acrónimo</th><th>Nombre</th><th>Financiador</th><th>Investigador principal</th><th>Fecha de finalización</th><th>Centro de gestión</th><th>Activa</th><th></th></tr></thead><tbody>' +
+      R.map(function (r) { return '<tr data-rid="' + esc(r.id) + '"><td><select data-r="tipo"><option' + (r.tipo !== "RETIC" ? " selected" : "") + ">CIBER</option><option" + (r.tipo === "RETIC" ? " selected" : "") + ">RETIC</option></select></td>" +
+        "<td>" + inp("codigo", r.codigo, "110px") + "</td><td>" + inp("acronimo", r.acronimo, "90px") + "</td><td>" + inp("nombre", r.nombre) + "</td><td>" + inp("financiador", r.financiador, "80px") + "</td><td>" + inp("ip", r.ip) + "</td>" +
+        "<td>" + inp("fechaFin", r.fechaFin, "100px") + "</td><td>" + inp("centro", r.centro) + "</td><td>" + inp("desde", r.desde, "56px") + " – " + inp("hasta", r.hasta, "56px") + "</td>" +
+        '<td><button class="bt-icono" data-rborrar="' + esc(r.id) + '"><i class="fa-regular fa-trash-can"></i></button></td></tr>'; }).join("") +
+      '</tbody></table></div><p><button class="bt" id="mmNuevaRed"><i class="fa-solid fa-plus"></i> Añadir CIBER o RETIC</button></p>';
+    cu.querySelectorAll("[data-r]").forEach(function (e) { e.addEventListener("change", function () {
+      var id = e.closest("tr").getAttribute("data-rid"), r = R.filter(function (x) { return x.id === id; })[0]; r[e.getAttribute("data-r")] = e.value.trim();
+      G.api("webGuardarRed", G.S.token, r).then(function () { G.aviso("Guardado.", 1500); pintarPestanas(); }).catch(function (err) { G.aviso(err.message, 6000); }); }); });
+    cu.querySelectorAll("[data-rborrar]").forEach(function (b) { b.onclick = function () { var id = b.getAttribute("data-rborrar");
+      G.api("webEliminarRed", G.S.token, id).then(function () { MM.datos.redes = R.filter(function (x) { return x.id !== id; }); pintar(); }).catch(function (e) { G.aviso(e.message, 6000); }); }; });
+    $("mmNuevaRed").onclick = function () {
+      var r = { tipo: "CIBER", acronimo: "Nueva", nombre: "", financiador: "ISCIII", centro: "FIBHULP", desde: String(MM.anio) };
+      G.api("webGuardarRed", G.S.token, r).then(function (x) { r.id = x.id; R.push(r); pintar(); }).catch(function (e) { G.aviso(e.message, 6000); });
+    };
+  }
+
+  // ---------- Excel G75 (mismas hojas, cabeceras, colores y anchos que el archivo de IdiPAZ) ----------
+  var XS = { normal: 0, cab: 1, cabExtra: 2, ajustar: 3, negrita: 4 };
+  function xmlTxt(v) { return String(v).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+  function colL(i) { var s = ""; i++; while (i > 0) { var m = (i - 1) % 26; s = String.fromCharCode(65 + m) + s; i = Math.floor((i - 1) / 26); } return s; }
+  function hojaXml(filas, anchos) {               // filas: [[{v, s}|valor]]
+    var x = ['<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">'];
+    if (anchos && anchos.length) x.push("<cols>" + anchos.map(function (w, i) { return w ? '<col min="' + (i + 1) + '" max="' + (i + 1) + '" width="' + w + '" customWidth="1"/>' : ""; }).join("") + "</cols>");
+    x.push("<sheetData>");
+    filas.forEach(function (f, r) {
+      x.push('<row r="' + (r + 1) + '">');
+      (f || []).forEach(function (c, k) {
+        var o = c !== null && typeof c === "object" ? c : { v: c }, v = o.v;
+        if (v === null || v === undefined || v === "") { if (o.s) x.push('<c r="' + colL(k) + (r + 1) + '" s="' + o.s + '"/>'); return; }
+        var s = o.s ? ' s="' + o.s + '"' : "";
+        if (typeof v === "number") x.push('<c r="' + colL(k) + (r + 1) + '"' + s + "><v>" + v + "</v></c>");
+        else x.push('<c r="' + colL(k) + (r + 1) + '"' + s + ' t="inlineStr"><is><t xml:space="preserve">' + xmlTxt(v) + "</t></is></c>");
+      });
+      x.push("</row>");
+    });
+    x.push("</sheetData></worksheet>");
+    return x.join("");
+  }
+  function libro(hojas) {
+    var ct = hojas.map(function (h, i) { return '<Override PartName="/xl/worksheets/sheet' + (i + 1) + '.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>'; }).join("");
+    var sheets = hojas.map(function (h, i) { return '<sheet name="' + xmlTxt(h.nombre.substring(0, 31)) + '" sheetId="' + (i + 1) + '" r:id="rId' + (i + 1) + '"/>'; }).join("");
+    var rels = hojas.map(function (h, i) { return '<Relationship Id="rId' + (i + 1) + '" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet' + (i + 1) + '.xml"/>'; }).join("") +
+      '<Relationship Id="rId' + (hojas.length + 1) + '" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>';
+    var estilos = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">' +
+      '<fonts count="3"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font></fonts>' +
+      '<fills count="4"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill>' +
+      '<fill><patternFill patternType="solid"><fgColor rgb="FF31869B"/><bgColor indexed="64"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FF3F3151"/><bgColor indexed="64"/></patternFill></fill></fills>' +
+      '<borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>' +
+      '<cellXfs count="5"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>' +
+      '<xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1" applyAlignment="1"><alignment vertical="center" wrapText="1"/></xf>' +
+      '<xf numFmtId="0" fontId="1" fillId="3" borderId="0" xfId="0" applyFont="1" applyFill="1" applyAlignment="1"><alignment vertical="center" wrapText="1"/></xf>' +
+      '<xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0" applyAlignment="1"><alignment vertical="top" wrapText="1"/></xf>' +
+      '<xf numFmtId="0" fontId="2" fillId="0" borderId="0" xfId="0" applyFont="1"/></cellXfs>' +
+      '<cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>';
+    var arch = [
+      ["[Content_Types].xml", '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>' + ct + '<Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>'],
+      ["_rels/.rels", '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>'],
+      ["xl/workbook.xml", '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>' + sheets + "</sheets></workbook>"],
+      ["xl/_rels/workbook.xml.rels", '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' + rels + "</Relationships>"],
+      ["xl/styles.xml", estilos]
+    ];
+    hojas.forEach(function (h, i) { arch.push(["xl/worksheets/sheet" + (i + 1) + ".xml", hojaXml(h.filas, h.anchos)]); });
+    return G.zip(arch);
+  }
+  function cabecera(textos, extras) { return textos.map(function (t, i) { return t === null ? "" : { v: t, s: (extras || []).indexOf(i) !== -1 ? XS.cabExtra : XS.cab }; }); }
+  function construirLibro(pubsCompletas) {
+    var url = MM.datos.url, hojas = [];
+    var C = hComp();
+    hojas.push({ nombre: "Composition", anchos: [19.2, 32, 34, 30, 22, 16, 22, 22], filas: [[url], [], cabecera(C.cab)].concat(C.filas.map(function (f) { return f.vals; })) });
+    var ob = [[url], [], [{ v: "OBJETIVOS ESTRATÉGICOS", s: XS.negrita }]];
+    String(MM.obj.objetivos || "").split("\n").forEach(function (l) { ob.push([{ v: l, s: XS.ajustar }]); });
+    while (ob.length < 12) ob.push([]);
+    ob.push([{ v: "LÍNEAS DE INVESTIGACIÓN", s: XS.negrita }]);
+    String(MM.obj.lineas || "").split("\n").forEach(function (l) { ob.push([{ v: l, s: XS.ajustar }]); });
+    hojas.push({ nombre: "Objectives and Research lines", anchos: [170.3, 10.8], filas: ob });
+    var E = hEstancias() || { cab: [], filas: [] };
+    hojas.push({ nombre: "Estancias", anchos: [31.7, 38.3, 28.2, 14, 16, 16], filas: [cabecera(E.cab)].concat(E.filas.map(function (f) { return f.vals; })) });
+    var P = hPubs(), porId = {}; (pubsCompletas || []).forEach(function (p) { porId[p.ID_Articulo] = p; });
+    hojas.push({ nombre: "Publications", anchos: [65.5, 60, 30, 16, 40, 40, 8, 12, 18, 7, 8, 8, 8, 10, 26, 12, 18],
+      filas: [cabecera(P.cab)].concat(P.filas.map(function (f) { var p = porId[f.id] || f.p; var v = filaPub(p); v[6] = v[6] === "" ? "" : (Number(v[6]) || v[6]); return v; })) });
+    var PR = hProyectos() || { cab: [], filas: [] };
+    hojas.push({ nombre: "Projects", anchos: [19.2, 60, 36, 18, 12, 12, 16, 18], filas: [PR.cab.map(function (t, i) { return t ? { v: t, s: XS.cab } : ""; })].concat(PR.filas.map(function (f) { return f.vals; })) });
+    var T = hTesis() || { cab: [], filas: [] }, tf = [];
+    BLOQUES_TESIS.forEach(function (b, k) {
+      var cab = T.cab.slice(); cab[0] = b[1]; cab[1] = null;
+      if (k > 0) { cab = cab.slice(0, 11); }
+      tf.push(cab.map(function (t, i) { return t === null || t === "" ? "" : { v: t, s: i >= 11 ? XS.cabExtra : XS.cab }; }));
+      var l = T.filas.filter(function (f) { return f.bloque === b[0]; });
+      l.forEach(function (f) { tf.push(k > 0 ? f.vals.slice(0, 11) : f.vals); });
+      tf.push([]); tf.push([]); if (!l.length) tf.push([]);
+    });
+    hojas.push({ nombre: "PhD, MT. and FDT defenses", anchos: [16, 4, 26, 26, 60, 26, 14, 16, 8, 14, 22, 16, 26], filas: tf });
+    var Rd = hRedes(), rf = [];
+    ["CIBER", "RETIC"].forEach(function (b, k) {
+      if (k > 0) { while (rf.length < 9) rf.push([]); }
+      rf.push([{ v: b, s: XS.cab }, ""].concat(Rd.cab.slice(2).map(function (t) { return { v: t, s: XS.cab }; })));
+      Rd.filas.filter(function (f) { return f.bloque === b; }).forEach(function (f) { rf.push(f.vals); });
+    });
+    hojas.push({ nombre: "Redes y Ciber", anchos: [20.7, 40, 16, 14, 40, 14, 28, 18, 20], filas: rf });
+    var EN = hEnsayos() || { cab: ["ENSAYOS CLÍNICOS", "LIBERACIÓN PÚBLICA DE LA BASE DE DATOS BRUTA DEL ESTUDIO (SI/NO)"], filas: [] };
+    hojas.push({ nombre: "Clinical trials", anchos: [92.2, 30], filas: [cabecera(EN.cab, [1])].concat(EN.filas.map(function (f) { return f.vals; })) });
+    var PA = hPatentes() || { cab: ["INVENTORS", "START-UP (SI/NO)", "LICENCIADA A TERCEROS (SI/NO)"], filas: [] };
+    hojas.push({ nombre: "Patents and Trademarks", anchos: [120.7, 11.5, 14], filas: [cabecera(PA.cab, [1, 2])].concat(PA.filas.map(function (f) { return f.vals; })) });
+    return libro(hojas);
+  }
+  function descargar() {
+    if (!MM.datos) return;
+    var ids = hPubs().filas.map(function (f) { return f.id; });
+    G.aviso("Preparando el Excel G75 " + MM.anio + "…", 4000); G.cargando(true);
+    (ids.length ? G.api("webExportarPublicaciones", G.S.token, ids) : Promise.resolve([])).then(function (full) {
+      G.bajar(construirLibro(full), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "G75_Translational research and innovation in general and digestive surgery_" + MM.anio + ".xlsx");
+      if (MM.sucio) G.aviso("Excel descargado. Recuerda guardar los cambios de la memoria.", 6000);
+    }).catch(function (e) { G.aviso(e.message, 7000); }).then(function () { G.cargando(false); });
+  }
+
+  // ---------- registro de la vista ----------
+  $("pestMem").addEventListener("click", function (ev) { var b = ev.target.closest("[data-mtab]"); if (!b) return; MM.tab = b.getAttribute("data-mtab"); pintar(); if (G.subCambiado) G.subCambiado(); });
+  $("mmAnio").onchange = function () {
+    var a = this.value;
+    if (MM.sucio) { var s = this; G.dialogo("Cambios sin guardar", "<p>Hay cambios sin guardar en la memoria " + MM.anio + ".</p>", "Guardar y cambiar", function () { G.cerrarDialogo(); guardar().then(function () { cargar(a); }); }); return; }
+    cargar(a);
+  };
+  $("mmGuardar").onclick = guardar;
+  $("mmExcel").onclick = descargar;
+  window.addEventListener("beforeunload", function (e) { if (MM.sucio) { e.preventDefault(); e.returnValue = ""; } });
+  G.registrar("memoria", { secciones: ["vistaMemoria"], placeholder: "Buscar Publicaciones (desde cualquier vista)",
+    mostrar: function () {
+      if (!admin()) { $("cuerpoMem").innerHTML = '<p class="tenue" style="padding:14px">La Memoria IdiPAZ es solo para administradores.</p>'; $("pestMem").innerHTML = ""; return; }
+      if (!MM.anio) MM.anio = new Date().getFullYear() - 1;
+      selAnios();
+      if (!MM.datos && !MM.cargando) cargar(MM.anio); else pintar();
+    }, ocultar: function () {} });
+  $("btSync").addEventListener("click", function () { if (G.S.vista === "memoria" && !MM.sucio) cargar(MM.anio); });
+  G.memoria = { construir: CONSTR, libro: function () { return construirLibro([]); }, tab: function () { return MM.tab; }, cambiarTab: function (t) { MM.tab = t; pintar(); } };
 })();
 </script>
 
