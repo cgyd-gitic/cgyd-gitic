@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Gestión Científica CGyAD-GITIC · web publicada (GitHub Pages) · versión 0.6.1 · generado el 11/11/2026 a partir de Web_App + Web_Estilos + Web_Cliente + Web_Estudios_Cliente + Web_Congresos_Cliente + Web_Docencia_Cliente + Web_Perfil_Cliente.
+<!-- Gestión Científica CGyAD-GITIC · web publicada (GitHub Pages) · versión 0.7 · generado el 11/11/2026 a partir de Web_App + Web_Estilos + Web_Cliente + Web_Estudios_Cliente + Web_Congresos_Cliente + Web_Docencia_Cliente + Web_Perfil_Cliente.
      No edites este archivo: la dirección del servidor está en config.js. -->
 <html lang="es">
 <head>
@@ -584,6 +584,39 @@
   body.tactil:not(.en-inicio) #btAtras { display:inline-flex; }
   @media (max-width: 899px) { body.tactil:not(.en-inicio) .cab .hueco-logo { display:none; } }
 
+
+  /* ===== v0.7: solicitud de alta, accesos y notificaciones ===== */
+  .bt-solicitar { margin-top:14px; font-size:13.5px; }
+  .alta-form { text-align:left; }
+  .alta-form label { display:block; font-size:12.5px; color:var(--tenue); margin:10px 0 4px; }
+  .alta-form input, .alta-form select, .alta-form textarea { width:100%; box-sizing:border-box; }
+  .alta-form .bt-rojo { width:100%; margin-top:14px; }
+  .alta-form .bt-texto { width:100%; margin-top:6px; }
+  .alta-intro { font-size:13px; color:var(--tenue); margin:0 0 4px; line-height:1.4; }
+  .alta-2 { display:grid; grid-template-columns:1fr 1fr; gap:0 10px; }
+  .alta-mas { margin-top:10px; font-size:13px; } .alta-mas summary { cursor:pointer; color:var(--tenue); }
+  .alta-trampa { position:absolute !important; left:-9999px !important; width:1px !important; height:1px !important; opacity:0; }
+  .alta-form label.alta-acepto { display:flex; gap:8px; align-items:flex-start; color:var(--texto); font-size:12.5px; line-height:1.35; margin-top:14px; }
+  .alta-acepto input { width:auto !important; margin-top:2px; flex:none; }
+  @media (max-width: 480px) { .alta-2 { grid-template-columns:1fr; } }
+  .menu-push { display:flex; gap:8px; align-items:center; }
+  .menu-nota { font-size:11.5px; color:var(--tenue); margin:4px 0 10px; line-height:1.35; }
+  .banner-push { display:flex; align-items:center; gap:10px; flex-wrap:wrap; max-width:1100px; margin:0 auto 12px; padding:10px 14px; border:1px solid var(--borde);
+    border-radius:10px; background:var(--rojo-claro); font-size:13.5px; }
+  .banner-push > i { color:var(--rojo); } .banner-push span { flex:1; min-width:200px; }
+  .acc-tarjeta { border:1px solid var(--borde); border-radius:10px; padding:12px 14px; margin-bottom:12px; background:var(--fondo); }
+  .acc-cab { display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; font-size:15px; }
+  .acc-cab .tenue { font-size:12px; }
+  .acc-datos { display:flex; flex-wrap:wrap; gap:4px 16px; font-size:13px; margin-top:4px; color:var(--tenue); }
+  .acc-datos i { width:14px; }
+  .acc-coment { font-size:13px; margin-top:6px; font-style:italic; }
+  .acc-aviso { margin-top:8px; padding:8px 10px; border-radius:8px; background:var(--rojo-claro); font-size:12.5px; }
+  .acc-aviso > i { color:var(--ambar); }
+  .acc-aviso label { display:block; margin-top:4px; cursor:pointer; }
+  .acc-campos { display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:8px 12px; margin:10px 0; }
+  .acc-campos label { display:flex; flex-direction:column; gap:3px; font-size:12px; color:var(--tenue); }
+  .acc-campos input, .acc-campos select { font-size:13px; }
+
   /* ===== Tema oscuro (v0.6.1). Variables a mano; el resto, generado a partir de los colores fijos de las reglas anteriores.
      Solo en pantalla: al imprimir se usa siempre el tema claro. ===== */
   @media screen {
@@ -716,6 +749,28 @@
         <input id="inEmail" type="email" autocomplete="email" placeholder="nombre@salud.madrid.org">
         <button class="bt-rojo" id="btEnviar">Enviar código</button>
         <button class="bt bt-bio oculto" id="btBioEntrar"><i class="fa-solid fa-fingerprint"></i> Entrar con Face ID / huella</button>
+        <button class="bt-texto bt-solicitar" id="btSolicitar"><i class="fa-solid fa-user-plus"></i> ¿Aún no tienes acceso? Solicitar alta</button>
+      </div>
+      <div id="pasoAlta" class="oculto alta-form">
+        <p class="alta-intro">Rellena tus datos. Un administrador del Servicio revisará la solicitud, decidirá tu rol y recibirás un correo con la respuesta.</p>
+        <div class="alta-2">
+          <div><label for="alNombre">Nombre *</label><input id="alNombre" autocomplete="given-name" maxlength="60"></div>
+          <div><label for="alApellidos">Apellidos *</label><input id="alApellidos" autocomplete="family-name" maxlength="80"></div>
+        </div>
+        <label for="alEmail">Correo con el que entrarás *</label>
+        <input id="alEmail" type="email" autocomplete="email" placeholder="nombre@salud.madrid.org" maxlength="120">
+        <label for="alCargo">Cargo o vinculación con el Servicio *</label>
+        <select id="alCargo"></select>
+        <input id="alCargoOtro" class="oculto" placeholder="Indica tu cargo o vinculación" maxlength="80">
+        <details class="alta-mas"><summary>Datos opcionales (ORCID, otro correo, comentario)</summary>
+          <label for="alOrcid">ORCID</label><input id="alOrcid" placeholder="0000-0000-0000-0000" maxlength="19">
+          <label for="alEmailAlt">Correo alternativo</label><input id="alEmailAlt" type="email" maxlength="120">
+          <label for="alComentario">Comentario para el administrador</label><textarea id="alComentario" rows="2" maxlength="500" placeholder="Por ejemplo: residente de 2.º año, rotación en la Unidad HBP…"></textarea>
+        </details>
+        <input id="alWeb" class="alta-trampa" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <label class="alta-acepto"><input type="checkbox" id="alAcepto"> Acepto que estos datos se guarden en las hojas del Servicio para gestionar mi acceso.</label>
+        <button class="bt-rojo" id="btAltaEnviar">Enviar solicitud</button>
+        <button class="bt-texto" id="btAltaVolver">Volver</button>
       </div>
       <div id="pasoBio" class="oculto">
         <p id="lblBioHola" style="font-size:16px;margin:0 0 6px"></p>
@@ -750,6 +805,9 @@
       <select id="selEscala" class="menu-sel"></select>
       <label class="menu-et" for="selTema"><i class="fa-solid fa-circle-half-stroke"></i> Tema</label>
       <select id="selTema" class="menu-sel"></select>
+      <label class="menu-et"><i class="fa-solid fa-bell"></i> Notificaciones en este dispositivo</label>
+      <div class="menu-push"><button class="bt" id="btPush">Activar</button><button class="bt-texto oculto" id="btPushProbar">Enviar prueba</button></div>
+      <p class="menu-nota" id="txtPush"></p>
       <button class="bt" id="btMiFicha" style="margin-bottom:8px"><i class="fa-solid fa-id-badge"></i> Mi ficha personal</button>
       <button class="bt" id="btSalir"><i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión</button>
     </div>
@@ -795,6 +853,8 @@
         <div class="inicio">
           <div class="inicio-hola"><span class="hueco-logo" data-tam="56"></span>
             <div><h1 id="inicioSaludo">Hola</h1><p class="tenue" id="inicioFecha"></p></div></div>
+          <div class="banner-push oculto" id="bannerPush"><i class="fa-solid fa-bell"></i><span>¿Quieres recibir en este dispositivo, como notificación, los mismos avisos que te llegan por correo?</span>
+            <button class="bt-rojo" id="btBannerPush">Activar</button><button class="bt-texto" id="btBannerNo">Ahora no</button></div>
           <p class="inicio-sub">¿A qué quieres acceder?</p>
           <div class="inicio-tarjetas" id="carrusel">
             <div class="inicio-fila bloques">
@@ -1202,7 +1262,7 @@
   var MODULOS = {   // bloques aún no disponibles en la web
     asistencial: ["Asistencial", "fa-stethoscope", ""]
   };
-  var VERSION_WEB = "0.6.1";
+  var VERSION_WEB = "0.7";
   // Nombres visibles iguales a los de AppSheet (con las erratas corregidas) y orden de la ficha
   var ETIQ = { "Volúmen": "Volumen", "Notas_JCR": "Notas sobre JCR", "Investigadores Servicio": "Investigadores participantes",
                "Posiciones Servicio": "Posición en la autoría", "Es Correspondencia": "¿Es autor de correspondencia?",
@@ -1473,7 +1533,125 @@
     if (!silencioso) { CACHE.vaciar(); guardar("gc_cuenta", null); }       // al cerrar sesión no queda ningún dato en el dispositivo
     if (bioActivo()) mostrarDesbloqueo(); else mostrarAcceso();
   }
-  $("btSalir").onclick = function () { salir(false); };
+  $("btSalir").onclick = function () { var fin = function () { salir(false); }; PUSH.desactivar(true).then(fin, fin); };
+
+  // ---------- solicitud de alta (pantalla de acceso, sin sesión) ----------
+  var CARGOS_ALTA = ["Facultativo/a especialista (FEA)", "Jefe/a de Sección", "Jefe/a de Servicio", "Médico/a residente (MIR)", "Investigador/a",
+    "Personal de enfermería", "Estudiante", "Colaborador/a externo/a", "Otro"];
+  (function () {
+    var sel = $("alCargo"); if (!sel) return;
+    sel.innerHTML = '<option value="">— Elige —</option>' + CARGOS_ALTA.map(function (x) { return "<option>" + esc(x) + "</option>"; }).join("");
+    sel.onchange = function () { $("alCargoOtro").classList.toggle("oculto", sel.value !== "Otro"); };
+    var ver = function (alta) { $("pasoEmail").classList.toggle("oculto", alta); $("pasoAlta").classList.toggle("oculto", !alta); $("pasoCodigo").classList.add("oculto"); $("pasoBio").classList.add("oculto"); };
+    $("btSolicitar").onclick = function () { ver(true); $("msgAcceso").textContent = ""; if (!$("alEmail").value) $("alEmail").value = $("inEmail").value.trim(); $("alNombre").focus(); };
+    $("btAltaVolver").onclick = function () { ver(false); $("msgAcceso").textContent = ""; };
+    $("btAltaEnviar").onclick = function () {
+      var cargo = sel.value === "Otro" ? $("alCargoOtro").value.trim() : sel.value;
+      var d = { nombre: $("alNombre").value.trim(), apellidos: $("alApellidos").value.trim(), email: $("alEmail").value.trim(), emailAlt: $("alEmailAlt").value.trim(),
+        cargo: cargo, orcid: $("alOrcid").value.trim(), comentario: $("alComentario").value.trim(), acepto: $("alAcepto").checked, web: $("alWeb").value };
+      var falta = !d.nombre ? "tu nombre" : !d.apellidos ? "tus apellidos" : !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(d.email) ? "un correo válido" : !d.cargo ? "tu cargo" : "";
+      if (falta) { $("msgAcceso").textContent = "Falta " + falta + "."; return; }
+      if (!d.acepto) { $("msgAcceso").textContent = "Marca la casilla de aceptación para enviar la solicitud."; return; }
+      $("btAltaEnviar").disabled = true; $("msgAcceso").textContent = "Enviando…";
+      api("webSolicitarAcceso", d).then(function (r) {
+        $("msgAcceso").textContent = r.mensaje;
+        if (r.ok) { ver(false); $("inEmail").value = d.email; ["alNombre", "alApellidos", "alEmailAlt", "alOrcid", "alComentario", "alCargoOtro"].forEach(function (id) { $(id).value = ""; }); sel.value = ""; $("alAcepto").checked = false; }
+      }).catch(function (e) { $("msgAcceso").textContent = e.message; }).then(function () { $("btAltaEnviar").disabled = false; });
+    };
+  })();
+
+  // ---------- notificaciones push (web publicada en GitHub Pages; en iPhone/iPad, con la web instalada) ----------
+  var PUSH = (function () {
+    var ua = navigator.userAgent || "", ios = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    var instalada = window.navigator.standalone === true || !!(window.matchMedia && window.matchMedia("(display-mode: standalone)").matches);
+    var soportado = !EN_APPS_SCRIPT && !!window.isSecureContext && "serviceWorker" in navigator && "PushManager" in window && "Notification" in window;
+    function b64u8(s) { s = String(s).replace(/-/g, "+").replace(/_/g, "/"); while (s.length % 4) s += "="; var b = atob(s), u = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return u; }
+    function idb(modo, valor) {          // configuración para el service worker: dirección del servidor y código de este dispositivo
+      return new Promise(function (ok) {
+        try {
+          var rq = indexedDB.open("gc-push", 1);
+          rq.onupgradeneeded = function () { rq.result.createObjectStore("cfg"); };
+          rq.onsuccess = function () { try { var st = rq.result.transaction("cfg", modo === "leer" ? "readonly" : "readwrite").objectStore("cfg");
+            var r = modo === "leer" ? st.get("cfg") : modo === "borrar" ? st.delete("cfg") : st.put(valor, "cfg"); r.onsuccess = function () { ok(r.result); }; r.onerror = function () { ok(null); }; } catch (e) { ok(null); } };
+          rq.onerror = function () { ok(null); };
+        } catch (e) { ok(null); }
+      });
+    }
+    function registro() { return navigator.serviceWorker.getRegistration().then(function (r) { return r || navigator.serviceWorker.register("sw.js"); }).then(function () { return navigator.serviceWorker.ready; }); }
+    function suscripcion() { return soportado ? registro().then(function (r) { return r.pushManager.getSubscription(); }).catch(function () { return null; }) : Promise.resolve(null); }
+    function dispositivo() {
+      return (/iPhone/.test(ua) ? "iPhone" : ios ? "iPad" : /Android/.test(ua) ? "Android" : /Mac/.test(ua) ? "Mac" : /Windows/.test(ua) ? "Windows" : "Otro") + " · " +
+        (/Edg\//.test(ua) ? "Edge" : /Chrome\//.test(ua) ? "Chrome" : /Firefox\//.test(ua) ? "Firefox" : /Safari\//.test(ua) ? "Safari" : "navegador") + (instalada ? " (app)" : "");
+    }
+    function guardarSub(sub) { return api("webPushSuscribir", S.token, { endpoint: sub.endpoint, dispositivo: dispositivo() }).then(function (r) { return idb("poner", { api: window.GC_API || "", secreto: r.secreto }).then(function () { return r; }); }); }
+    function activar() {                 // el permiso se pide en el mismo toque (obligatorio en iPhone)
+      var perm = Notification.permission === "granted" ? Promise.resolve("granted") : Promise.resolve(Notification.requestPermission());
+      return perm.then(function (p) {
+        if (p !== "granted") throw new Error(p === "denied" ? "Las notificaciones están bloqueadas para esta web: actívalas en los ajustes del navegador o del teléfono." : "No se han permitido las notificaciones.");
+        return Promise.all([registro(), api("webPushClave", S.token)]);
+      }).then(function (x) {
+        var reg = x[0], clave = b64u8(x[1].clave);
+        return reg.pushManager.getSubscription().then(function (s) {
+          var k = s && s.options && s.options.applicationServerKey ? new Uint8Array(s.options.applicationServerKey) : null;
+          if (s && k && (k.length !== clave.length || Array.prototype.some.call(k, function (v, i) { return v !== clave[i]; }))) return s.unsubscribe().then(function () { return null; });
+          return s;
+        }).then(function (s) { return s || reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: clave }); });
+      }).then(guardarSub);
+    }
+    function desactivar(conServidor) {
+      return suscripcion().then(function (s) {
+        if (!s) return; var ep = s.endpoint;
+        return s.unsubscribe().catch(function () {}).then(function () { if (conServidor && S.token) return api("webPushBaja", S.token, ep).catch(function () {}); });
+      }).then(function () { return idb("borrar"); }).catch(function () {});
+    }
+    function sincronizar() {             // al entrar: renueva el código del dispositivo si ya estaban activadas
+      if (!soportado || Notification.permission !== "granted" || !S.token) return Promise.resolve();
+      return suscripcion().then(function (s) { if (s) return guardarSub(s); }).catch(function () {});
+    }
+    function estado() {                  // "app" (falta instalar en iPhone), "no", "bloqueadas", "on", "off"
+      if (EN_APPS_SCRIPT) return Promise.resolve("as");
+      if (ios && !instalada) return Promise.resolve("app");
+      if (!soportado) return Promise.resolve("no");
+      if (Notification.permission === "denied") return Promise.resolve("bloqueadas");
+      return suscripcion().then(function (s) { return s && Notification.permission === "granted" ? "on" : "off"; });
+    }
+    var TXT = { as: "Disponibles en la web publicada (la dirección de GitHub Pages), no en esta.", app: "En iPhone y iPad, primero instala la web: Safari → Compartir → «Añadir a pantalla de inicio». Después actívalas desde la app.",
+      no: "Este navegador no admite notificaciones.", bloqueadas: "Bloqueadas para esta web en los ajustes del navegador o del teléfono.",
+      on: "Activadas: recibirás aquí los mismos avisos que por correo.", off: "Recibe aquí, como notificación, los mismos avisos que te llegan por correo." };
+    function pintar() {
+      var b = $("btPush"); if (!b) return Promise.resolve();
+      return estado().then(function (e) {
+        b.classList.toggle("oculto", e !== "on" && e !== "off"); b.textContent = e === "on" ? "Desactivar" : "Activar"; b.setAttribute("data-on", e === "on" ? "1" : "");
+        $("btPushProbar").classList.toggle("oculto", e !== "on"); $("txtPush").textContent = TXT[e] || "";
+        var ban = $("bannerPush"); if (ban) ban.classList.toggle("oculto", !(e === "off" && Notification.permission === "default" && !leer("gc_push_no")));
+      });
+    }
+    function alternar() {
+      var on = $("btPush").getAttribute("data-on") === "1";
+      var p = on ? desactivar(true).then(function () { aviso("Notificaciones desactivadas en este dispositivo.", 3000); }) : activar().then(function (r) { aviso(r.mensaje, 3500); });
+      $("btPush").disabled = true;
+      return p.catch(function (e) { aviso(e.message, 7000); }).then(function () { $("btPush").disabled = false; return pintar(); });
+    }
+    if ($("btPush")) {
+      $("btPush").onclick = alternar;
+      $("btPushProbar").onclick = function () { api("webPushProbar", S.token).then(function (r) { aviso(r.mensaje, 4000); }).catch(function (e) { aviso(e.message, 6000); }); };
+      $("btBannerPush").onclick = function () { $("bannerPush").classList.add("oculto"); activar().then(function (r) { aviso(r.mensaje, 3500); }).catch(function (e) { aviso(e.message, 7000); }).then(pintar); };
+      $("btBannerNo").onclick = function () { guardar("gc_push_no", "1"); $("bannerPush").classList.add("oculto"); };
+      $("avatar").addEventListener("click", function () { pintar(); });
+    }
+    if (soportado && navigator.serviceWorker.addEventListener) navigator.serviceWorker.addEventListener("message", function (ev) { if (ev.data && ev.data.ir) irAviso(ev.data.ir); });
+    return { soportado: soportado, activar: activar, desactivar: desactivar, sincronizar: sincronizar, pintar: pintar, estado: estado };
+  })();
+  // Al tocar una notificación se abre la pantalla del aviso (#ir=revision:accesos, #ir=docencia…)
+  function irAviso(destino) {
+    if (!S.inicio) return;
+    var m = String(destino || "").match(/^([a-z]+)(?::([a-z]+))?$/); if (!m) return;
+    var v = m[1], sub = m[2] || "";
+    if (!GC.mod[v] && v !== "revision" && v !== "inicio" && v !== "pubs") return;
+    if (v === "revision") REV.tab = sub || null;
+    mostrarVista(v);
+    if (sub && v !== "revision") { try { aplicarSub(v, sub); subCambiado(true); } catch (e) {} }
+  }
 
 
   // ---------- Face ID / huella (passkeys WebAuthn) — solo en la web publicada en su propia dirección ----------
@@ -1666,6 +1844,9 @@
         PILA = [{ v: "inicio", sub: "" }];
         mostrarVista("inicio", { sinHistoria: true });     // pantalla de bienvenida; las publicaciones se cargan en segundo plano
         cargarPubs(conCache).then(precargar);
+        var irA0 = (location.hash.match(/^#ir=([a-z:]+)$/) || [])[1];
+        if (irA0) { try { history.replaceState({ gc: 1, v: "inicio" }, "", location.pathname + location.search); } catch (e) {} setTimeout(function () { irAviso(irA0); }, 400); }
+        setTimeout(function () { PUSH.sincronizar().then(PUSH.pintar); }, 1500);
       } else if (S.vista === "inicio") pintarInicio();
     }
     if (conCache) CACHE.get("webInicio").then(function (x) { if (x && !aplicado && S.token) { aplicado = true; aplicar(x.v); } });
@@ -1681,6 +1862,7 @@
       if (GC.docencia && GC.docencia.asegurar) GC.docencia.asegurar();
       if (S.inicio.usuario.admin && GC.congresos && GC.congresos.asegurar) GC.congresos.asegurar();
       cargarRecl().then(contarRevision, function () {});
+      if (S.inicio.usuario.admin) cargarAccesos().then(contarRevision, function () {});
       if (GC.perfil && GC.perfil.cargarFotoPropia) GC.perfil.cargarFotoPropia();
     }, 800);
   }
@@ -2145,6 +2327,7 @@
       if (Array.prototype.some.call($("fPersona").options || [], function (o) { return o.value === n; })) $("fPersona").value = n;
       S.ano = ""; S.anoAuto = false; pintarLista();
     } };
+  GC.push = PUSH; GC.irAviso = irAviso;
   var CIENCIA = [["pubs", "Publicaciones", "fa-book"], ["congresos", "Congresos y cursos", "fa-people-group"], ["estudios", "Estudios", "fa-flask"], ["meritos", "Otros méritos", "fa-award"]];
   function bloqueDe(v) { return v === "pubs" ? "ciencia" : (GC.mod[v] && GC.mod[v].bloque) || ""; }
   function grupoDe(v) { return (GC.mod[v] && GC.mod[v].grupo) || v; }
@@ -2198,7 +2381,7 @@
         '<p class="tenue">Los datos se guardan en las hojas de Google del Servicio. Para ir más rápido, este dispositivo guarda una copia de lo último que has consultado; se borra al cerrar sesión.<br>Dudas o errores: escribe al administrador del Servicio.</p>';
       ponerLogo();
     }
-    if (v === "revision") pintarRevision();
+    if (v === "revision") { if (S.inicio && S.inicio.usuario.admin && REV.tab === "accesos") S.accesos = null; pintarRevision(); }
     if (GC.mod[v] && GC.mod[v].mostrar) GC.mod[v].mostrar();
     if (!opc.sinHistoria && S.inicio) {
       var st = history.state || {};
@@ -2466,11 +2649,13 @@
   // Resto: mis reclamaciones · mis registros de docencia y méritos sin validar o rechazados · mis solicitudes de días.
   var REV = { tab: null };
   S.reclCargadas = false;
+  S.accesos = null;
+  function cargarAccesos() { return api("webSolicitudesAcceso", S.token).then(function (r) { S.accesos = r; return r; }); }
   function cargarRecl() { return api("webMisReclamaciones", S.token).then(function (l) { S.recl = l; S.reclCargadas = true; return l; }); }
   function pendientePub(p) { return estadoDe(p) === "Pendiente de Confirmación"; }
   function revSecciones() {
     return S.inicio.usuario.admin ?
-      [["pubs", "Publicaciones", "fa-book"], ["autoria", "Autoría", "fa-user-check"], ["docencia", "Docencia y méritos", "fa-user-graduate"],
+      [["pubs", "Publicaciones", "fa-book"], ["accesos", "Accesos", "fa-user-plus"], ["autoria", "Autoría", "fa-user-check"], ["docencia", "Docencia y méritos", "fa-user-graduate"],
        ["dias", "Días de congreso", "fa-calendar-days"], ["ia", "Propuestas IA", "fa-wand-magic-sparkles"]] :
       [["autoria", "Mis reclamaciones", "fa-user-check"], ["docencia", "Mis registros", "fa-user-graduate"], ["dias", "Mis solicitudes de días", "fa-calendar-days"]];
   }
@@ -2498,6 +2683,7 @@
     var admin = S.inicio.usuario.admin, doc = revDocencia(), dias = revDias(), ia = revIA(), V = GC.docencia && GC.docencia.VAL;
     return {
       pubs: S.pubs.filter(pendientePub).length,
+      accesos: admin ? (S.accesos ? S.accesos.pendientes.length : null) : 0,
       autoria: S.reclCargadas ? S.recl.filter(function (r) { return r.Estado === "Pendiente"; }).length : null,
       docencia: doc === null ? null : admin ? doc.length : doc.filter(function (x) { return x.r.estadoVal === V.no; }).length,
       dias: dias === null ? null : admin ? dias.length : 0,
@@ -2508,7 +2694,7 @@
     if (!S.inicio) return;
     var k = revCuentas(), admin = S.inicio.usuario.admin;
     // contador: lo que requiere una acción (administradores: todo lo pendiente; resto: registros rechazados que hay que corregir)
-    var n = admin ? (k.pubs || 0) + (k.autoria || 0) + (k.docencia || 0) + (k.dias || 0) + (k.ia || 0) : (k.docencia || 0);
+    var n = admin ? (k.pubs || 0) + (k.accesos || 0) + (k.autoria || 0) + (k.docencia || 0) + (k.dias || 0) + (k.ia || 0) : (k.docencia || 0);
     ["cntRevisionRiel", "cntRevisionCajon", "cntRevisionInicio", "cntRevisionInferior"].forEach(function (id) { if ($(id)) { $(id).textContent = n ? String(n) : ""; $(id).classList.toggle("oculto", !n); } });
     if ($("txtRevisionInicio")) $("txtRevisionInicio").textContent = n ? n + (admin ? (n === 1 ? " pendiente de revisar" : " pendientes de revisar") : (n === 1 ? " registro que corregir" : " registros que corregir")) :
       (admin ? "Nada pendiente" : "Todo en orden");
@@ -2534,6 +2720,49 @@
     api("webResolverReclamacion", S.token, id, dec).then(function (r) { aviso(r.mensaje, 5000); return cargarRecl(); })
       .then(function () { pintarRevision(); contarRevision(); }).catch(function (e) { aviso(e.message, 6000); }).then(function () { cargando(false); });
   }
+  // ---------- Revisar → Accesos: solicitudes de alta (solo administradores) ----------
+  function pintarAccesos(cu) {
+    var A = S.accesos, opt = function (l, v) { return l.map(function (x) { return "<option" + (x === v ? " selected" : "") + ">" + esc(x) + "</option>"; }).join(""); };
+    var h = ['<p class="rev-ayuda">Personas que han pedido acceso desde la pantalla de entrada. Revisa sus datos, elige su <b>rol</b> y apruébalas: se crea (o se reactiva) su ficha en Personal_Investigador y reciben un correo para entrar.</p>'];
+    if (!A.pendientes.length) h.push(vacioHtml("No hay solicitudes de acceso pendientes."));
+    A.pendientes.forEach(function (s) {
+      var nm = s.nombre + " " + s.apellidos, mostrar = s.nombre + " " + String(s.apellidos).split(" ")[0], completo = (s.apellidos + ", " + s.nombre).toUpperCase();
+      var cargos = A.cargos.indexOf(s.cargo) === -1 ? [s.cargo].concat(A.cargos) : A.cargos;
+      h.push('<div class="acc-tarjeta" data-acc="' + esc(s.id) + '"><div class="acc-cab"><b>' + esc(nm) + '</b><span class="tenue">' + esc(s.fecha) + "</span></div>" +
+        '<div class="acc-datos"><span><i class="fa-regular fa-envelope"></i> ' + esc(s.email) + (s.emailAlt ? " · " + esc(s.emailAlt) : "") + "</span><span><i class=\"fa-solid fa-briefcase\"></i> " + esc(s.cargo) + "</span>" +
+          (s.orcid ? '<span><i class="fa-brands fa-orcid"></i> ' + esc(s.orcid) + "</span>" : "") + "</div>" +
+        (s.comentario ? '<div class="acc-coment">«' + esc(s.comentario) + "»</div>" : "") +
+        (s.coincidencias.length ? '<div class="acc-aviso"><i class="fa-solid fa-triangle-exclamation"></i> Ya hay ' + (s.coincidencias.length === 1 ? "una ficha parecida" : "fichas parecidas") + " en Personal_Investigador:" +
+          '<label><input type="radio" name="vinc_' + esc(s.id) + '" value="" checked> Crear un alta nueva</label>' +
+          s.coincidencias.map(function (p) { return '<label><input type="radio" name="vinc_' + esc(s.id) + '" value="' + esc(p.id) + '"> Usar la ficha de <b>' + esc(p.nombre) + "</b> (" + esc(p.id || "sin ID") + " · " + esc(p.estado || "sin estado") + (p.mismoCorreo ? " · mismo correo" : "") + ")</label>"; }).join("") + "</div>" : "") +
+        '<div class="acc-campos">' +
+          '<label>Rol<select data-c="rol">' + opt(A.roles, "Investigador") + "</select></label>" +
+          '<label>Cargo<select data-c="cargo">' + opt(cargos, s.cargo) + "</select></label>" +
+          '<label>Nombre en la web<input data-c="nombreMostrar" value="' + esc(mostrar) + '"></label>' +
+          '<label title="Se usa para encontrar sus publicaciones (APELLIDOS, NOMBRE)">Nombre completo (para sus publicaciones)<input data-c="nombreCompleto" value="' + esc(completo) + '"></label>' +
+          '<label>ORCID<input data-c="orcid" value="' + esc(s.orcid) + '" placeholder="0000-0000-0000-0000"></label>' +
+          '<label>Nota (opcional; se incluye en el correo si se rechaza)<input data-c="motivo" maxlength="300"></label></div>' +
+        '<div class="botones" style="justify-content:flex-start"><button class="bt-rojo" data-aprobar="' + esc(s.id) + '"><i class="fa-solid fa-check"></i> Aprobar</button>' +
+          '<button class="bt" data-rechazar="' + esc(s.id) + '"><i class="fa-solid fa-xmark"></i> Rechazar</button></div></div>');
+    });
+    if (A.recientes.length) h.push('<h3 class="rev-sub">Resueltas recientemente</h3><div class="lista-simple">' + A.recientes.map(function (s) {
+      return '<div class="item-lista"><div class="t">' + esc(s.nombre + " " + s.apellidos) + ' <span class="et ' + (s.estado === "Aprobada" ? "ok" : "falta") + '">' + esc(s.estado) + "</span></div>" +
+        '<div class="m">' + esc([s.email, s.estado === "Aprobada" ? "rol " + s.rol + (s.idInv ? " · " + s.idInv : "") : s.motivo, s.resueltaPor ? "por " + s.resueltaPor : "", s.fechaRes].filter(Boolean).join(" · ")) + "</div></div>";
+    }).join("") + "</div>");
+    cu.innerHTML = h.join("");
+    var resolver = function (id, aprobar) {
+      var t = cu.querySelector('[data-acc="' + id + '"]'), d = { aprobar: aprobar };
+      t.querySelectorAll("[data-c]").forEach(function (e) { d[e.getAttribute("data-c")] = e.value.trim(); });
+      var r = t.querySelector('input[name="vinc_' + id + '"]:checked'); d.vincular = r ? r.value : "";
+      var s = A.pendientes.filter(function (x) { return x.id === id; })[0];
+      if (!confirm(aprobar ? "¿Aprobar el acceso de " + s.nombre + " " + s.apellidos + " con rol «" + d.rol + "»?" : "¿Rechazar la solicitud de " + s.nombre + " " + s.apellidos + "?")) return;
+      cargando(true);
+      api("webResolverAcceso", S.token, id, d).then(function (x) { aviso(x.mensaje, 6000); return cargarAccesos(); })
+        .then(function () { pintarRevision(); contarRevision(); }).catch(function (e) { aviso(e.message, 7000); }).then(function () { cargando(false); });
+    };
+    cu.querySelectorAll("[data-aprobar]").forEach(function (b) { b.onclick = function () { resolver(b.getAttribute("data-aprobar"), true); }; });
+    cu.querySelectorAll("[data-rechazar]").forEach(function (b) { b.onclick = function () { resolver(b.getAttribute("data-rechazar"), false); }; });
+  }
   function fechaCorta(iso) { var p = String(iso || "").split("-"); return p.length === 3 ? p[2] + "/" + p[1] + "/" + p[0] : String(iso || ""); }
   function cargandoHtml(txt) { return '<p class="tenue" style="padding:10px 2px"><i class="fa-solid fa-spinner fa-spin"></i> ' + esc(txt) + "</p>"; }
   function vacioHtml(txt) { return '<div class="rev-vacio"><i class="fa-regular fa-circle-check"></i> ' + esc(txt) + "</div>"; }
@@ -2554,6 +2783,9 @@
       h.push(pend.length ? '<div class="lista-simple" id="revPubs">' + pend.map(itemPub).join("") + "</div>" : vacioHtml("No hay publicaciones pendientes."));
       cu.innerHTML = h.join("");
       if ($("revPubs")) $("revPubs").onclick = clicLista;
+    } else if (t === "accesos") {
+      if (!S.accesos) { cu.innerHTML = cargandoHtml("Cargando solicitudes de acceso…"); cargarAccesos().then(pintarRevision, function (e) { cu.innerHTML = vacioHtml(e.message); }); return; }
+      pintarAccesos(cu); return;
     } else if (t === "autoria") {
       if (!S.reclCargadas) { cu.innerHTML = cargandoHtml("Cargando reclamaciones…"); cargarRecl().then(pintarRevision, function (e) { aviso(e.message); }); return; }
       if (admin) {
@@ -2610,7 +2842,7 @@
       }
     }
   }
-  $("pestRev").addEventListener("click", function (ev) { var b = ev.target.closest("[data-rtab]"); if (b) { REV.tab = b.getAttribute("data-rtab"); pintarRevision(); subCambiado(); } });
+  $("pestRev").addEventListener("click", function (ev) { var b = ev.target.closest("[data-rtab]"); if (b) { REV.tab = b.getAttribute("data-rtab"); if (REV.tab === "accesos") S.accesos = null; pintarRevision(); subCambiado(); } });
 
   // ---------- descargar la lista filtrada ----------
   var ETIQ_EXPORT = { "Revista": "Revista / Libro", "Personas Servicio": "Personas del Servicio", "ID_Articulo": "ID_Articulo" };
