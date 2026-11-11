@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Gestión Científica CGyAD-GITIC · web publicada (GitHub Pages) · versión 0.5.1 · generado el 10/11/2026 a partir de Web_App + Web_Estilos + Web_Cliente + Web_Estudios_Cliente + Web_Congresos_Cliente + Web_Docencia_Cliente + Web_Perfil_Cliente.
+<!-- Gestión Científica CGyAD-GITIC · web publicada (GitHub Pages) · versión 0.6.1 · generado el 11/11/2026 a partir de Web_App + Web_Estilos + Web_Cliente + Web_Estudios_Cliente + Web_Congresos_Cliente + Web_Docencia_Cliente + Web_Perfil_Cliente.
      No edites este archivo: la dirección del servidor está en config.js. -->
 <html lang="es">
 <head>
@@ -17,6 +17,7 @@
   <script src="config.js"></script>
 
   <title>Gestión Científica CGyAD-GITIC</title>
+  <script>try { var gcT = localStorage.getItem("gc_tema"); if (gcT === "oscuro" || (gcT !== "claro" && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches)) document.documentElement.classList.add("tema-oscuro"); } catch (e) {}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -444,7 +445,8 @@
   .tarjeta-inicio .contador { position:absolute; top:10px; right:10px; }
   .tarjeta-inicio.mini .ti-ir { top:50%; bottom:auto; transform:translateY(-50%); }
   .tarjeta-inicio.mini { padding:14px 34px 14px 14px; justify-content:center; }
-  .tarjeta-inicio.proximo { opacity:.65; }
+  .tarjeta-inicio.proximo > :not(.pop-info) { opacity:.65; }
+  .tarjeta-inicio.con-pop { z-index:40; }
   .tarjeta-inicio.proximo .ti-ico { background:var(--gris); color:var(--tenue); }
   .ti-foto { width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:500; }
   .ti-foto img { width:100%; height:100%; object-fit:cover; }
@@ -576,6 +578,117 @@
   .mm-otras { margin-top:12px; background:#fff; border:1px solid var(--borde); border-radius:10px; padding:10px 14px; }
   .mm-otras summary { cursor:pointer; color:var(--tenue); font-size:13px; }
   @media (max-width: 899px) { .mm-cuerpo { padding:8px 8px 90px; } #vistaMemoria .barra-vista h2 { display:none; } .mm-estado { display:none; } }
+
+  /* ===== v0.6.1: botón «atrás» en pantallas táctiles ===== */
+  #btAtras { display:none; }
+  body.tactil:not(.en-inicio) #btAtras { display:inline-flex; }
+  @media (max-width: 899px) { body.tactil:not(.en-inicio) .cab .hueco-logo { display:none; } }
+
+  /* ===== Tema oscuro (v0.6.1). Variables a mano; el resto, generado a partir de los colores fijos de las reglas anteriores.
+     Solo en pantalla: al imprimir se usa siempre el tema claro. ===== */
+  @media screen {
+    html.tema-oscuro { color-scheme:dark; --rojo:#ef5350; --rojo-osc:#e57373; --rojo-claro:#3a2224; --rojo-sel:#4a2629; --fondo:#121417; --borde:#343a41;
+      --texto:#e6e8eb; --tenue:#9aa3ad; --gris:#262b31; --verde:#7cc68a; --ambar:#f2b45a; }
+    html.tema-oscuro body { background:var(--fondo); color:var(--texto); }
+    html.tema-oscuro img.logo-img, html.tema-oscuro .hueco-logo img { background:#fff; border-radius:8px; }
+    html.tema-oscuro ::placeholder { color:#7d858f; }
+    html.tema-oscuro a { color:#8ab4f8; }
+    html.tema-oscuro input, html.tema-oscuro select, html.tema-oscuro textarea { background:#1c1e22; }
+    html.tema-oscuro .bt { background:#1c1e22; }
+    html.tema-oscuro .acceso { background:#1c1e22; }
+    html.tema-oscuro .cab { background:#1c1e22; }
+    html.tema-oscuro .menu-usuario { background:#1c1e22; box-shadow:0 6px 20px rgba(0,0,0,0.36); }
+    html.tema-oscuro .riel { background:#1c1e22; }
+    html.tema-oscuro .cajon { background:#1c1e22; box-shadow:4px 0 16px rgba(0,0,0,0.24); }
+    html.tema-oscuro .panel { background:#1c1e22; }
+    html.tema-oscuro .contador { color:#ededed; }
+    html.tema-oscuro .filtros { background:#1c1e22; box-shadow:0 6px 20px rgba(0,0,0,0.36); }
+    html.tema-oscuro .fila { border-bottom:1px solid #3e4145; }
+    html.tema-oscuro .fila.cabecera { background:#1c1e22; }
+    html.tema-oscuro .fila:not(.cabecera):hover { background:#1e2124; }
+    html.tema-oscuro .grupo-tabla { background:#1d2124; border-bottom:1px solid #3e4145; }
+    html.tema-oscuro .et { background:#242729; color:#bfccd2; }
+    html.tema-oscuro .et.q1 { background:#233426; color:#b0e8b4; }
+    html.tema-oscuro .et.no { background:#392e1f; color:#ead3ad; }
+    html.tema-oscuro .et.pend { background:#3e3518; color:#eadcad; }
+    html.tema-oscuro .et.desc { background:#361717; color:#e69999; }
+    html.tema-oscuro .tarjeta { background:#1c1e22; }
+    html.tema-oscuro .et-cat { background:#1c1e22; }
+    html.tema-oscuro .recl { border-top:1px solid #3e4145; }
+    html.tema-oscuro .dialogo { background:#1c1e22; }
+    @media (max-width: 899px) {
+      html.tema-oscuro .buscador { background:#1c1e22; }
+      html.tema-oscuro .tm { background:#1c1e22; border-bottom:1px solid #3e4145; }
+      html.tema-oscuro .inferior { background:#1c1e22; }
+    }
+    html.tema-oscuro .item-lista { border-top:1px solid #3e4145; }
+    html.tema-oscuro .item-lista:hover { background:#1e2124; }
+    html.tema-oscuro .indicadores { background:#1d2124; }
+    html.tema-oscuro .ind { background:#1c1e22; }
+    html.tema-oscuro .deck-grupo { background:#1d2124; border-bottom:1px solid #3e4145; }
+    html.tema-oscuro .deck { border-bottom:1px solid #3e4145; }
+    html.tema-oscuro .deck:hover { background:#1e2124; }
+    html.tema-oscuro .et.falta { background:#361717; color:#e69999; }
+    html.tema-oscuro .et.bloq { background:#242729; color:#b3c3ca; }
+    html.tema-oscuro .et.ok { background:#233426; color:#b0e8b4; }
+    html.tema-oscuro .tabla-simple td { border-bottom:1px solid #3e4145; }
+    html.tema-oscuro .tabla-simple tr.clic:hover td { background:#1e2124; }
+    html.tema-oscuro .tabla-simple tr.falta td { color:#e69999; background:#2f1212; }
+    html.tema-oscuro .chips { background:#1c1e22; }
+    html.tema-oscuro .chips .chip.externo { background:#3e3518; }
+    html.tema-oscuro .chips .chip.fuera { background:#361717; color:#e69999; }
+    html.tema-oscuro .grupo-pac { background:#1d2124; border-bottom:1px solid #3e4145; }
+    html.tema-oscuro .et.ia { background:#1f212e; color:#929ce1; }
+    html.tema-oscuro .recl.aport.clic:hover { background:#1e2124; }
+    html.tema-oscuro .inicio { background:linear-gradient(180deg, #1c1e22 0%, var(--fondo) 100%); }
+    html.tema-oscuro .mosaico { background:#1c1e22; }
+    html.tema-oscuro .mosaico:hover, html.tema-oscuro .mosaico:focus-visible { box-shadow:0 4px 14px rgba(0,0,0,0.24); }
+    html.tema-oscuro .aviso-pend { background:#372f15; border-bottom:1px solid #665b38; }
+    html.tema-oscuro .cal-dia { border:1px solid #3e4145; background:#1c1e22; }
+    html.tema-oscuro .cal-dia.nolab { background:#212325; }
+    html.tema-oscuro .cal-dia.muchos { background:#361717; }
+    html.tema-oscuro .cal-dia.muchos .fa-triangle-exclamation { color:#e69999; }
+    html.tema-oscuro .cal-fest { color:#e69999; }
+    html.tema-oscuro .cal-p { background:#233426; color:#b0e8b4; }
+    html.tema-oscuro .cal-p.pend { background:#1c1e22; color:#eadcad; }
+    html.tema-oscuro .bloque-bar { background:#1d2124; }
+    html.tema-oscuro .bloque-bar button { background:#1c1e22; }
+    html.tema-oscuro .bloque-mosaico { background:#1c1e22; }
+    html.tema-oscuro .bloque-mosaico:hover { box-shadow:0 4px 14px rgba(0,0,0,0.24); }
+    html.tema-oscuro .bloque-mosaico .atajos button { background:#1d2124; }
+    html.tema-oscuro .rev-vacio i { color:#a0e7b6; }
+    html.tema-oscuro .pf-cambiar { border:2px solid #353a41; }
+    html.tema-oscuro .pf-bloque { background:#1c1e22; }
+    html.tema-oscuro .tarjeta-inicio { background:#1c1e22; }
+    html.tema-oscuro .pop-info { background:#1c1e22; box-shadow:0 8px 24px rgba(0,0,0,0.48); }
+    html.tema-oscuro .pop-info p { color:#c7cbcd; }
+    @media (hover: hover) and (pointer: fine) {
+      html.tema-oscuro .tarjeta-inicio:hover { box-shadow:0 6px 18px rgba(0,0,0,0.3); }
+    }
+    @media (hover: hover) and (pointer: fine) {
+      html.tema-oscuro .tarjeta-inicio.con-lista .ti-subs { background:#1c1e22; box-shadow:0 12px 20px rgba(0,0,0,0.3); }
+    }
+    html.tema-oscuro .et.pdf { background:#321a17; color:#e18b86; }
+    html.tema-oscuro .ico-pdf { color:#e18b86; }
+    html.tema-oscuro #vistaPerfil .perfil-cuerpo { background:#1f2125; }
+    html.tema-oscuro .pf-card { background:#1c1e22; }
+    html.tema-oscuro .pf-card h4 { color:#d8d9dd; }
+    html.tema-oscuro .pf-chip { color:#c7cbcd; }
+    html.tema-oscuro .pf-kpi { background:#2e1717; }
+    html.tema-oscuro .pf-kpi span { color:#c7cbcd; }
+    html.tema-oscuro .pf-tiles .ind { background:#1d2124; }
+    html.tema-oscuro .pf-pie { color:#c7cbcd; }
+    html.tema-oscuro .pf-stat { border-top:1px solid #3e4145; }
+    html.tema-oscuro .mm-cuerpo { background:#1f2125; }
+    html.tema-oscuro .mm-card { background:#1c1e22; }
+    html.tema-oscuro .mm-tabla-env { background:#1c1e22; }
+    html.tema-oscuro .mm-tabla th { background:#20282a; color:#b3dbe5; }
+    html.tema-oscuro .mm-tabla td { border-bottom:1px solid #3e4145; }
+    html.tema-oscuro .mm-obj { background:#1c1e22; }
+    html.tema-oscuro .mm-obj label { color:#b3dbe5; }
+    html.tema-oscuro .mm-otras { background:#1c1e22; }
+  }
+  /* ===== fin tema oscuro ===== */
 </style>
 
 </head>
@@ -622,6 +735,7 @@
   <!-- ===== Aplicación ===== -->
   <div id="vApp" class="oculto">
     <header class="cab">
+      <button class="bt-icono" id="btAtras" title="Atrás" aria-label="Atrás"><i class="fa-solid fa-chevron-left"></i></button>
       <button class="bt-icono" id="btMenu" title="Menú"><i class="fa-solid fa-bars"></i></button>
       <span class="hueco-logo" data-tam="32"></span>
       <span class="titulo">Gestión Científica CGyAD-GITIC</span>
@@ -634,6 +748,8 @@
       <button class="bt oculto" id="btBio" style="margin-bottom:8px"><i class="fa-solid fa-fingerprint"></i> Face ID / huella</button>
       <label class="menu-et" for="selEscala"><i class="fa-solid fa-text-height"></i> Tamaño de la pantalla</label>
       <select id="selEscala" class="menu-sel"></select>
+      <label class="menu-et" for="selTema"><i class="fa-solid fa-circle-half-stroke"></i> Tema</label>
+      <select id="selTema" class="menu-sel"></select>
       <button class="bt" id="btMiFicha" style="margin-bottom:8px"><i class="fa-solid fa-id-badge"></i> Mi ficha personal</button>
       <button class="bt" id="btSalir"><i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión</button>
     </div>
@@ -1086,7 +1202,7 @@
   var MODULOS = {   // bloques aún no disponibles en la web
     asistencial: ["Asistencial", "fa-stethoscope", ""]
   };
-  var VERSION_WEB = "0.5.1";
+  var VERSION_WEB = "0.6.1";
   // Nombres visibles iguales a los de AppSheet (con las erratas corregidas) y orden de la ficha
   var ETIQ = { "Volúmen": "Volumen", "Notas_JCR": "Notas sobre JCR", "Investigadores Servicio": "Investigadores participantes",
                "Posiciones Servicio": "Posición en la autoría", "Es Correspondencia": "¿Es autor de correspondencia?",
@@ -1168,6 +1284,26 @@
     s.onchange = function () { guardar("gc_escala", s.value); aplicarEscala(); aviso("Tamaño: " + s.options[s.selectedIndex].text + (S.escala ? " (" + Math.round(S.escala * 100) + " %)" : ""), 2500); };
     window.addEventListener("resize", aplicarEscala);
     aplicarEscala();
+  })();
+  // ---------- tema claro / oscuro: automático (como el dispositivo) o elegido en «Mi cuenta» ----------
+  var TEMAS = [["auto", "Automático (como el dispositivo)"], ["claro", "Claro"], ["oscuro", "Oscuro"]];
+  var temaMQ = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+  function temaPref() { var t = leer("gc_tema"); return t === "claro" || t === "oscuro" ? t : "auto"; }
+  function aplicarTema() {
+    var p = temaPref(), oscuro = p === "oscuro" || (p === "auto" && !!(temaMQ && temaMQ.matches)), r = document.documentElement;
+    if (r && r.classList) r.classList.toggle("tema-oscuro", oscuro);
+    var m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute("content", oscuro ? "#1b1d20" : "#e53935");
+    S.oscuro = oscuro;
+  }
+  (function () {
+    var s = $("selTema");
+    if (s) {
+      s.innerHTML = TEMAS.map(function (x) { return '<option value="' + x[0] + '">' + x[1] + "</option>"; }).join("");
+      s.value = temaPref();
+      s.onchange = function () { guardar("gc_tema", s.value === "auto" ? null : s.value); aplicarTema(); aviso("Tema: " + s.options[s.selectedIndex].text, 2000); };
+    }
+    if (temaMQ) { if (temaMQ.addEventListener) temaMQ.addEventListener("change", aplicarTema); else if (temaMQ.addListener) temaMQ.addListener(aplicarTema); }
+    aplicarTema();
   })();
   // ---------- caché del dispositivo (IndexedDB): se muestra al instante lo último descargado y se actualiza en segundo plano ----------
   var CACHE_VER = "0.5", CACHE_MAX = 30 * 86400000;
@@ -1527,6 +1663,7 @@
       S.tiposTodos = tipos; prepararTabPub();
       if (primera) {
         try { history.replaceState({ gc: 1, v: "inicio" }, ""); } catch (e) {}
+        PILA = [{ v: "inicio", sub: "" }];
         mostrarVista("inicio", { sinHistoria: true });     // pantalla de bienvenida; las publicaciones se cargan en segundo plano
         cargarPubs(conCache).then(precargar);
       } else if (S.vista === "inicio") pintarInicio();
@@ -2066,6 +2203,7 @@
     if (!opc.sinHistoria && S.inicio) {
       var st = history.state || {};
       if (!st.gc || st.v !== v || st.f) { try { history.pushState({ gc: 1, v: v, sub: subActual(v) }, ""); } catch (e) {} }
+      pilaPoner(v, subActual(v));
     }
   }
   document.querySelectorAll("[data-vista]").forEach(function (b) { b.addEventListener("click", function () {
@@ -2090,16 +2228,16 @@
 
   // ---------- pantalla de inicio: tarjetas (clic en la tarjeta = bloque; en un apartado = ese apartado), información (i) y flechas ----------
   var INFO_INICIO = {
-    ciencia: "Producción científica del Servicio: artículos, libros y abstracts (con factor de impacto, cuartil y PDF), congresos y cursos con sus comunicaciones, estudios y ensayos con los pacientes incluidos, y otros méritos: premios, becas, cargos, comités, estancias y patentes.",
-    docencia: "Actividad docente: dirección de TFG, TFM y tesis doctorales, tutorías de residentes y estudiantes, rotantes de otros hospitales y acreditaciones de ANECA o de las agencias autonómicas.",
-    asistencial: "Actividad asistencial del Servicio. Está en diseño: tendrá una estructura integral similar a la de LYA2.",
-    revision: "Lo que está pendiente: publicaciones por confirmar, reclamaciones de autoría, registros de docencia y méritos por validar y solicitudes de días de congreso. Cada persona ve lo suyo; los administradores, todo.",
-    perfil: "Tus datos de Personal_Investigador, tu foto y tus métricas de todos los bloques, por periodos y listas para imprimir.",
-    memoria: "Memoria anual del grupo IdiPAZ G75: reúne de la web publicaciones, estancias, proyectos, tesis, ensayos y patentes de los miembros del grupo, y descarga el Excel que pide IdiPAZ. Solo administradores."
+    ciencia: "Producción científica del Servicio: publicaciones, congresos y cursos, estudios y otros méritos.",
+    docencia: "Actividad docente: TFG, TFM y tesis dirigidas, tutorías, rotantes y acreditaciones ANECA.",
+    asistencial: "Actividad asistencial del Servicio. Próximamente.",
+    revision: "Lo pendiente de confirmar o validar. Cada persona ve lo suyo; los administradores, todo.",
+    perfil: "Tus datos, tu foto y el resumen de tu actividad.",
+    memoria: "Memoria anual del grupo IdiPAZ G75 y su Excel oficial. Solo administradores."
   };
   (function () {
     var car = $("carrusel"); if (!car) return;
-    function cerrarPops(excepto) { car.querySelectorAll(".pop-info").forEach(function (p) { if (p !== excepto) p.classList.add("oculto"); }); }
+    function cerrarPops(excepto) { car.querySelectorAll(".pop-info").forEach(function (p) { if (p !== excepto) { p.classList.add("oculto"); var t = p.closest(".tarjeta-inicio"); if (t) t.classList.remove("con-pop"); } }); }
     // Ciencia y Docencia son desplegables: con ratón, la lista sale al pasar por encima; en pantallas táctiles (tablet, app), al tocar la tarjeta
     var hoverMQ = window.matchMedia ? window.matchMedia("(hover: hover) and (pointer: fine)") : null;
     function conRaton() { return !!(hoverMQ && hoverMQ.matches); }
@@ -2114,7 +2252,7 @@
         var pop = t.querySelector(".pop-info"), abierto = !pop.classList.contains("oculto");
         cerrarPops(); if (abierto) return;
         pop.innerHTML = '<button class="pop-cerrar" aria-label="Cerrar">×</button><b>' + esc(t.querySelector("h3").textContent) + "</b><p>" + esc(INFO_INICIO[info.getAttribute("data-info")] || "") + "</p>";
-        pop.classList.remove("oculto"); return;
+        pop.classList.remove("oculto"); t.classList.add("con-pop"); return;
       }
       if (ev.target.closest(".pop-info")) { if (ev.target.closest(".pop-cerrar")) cerrarPops(); return; }
       if (ev.target.closest("[data-vista]")) { cerrarListas(); return; }       // los apartados tienen su propio botón
@@ -2156,7 +2294,16 @@
   })();
   $("btMiFicha").onclick = function () { $("menuUsuario").classList.add("oculto"); mostrarVista("perfil"); };
   // ---------- atrás: botón del navegador / Android y gesto desde el borde izquierdo (iPhone con la app instalada) ----------
-  var HIST = { ignorar: false, aplicando: false };
+  var HIST = { ignorar: false, aplicando: false, saltos: 0 };
+  // Pila propia de pantallas: «atrás» funciona aunque el navegador pierda o se salte pasos del historial (app instalada, tablet)
+  var PILA = [{ v: "inicio", sub: "" }];
+  function pilaTope() { return PILA[PILA.length - 1]; }
+  function pilaPoner(v, sub) { var t = pilaTope(); if (t && t.v === v && (t.sub || "") === (sub || "")) return; PILA.push({ v: v, sub: sub || "" }); if (PILA.length > 80) PILA.splice(1, 1); }
+  function pilaCambiar(v, sub) { var t = pilaTope(); if (t && t.v === v) t.sub = sub || ""; else pilaPoner(v, sub); }
+  function pilaIr(v, sub) {             // el navegador ha vuelto a (v, sub): se recorta la pila hasta ese paso
+    for (var i = PILA.length - 1; i >= 0; i--) if (PILA[i].v === v && (!sub || (PILA[i].sub || "") === sub)) { PILA.length = i + 1; return; }
+    PILA.push({ v: v, sub: sub || "" });
+  }
   // Pestañas dentro de una sección (Artículos/Libros/Abstracts, Trabajos/Tutorías/Rotantes/ANECA, secciones de Revisar): también son un paso del historial
   function subActual(v) {
     if (v === "pubs") return S.pubTab || "";
@@ -2175,30 +2322,52 @@
     if (!S.inicio || HIST.aplicando) return;
     var st = history.state || {}, sub = subActual(S.vista);
     if (st.gc && st.v === S.vista && (st.sub || "") === sub) return;
-    try { if (reemplazar && st.gc && st.v === S.vista && !st.f) history.replaceState({ gc: 1, v: S.vista, sub: sub }, ""); else history.pushState({ gc: 1, v: S.vista, sub: sub }, ""); } catch (e) {}
+    var reempl = reemplazar && st.gc && st.v === S.vista && !st.f;
+    try { if (reempl) history.replaceState({ gc: 1, v: S.vista, sub: sub }, ""); else history.pushState({ gc: 1, v: S.vista, sub: sub }, ""); } catch (e) {}
+    if (reempl) pilaCambiar(S.vista, sub); else pilaPoner(S.vista, sub);
   }
   GC.subCambiado = subCambiado;
   var FICHAS = [["panelFicha", function () { cerrarFicha(); }], ["panelFichaEst", "btCerrarFichaEst"], ["panelFichaCon", "btCerrarFichaCon"], ["panelFichaDoc", "btCerrarFichaDoc"]];
   function fichaAbierta() { return FICHAS.filter(function (f) { var e = $(f[0]); return e && !e.classList.contains("oculto") && !(f[0] === "panelFicha" && S.vista !== "pubs" && S.vista !== "revision"); })[0]; }
   function dialogoAbierto() { return ["dlgForm", "dlgAlta"].filter(function (id) { return $(id) && !$(id).classList.contains("oculto"); })[0]; }
+  // Antes de cambiar de pantalla, «atrás» cierra lo que esté abierto encima: diálogo, menú, filtros o detalles
+  function cerrarCapa() {
+    var dlg = dialogoAbierto();
+    if (dlg) { if (dlg === "dlgForm") cerrarDialogo(); else $(dlg).classList.add("oculto"); return "capa"; }
+    if (!$("cajon").classList.contains("oculto")) { $("cajon").classList.add("oculto"); return "capa"; }
+    var panel = ["panelFiltros", "panelFiltrosEst", "panelFiltrosCon", "panelFiltrosDoc"].filter(function (id) { return $(id) && !$(id).classList.contains("oculto"); })[0];
+    if (panel) { $(panel).classList.add("oculto"); return "capa"; }
+    var f = fichaAbierta();
+    if (f) { if (typeof f[1] === "function") f[1](); else if ($(f[1])) $(f[1]).click(); return "ficha"; }
+    return "";
+  }
+  function irA(v, sub) {                // muestra (v, sub) sin añadir pasos al historial; devuelve si ha cambiado algo visible
+    var cambio = false; HIST.aplicando = true;
+    try {
+      if (v !== S.vista) { mostrarVista(v, { sinHistoria: true }); cambio = true; }
+      if (sub && subActual(v) !== sub) { aplicarSub(v, sub); cambio = true; }
+    } finally { HIST.aplicando = false; }
+    return cambio;
+  }
   window.addEventListener("popstate", function (ev) {
     if (HIST.ignorar) { HIST.ignorar = false; return; }
     if (!S.inicio) return;
     var st = ev.state || {};
-    var dlg = dialogoAbierto(), reponer = function () { try { history.pushState({ gc: 1, v: S.vista, sub: subActual(S.vista), f: fichaAbierta() ? 1 : 0 }, ""); } catch (e) {} };
-    if (dlg) { if (dlg === "dlgForm") cerrarDialogo(); else $(dlg).classList.add("oculto"); reponer(); return; }
-    if (!$("cajon").classList.contains("oculto")) { $("cajon").classList.add("oculto"); reponer(); return; }          // primero se cierra el menú
-    var panel = ["panelFiltros", "panelFiltrosEst", "panelFiltrosCon", "panelFiltrosDoc"].filter(function (id) { return $(id) && !$(id).classList.contains("oculto"); })[0];
-    if (panel) { $(panel).classList.add("oculto"); reponer(); return; }                                                  // … o los filtros
-    var f = fichaAbierta();
-    if (f) { if (typeof f[1] === "function") f[1](); else if ($(f[1])) $(f[1]).click(); if (!st.v || st.v === S.vista) return; }
-    var v = st.gc && st.v ? st.v : "inicio", cambio = false;
-    HIST.aplicando = true;
-    try {
-      if (v !== S.vista) { mostrarVista(v, { sinHistoria: true }); cambio = true; }
-      if (st.sub && subActual(v) !== st.sub) { aplicarSub(v, st.sub); cambio = true; }
-    } finally { HIST.aplicando = false; }
-    if (!cambio && !f && v !== "inicio" && history.length > 1) history.back();          // paso sin cambios visibles: se salta
+    var reponer = function () { try { history.pushState({ gc: 1, v: S.vista, sub: subActual(S.vista), f: fichaAbierta() ? 1 : 0 }, ""); } catch (e) {} };
+    var capa = cerrarCapa();
+    if (capa === "capa") { reponer(); return; }
+    if (capa === "ficha" && (!st.v || st.v === S.vista)) return;
+    var v, sub;
+    if (st.gc && st.v) { v = st.v; sub = st.sub || ""; pilaIr(v, sub); }
+    else {                                  // el navegador no conserva el paso: se usa la pila propia
+      if (PILA.length > 1) PILA.pop();
+      v = pilaTope().v; sub = pilaTope().sub;
+      try { history.replaceState({ gc: 1, v: v, sub: sub }, ""); } catch (e) {}
+    }
+    var cambio = irA(v, sub);
+    if (cambio || capa) { HIST.saltos = 0; return; }
+    if (v !== "inicio" && history.length > 1 && HIST.saltos < 3) { HIST.saltos++; history.back(); }     // paso sin cambios visibles: se salta
+    else HIST.saltos = 0;
   });
   function alCambiarFicha() {                  // al abrir unos detalles se añade un paso al historial; al cerrarlos con su botón, se quita
     var abierta = !!fichaAbierta(), st = history.state || {};
@@ -2206,7 +2375,23 @@
     if (abierta && st.gc && !st.f) { try { history.pushState({ gc: 1, v: S.vista, sub: subActual(S.vista), f: 1 }, ""); } catch (e) {} }
     else if (!abierta && st.gc && st.f && st.v === S.vista) { HIST.ignorar = true; history.back(); setTimeout(function () { HIST.ignorar = false; }, 600); }
   }
-  function atras() { if (history.state && history.state.gc && history.length > 1) history.back(); else if (S.vista !== "inicio") mostrarVista("inicio"); }
+  // «Atrás» propio (gesto desde el borde en la app instalada del iPhone/iPad y botón ‹ de la cabecera en pantallas táctiles):
+  // no depende del historial del navegador, que en la app instalada puede perderse al volver de segundo plano.
+  function atras() {
+    if (!S.inicio) return;
+    if (cerrarCapa()) return;
+    for (var n = 0; n < 6 && PILA.length > 1; n++) {
+      PILA.pop(); var t = pilaTope();
+      try { history.replaceState({ gc: 1, v: t.v, sub: t.sub }, ""); } catch (e) {}
+      if (irA(t.v, t.sub)) return;
+    }
+    if (S.vista !== "inicio") { PILA = [{ v: "inicio", sub: "" }]; irA("inicio", ""); try { history.replaceState({ gc: 1, v: "inicio" }, ""); } catch (e) {} }
+  }
+  GC.atras = atras;
+  (function () {
+    var b = $("btAtras"); if (!b) return;
+    b.onclick = function () { atras(); };
+  })();
   (function gestoAtras() {
     var ua = navigator.userAgent || "", ios = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
     var instalada = window.navigator.standalone === true || (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches);
