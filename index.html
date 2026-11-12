@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Gestión Científica CGyAD-GITIC · web publicada (GitHub Pages) · versión 0.7 · generado el 11/11/2026 a partir de Web_App + Web_Estilos + Web_Cliente + Web_Estudios_Cliente + Web_Congresos_Cliente + Web_Docencia_Cliente + Web_Perfil_Cliente.
+<!-- Gestión Científica CGyAD-GITIC · web publicada (GitHub Pages) · versión 0.7.1 · generado el 11/11/2026 a partir de Web_App + Web_Estilos + Web_Cliente + Web_Estudios_Cliente + Web_Congresos_Cliente + Web_Docencia_Cliente + Web_Perfil_Cliente.
      No edites este archivo: la dirección del servidor está en config.js. -->
 <html lang="es">
 <head>
@@ -12,8 +12,9 @@
   <meta name="apple-mobile-web-app-title" content="CGyAD-GITIC">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=2">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=2">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2">
   <script src="config.js"></script>
 
   <title>Gestión Científica CGyAD-GITIC</title>
@@ -617,6 +618,16 @@
   .acc-campos label { display:flex; flex-direction:column; gap:3px; font-size:12px; color:var(--tenue); }
   .acc-campos input, .acc-campos select { font-size:13px; }
 
+  /* ===== v0.7.1: logo animado en la pantalla de acceso (los arcos rojos giran mientras carga) ===== */
+  .logo-acceso { display:block; width:84px; height:84px; margin:0 auto; overflow:visible; }
+  .logo-acceso .arcos { transform-origin:32px 32px; transform-box:view-box; }
+  .logo-acceso.girando .arcos { animation:giroArcos .9s cubic-bezier(.45,.05,.4,1) infinite; }
+  @keyframes giroArcos { from { transform:rotate(0deg); } to { transform:rotate(180deg); } }   /* los dos arcos son simétricos: media vuelta = ciclo completo */
+  @media (prefers-reduced-motion: reduce) { .logo-acceso.girando .arcos { animation-duration:2.2s; animation-timing-function:linear; } }
+  .acceso-cargando { display:none; color:var(--tenue); font-size:13px; margin:18px 0 0; }
+  .acceso.arrancando .acceso-cargando { display:block; }
+  .acceso.arrancando #pasoEmail, .acceso.arrancando #pasoCodigo, .acceso.arrancando #pasoBio, .acceso.arrancando #pasoAlta, .acceso.arrancando #msgAcceso { display:none !important; }
+
   /* ===== Tema oscuro (v0.6.1). Variables a mano; el resto, generado a partir de los colores fijos de las reglas anteriores.
      Solo en pantalla: al imprimir se usa siempre el tema claro. ===== */
   @media screen {
@@ -739,9 +750,16 @@
   </svg>
 
   <!-- ===== Acceso ===== -->
-  <div id="vAcceso" class="acceso oculto">
+  <div id="vAcceso" class="acceso arrancando">
     <div class="tarjeta-acceso">
-      <span class="hueco-logo" data-tam="72"></span>
+      <!-- Logo de la pantalla de acceso: los arcos rojos giran mientras la web carga o espera al servidor -->
+      <svg class="logo-acceso girando" id="logoAcceso" viewBox="0 0 64 64" role="img" aria-label="Gestión Científica CGyAD-GITIC">
+        <circle cx="32" cy="32" r="30" fill="#fff" stroke="#1e5a96" stroke-width="3"/>
+        <g class="arcos" fill="none" stroke="#e53935" stroke-width="4" stroke-linecap="round"><path d="M32 6a26 26 0 0 1 24 16"/><path d="M32 58A26 26 0 0 1 8 42"/></g>
+        <circle cx="24" cy="25" r="5" fill="#1e5a96"/><circle cx="40" cy="25" r="5" fill="#1e5a96"/><circle cx="32" cy="21" r="5.5" fill="#e53935"/>
+        <path d="M15 44c0-8 4-12 9-12s9 4 9 12z M31 44c0-8 4-12 9-12s9 4 9 12z" fill="#1e5a96"/>
+        <path d="M22 42c0-9 4.5-13.5 10-13.5S42 33 42 42z" fill="#e53935"/>
+      </svg>
       <h1>Gestión Científica CGyAD-GITIC</h1>
       <p class="sub">Cirugía General y del Aparato Digestivo · H. U. La Paz · IdiPAZ</p>
       <div id="pasoEmail">
@@ -784,6 +802,7 @@
         <button class="bt-texto" id="btOtroCorreo">Usar otro correo</button>
       </div>
       <p class="mensaje" id="msgAcceso"></p>
+      <p class="acceso-cargando" id="txtArranque" aria-live="polite">Cargando…</p>
     </div>
   </div>
 
@@ -1262,7 +1281,7 @@
   var MODULOS = {   // bloques aún no disponibles en la web
     asistencial: ["Asistencial", "fa-stethoscope", ""]
   };
-  var VERSION_WEB = "0.7";
+  var VERSION_WEB = "0.7.1";
   // Nombres visibles iguales a los de AppSheet (con las erratas corregidas) y orden de la ficha
   var ETIQ = { "Volúmen": "Volumen", "Notas_JCR": "Notas sobre JCR", "Investigadores Servicio": "Investigadores participantes",
                "Posiciones Servicio": "Posición en la autoría", "Es Correspondencia": "¿Es autor de correspondencia?",
@@ -1504,25 +1523,42 @@
     });
   }
 
+  // ---------- logo de la pantalla de acceso: los arcos giran mientras hay algo cargando ----------
+  // Se cuentan las esperas abiertas; al terminar la última, el giro acaba la vuelta en curso (sin saltos) y se detiene.
+  var LOGO = { n: 1, arranque: true };          // la página empieza cargando (giro desde el primer instante, ya en el HTML)
+  function logoCarga(on) {
+    var l = $("logoAcceso"); if (!l) return;
+    LOGO.n = Math.max(0, LOGO.n + (on ? 1 : -1));
+    if (LOGO.n) { l.classList.add("girando"); l.classList.remove("parando"); clearTimeout(LOGO.t); return; }
+    if (!l.classList.contains("girando")) return;
+    l.classList.add("parando");
+    clearTimeout(LOGO.t); LOGO.t = setTimeout(function () { l.classList.remove("girando", "parando"); }, 1600);   // por si el navegador no avisa del fin de vuelta
+  }
+  function finArranque() { if (LOGO.arranque) { LOGO.arranque = false; logoCarga(false); } $("vAcceso").classList.remove("arrancando"); }
+  (function () {
+    var l = $("logoAcceso"), g = l && l.querySelector(".arcos"); if (!g) return;
+    g.addEventListener("animationiteration", function () { if (l.classList.contains("parando")) { l.classList.remove("girando", "parando"); clearTimeout(LOGO.t); } });
+  })();
+
   // ---------- acceso ----------
-  function mostrarAcceso() { $("vApp").classList.add("oculto"); $("vAcceso").classList.remove("oculto"); $("pasoEmail").classList.remove("oculto"); $("pasoCodigo").classList.add("oculto"); $("pasoBio").classList.add("oculto"); $("msgAcceso").textContent = "";
+  function mostrarAcceso() { finArranque(); $("vApp").classList.add("oculto"); $("vAcceso").classList.remove("oculto"); $("pasoEmail").classList.remove("oculto"); $("pasoCodigo").classList.add("oculto"); $("pasoBio").classList.add("oculto"); $("msgAcceso").textContent = "";
     PK.disponible().then(function (si) { $("btBioEntrar").classList.toggle("oculto", !si); if (si) PK.prepararEntrada(); }); }
   $("btEnviar").onclick = function () {
     var email = $("inEmail").value.trim(); if (!email) return;
-    $("btEnviar").disabled = true; $("msgAcceso").textContent = "Enviando…";
+    $("btEnviar").disabled = true; $("msgAcceso").textContent = "Enviando…"; logoCarga(true);
     api("webSolicitarCodigo", email).then(function (r) {
       $("msgAcceso").textContent = r.mensaje;
       if (r.ok) { $("pasoEmail").classList.add("oculto"); $("pasoCodigo").classList.remove("oculto"); $("inCodigo").focus(); guardar("gc_email", email); }
-    }).catch(function (e) { $("msgAcceso").textContent = e.message; }).then(function () { $("btEnviar").disabled = false; });
+    }).catch(function (e) { $("msgAcceso").textContent = e.message; }).then(function () { $("btEnviar").disabled = false; logoCarga(false); });
   };
   $("btEntrar").onclick = function () {
     var email = $("inEmail").value.trim() || leer("gc_email"), cod = $("inCodigo").value.trim();
     if (!/^\d{6}$/.test(cod)) { $("msgAcceso").textContent = "El código tiene 6 dígitos."; return; }
-    $("btEntrar").disabled = true;
+    $("btEntrar").disabled = true; logoCarga(true);
     api("webVerificarCodigo", email, cod, navigator.userAgent).then(function (r) {
       if (!r.ok) { $("msgAcceso").textContent = r.mensaje; return; }
       S.token = r.token; guardarToken(r.token); arrancar(String(email).toLowerCase() === leer("gc_cuenta")); setTimeout(ofrecerBio, 2500);
-    }).catch(function (e) { $("msgAcceso").textContent = e.message; }).then(function () { $("btEntrar").disabled = false; });
+    }).catch(function (e) { $("msgAcceso").textContent = e.message; }).then(function () { $("btEntrar").disabled = false; logoCarga(false); });
   };
   $("inCodigo").addEventListener("keyup", function (ev) { if (ev.key === "Enter") $("btEntrar").click(); });
   $("inEmail").addEventListener("keyup", function (ev) { if (ev.key === "Enter") $("btEnviar").click(); });
@@ -1552,11 +1588,11 @@
       var falta = !d.nombre ? "tu nombre" : !d.apellidos ? "tus apellidos" : !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(d.email) ? "un correo válido" : !d.cargo ? "tu cargo" : "";
       if (falta) { $("msgAcceso").textContent = "Falta " + falta + "."; return; }
       if (!d.acepto) { $("msgAcceso").textContent = "Marca la casilla de aceptación para enviar la solicitud."; return; }
-      $("btAltaEnviar").disabled = true; $("msgAcceso").textContent = "Enviando…";
+      $("btAltaEnviar").disabled = true; $("msgAcceso").textContent = "Enviando…"; logoCarga(true);
       api("webSolicitarAcceso", d).then(function (r) {
         $("msgAcceso").textContent = r.mensaje;
         if (r.ok) { ver(false); $("inEmail").value = d.email; ["alNombre", "alApellidos", "alEmailAlt", "alOrcid", "alComentario", "alCargoOtro"].forEach(function (id) { $(id).value = ""; }); sel.value = ""; $("alAcepto").checked = false; }
-      }).catch(function (e) { $("msgAcceso").textContent = e.message; }).then(function () { $("btAltaEnviar").disabled = false; });
+      }).catch(function (e) { $("msgAcceso").textContent = e.message; }).then(function () { $("btAltaEnviar").disabled = false; logoCarga(false); });
     };
   })();
 
@@ -1759,6 +1795,7 @@
   }
   // Pantalla de desbloqueo (Face ID / huella activado en este dispositivo)
   function mostrarDesbloqueo() {
+    finArranque();
     $("vApp").classList.add("oculto"); $("vAcceso").classList.remove("oculto");
     ["pasoEmail", "pasoCodigo"].forEach(function (id) { $(id).classList.add("oculto"); }); $("pasoBio").classList.remove("oculto");
     $("lblBioHola").textContent = leer("gc_nombre") ? "Hola, " + leer("gc_nombre") : "Hola";
@@ -1767,7 +1804,7 @@
   }
   function entrarConBio(boton) {
     if (boton.getAttribute("data-ocupado") === "1") return;
-    boton.setAttribute("data-ocupado", "1"); boton.disabled = true; $("msgAcceso").textContent = PK.entradaLista() ? "" : "Preparando…";
+    boton.setAttribute("data-ocupado", "1"); boton.disabled = true; $("msgAcceso").textContent = PK.entradaLista() ? "" : "Preparando…"; logoCarga(true);
     PK.entrar().then(function (r) {
       if (!r || !r.ok) {
         $("msgAcceso").textContent = (r && r.mensaje) || "No se pudo entrar.";
@@ -1776,7 +1813,7 @@
       }
       $("msgAcceso").textContent = ""; S.token = r.token; guardarToken(r.token); if (r.email) guardar("gc_email", r.email); arrancar(!!r.email && String(r.email).toLowerCase() === leer("gc_cuenta"));
     }).catch(function (e) { $("msgAcceso").textContent = errorBio(e); PK.prepararEntrada().catch(function () {}); })
-      .then(function () { boton.disabled = false; boton.removeAttribute("data-ocupado"); estadoBotonesBio(); });
+      .then(function () { boton.disabled = false; boton.removeAttribute("data-ocupado"); estadoBotonesBio(); logoCarga(false); });
   }
   $("btBioDesbloquear").onclick = function () { entrarConBio(this); };
   $("btBioEntrar").onclick = function () { entrarConBio(this); };
@@ -1826,8 +1863,11 @@
   // ---------- arranque ----------
   function arrancar(conCache) {
     cargando(true);
-    var aplicado = false;
+    var aplicado = false, girando = !$("vAcceso").classList.contains("oculto");
+    if (girando) { $("vAcceso").classList.add("arrancando"); logoCarga(true); }
+    var pararLogo = function () { if (girando) { girando = false; logoCarga(false); } };
     function aplicar(ini) {
+      pararLogo(); finArranque();
       var primera = !S.inicio;
       S.inicio = ini; guardar("gc_logo", ini.logo || null); ponerLogo();
       $("vAcceso").classList.add("oculto"); $("vApp").classList.remove("oculto");
@@ -1853,7 +1893,7 @@
     api("webInicio", S.token).then(function (ini) {
       guardar("gc_cuenta", String(ini.usuario.email || "").toLowerCase()); CACHE.set("webInicio", ini);
       aplicado = true; aplicar(ini);
-    }).catch(function (e) { cargando(false); aviso(e.message); if (!S.inicio) mostrarAcceso(); });
+    }).catch(function (e) { cargando(false); pararLogo(); aviso(e.message); if (!S.inicio) mostrarAcceso(); });
   }
   // En segundo plano, tras las publicaciones: datos que necesitan los contadores de Revisar (y la ficha personal)
   function precargar() {

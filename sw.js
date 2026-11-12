@@ -1,4 +1,4 @@
-// Service worker de Gestión Científica CGyAD-GITIC (v0.7): permite instalar la web como aplicación y recibe las
+// Service worker de Gestión Científica CGyAD-GITIC (v0.7.1): permite instalar la web como aplicación y recibe las
 // notificaciones push. No guarda datos ni páginas en caché (siempre se carga la versión publicada).
 // El aviso push llega vacío: el texto se pide al servidor con el código propio de este dispositivo (guardado en IndexedDB).
 self.addEventListener("install", function () { self.skipWaiting(); });
@@ -25,7 +25,7 @@ self.addEventListener("push", function (e) {
     if (!lista.length) lista = [{ id: "general", titulo: "Gestión Científica CGyAD-GITIC", texto: "Tienes avisos nuevos. Abre la app para verlos.", vista: "inicio" }];
     return Promise.all(lista.map(function (a) {
       return self.registration.showNotification(a.titulo || "Gestión Científica CGyAD-GITIC", {
-        body: a.texto || "", icon: "icon-192.png", badge: "icon-192.png", tag: "gc-" + (a.id || "general"), silent: !!a.repetido, data: { vista: a.vista || "inicio" } });
+        body: a.texto || "", icon: "icon-192.png", badge: "badge-96.png", tag: "gc-" + (a.id || "general"), silent: !!a.repetido, data: { vista: a.vista || "inicio" } });
     }));
   }));
 });
