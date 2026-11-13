@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Gestión Científica CGyAD-GITIC · web publicada (GitHub Pages) · versión 0.8 · generado el 13/11/2026 a partir de Web_App + Web_Estilos + Web_Cliente + Web_Estudios_Cliente + Web_Congresos_Cliente + Web_Docencia_Cliente + Web_Perfil_Cliente.
+<!-- Gestión Científica CGyAD-GITIC · web publicada (GitHub Pages) · versión 0.9.1 · generado el 13/11/2026 a partir de Web_App + Web_Estilos + Web_Cliente + Web_Estudios_Cliente + Web_Congresos_Cliente + Web_Docencia_Cliente + Web_Perfil_Cliente.
      No edites este archivo: la dirección del servidor está en config.js. -->
 <html lang="es">
 <head>
@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <!-- SEGURIDAD (v0.8): la página solo puede cargar archivos propios y hablar con el servidor de Apps Script. Si algo dejara de cargarse tras subir esta versión, borra la línea siguiente. -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob: https://lh3.googleusercontent.com https://drive.google.com; connect-src 'self' https://script.google.com https://script.googleusercontent.com; object-src 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: blob: https://lh3.googleusercontent.com https://drive.google.com; connect-src 'self' https://script.google.com https://script.googleusercontent.com; object-src 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'">
   <meta name="referrer" content="no-referrer">
   <meta name="theme-color" content="#e53935">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -15,24 +15,548 @@
   <meta name="apple-mobile-web-app-title" content="CGyAD-GITIC">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=2">
-  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=2">
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=4">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=4">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=4">
   <script src="config.js"></script>
 
   <title>Gestión Científica CGyAD-GITIC</title>
   <script>try { var gcT = localStorage.getItem("gc_tema"); if (gcT === "oscuro" || (gcT !== "claro" && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches)) document.documentElement.classList.add("tema-oscuro"); } catch (e) {}</script>
-  <link rel="preload" href="fuentes/roboto-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="fuentes/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="fuentes/roboto.css">
-  <link rel="stylesheet" href="fuentes/iconos.css">
+  <style>
+/*! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com · License: https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT) · Subconjunto con los 89 iconos que usa esta web, incrustado en esta misma página */
+  .fa {
+    font-family: var(--fa-style-family, "Font Awesome 6 Free");
+    font-weight: var(--fa-style, 900); }
+  .fa,
+  .fa-classic,
+  .fa-sharp,
+  .fas,
+  .fa-solid,
+  .far,
+  .fa-regular,
+  .fab,
+  .fa-brands {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    display: var(--fa-display, inline-block);
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto; }
+  .fas,
+  .fa-classic,
+  .fa-solid,
+  .far,
+  .fa-regular {
+    font-family: 'Font Awesome 6 Free'; }
+  .fab,
+  .fa-brands {
+    font-family: 'Font Awesome 6 Brands'; }
+  .fa-1x {
+    font-size: 1em; }
+  .fa-2x {
+    font-size: 2em; }
+  .fa-3x {
+    font-size: 3em; }
+  .fa-4x {
+    font-size: 4em; }
+  .fa-5x {
+    font-size: 5em; }
+  .fa-6x {
+    font-size: 6em; }
+  .fa-7x {
+    font-size: 7em; }
+  .fa-8x {
+    font-size: 8em; }
+  .fa-9x {
+    font-size: 9em; }
+  .fa-10x {
+    font-size: 10em; }
+  .fa-2xs {
+    font-size: 0.625em;
+    line-height: 0.1em;
+    vertical-align: 0.225em; }
+  .fa-xs {
+    font-size: 0.75em;
+    line-height: 0.08333em;
+    vertical-align: 0.125em; }
+  .fa-sm {
+    font-size: 0.875em;
+    line-height: 0.07143em;
+    vertical-align: 0.05357em; }
+  .fa-lg {
+    font-size: 1.25em;
+    line-height: 0.05em;
+    vertical-align: -0.075em; }
+  .fa-xl {
+    font-size: 1.5em;
+    line-height: 0.04167em;
+    vertical-align: -0.125em; }
+  .fa-2xl {
+    font-size: 2em;
+    line-height: 0.03125em;
+    vertical-align: -0.1875em; }
+  .fa-fw {
+    text-align: center;
+    width: 1.25em; }
+  .fa-ul {
+    list-style-type: none;
+    margin-left: var(--fa-li-margin, 2.5em);
+    padding-left: 0; }
+    .fa-ul > li {
+      position: relative; }
+  .fa-li {
+    left: calc(var(--fa-li-width, 2em) * -1);
+    position: absolute;
+    text-align: center;
+    width: var(--fa-li-width, 2em);
+    line-height: inherit; }
+  .fa-border {
+    border-color: var(--fa-border-color, #eee);
+    border-radius: var(--fa-border-radius, 0.1em);
+    border-style: var(--fa-border-style, solid);
+    border-width: var(--fa-border-width, 0.08em);
+    padding: var(--fa-border-padding, 0.2em 0.25em 0.15em); }
+  .fa-pull-left {
+    float: left;
+    margin-right: var(--fa-pull-margin, 0.3em); }
+  .fa-pull-right {
+    float: right;
+    margin-left: var(--fa-pull-margin, 0.3em); }
+  .fa-beat {
+    -webkit-animation-name: fa-beat;
+            animation-name: fa-beat;
+    -webkit-animation-delay: var(--fa-animation-delay, 0s);
+            animation-delay: var(--fa-animation-delay, 0s);
+    -webkit-animation-direction: var(--fa-animation-direction, normal);
+            animation-direction: var(--fa-animation-direction, normal);
+    -webkit-animation-duration: var(--fa-animation-duration, 1s);
+            animation-duration: var(--fa-animation-duration, 1s);
+    -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+    -webkit-animation-timing-function: var(--fa-animation-timing, ease-in-out);
+            animation-timing-function: var(--fa-animation-timing, ease-in-out); }
+  .fa-bounce {
+    -webkit-animation-name: fa-bounce;
+            animation-name: fa-bounce;
+    -webkit-animation-delay: var(--fa-animation-delay, 0s);
+            animation-delay: var(--fa-animation-delay, 0s);
+    -webkit-animation-direction: var(--fa-animation-direction, normal);
+            animation-direction: var(--fa-animation-direction, normal);
+    -webkit-animation-duration: var(--fa-animation-duration, 1s);
+            animation-duration: var(--fa-animation-duration, 1s);
+    -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+    -webkit-animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.28, 0.84, 0.42, 1));
+            animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.28, 0.84, 0.42, 1)); }
+  .fa-fade {
+    -webkit-animation-name: fa-fade;
+            animation-name: fa-fade;
+    -webkit-animation-delay: var(--fa-animation-delay, 0s);
+            animation-delay: var(--fa-animation-delay, 0s);
+    -webkit-animation-direction: var(--fa-animation-direction, normal);
+            animation-direction: var(--fa-animation-direction, normal);
+    -webkit-animation-duration: var(--fa-animation-duration, 1s);
+            animation-duration: var(--fa-animation-duration, 1s);
+    -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+    -webkit-animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.4, 0, 0.6, 1));
+            animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.4, 0, 0.6, 1)); }
+  .fa-beat-fade {
+    -webkit-animation-name: fa-beat-fade;
+            animation-name: fa-beat-fade;
+    -webkit-animation-delay: var(--fa-animation-delay, 0s);
+            animation-delay: var(--fa-animation-delay, 0s);
+    -webkit-animation-direction: var(--fa-animation-direction, normal);
+            animation-direction: var(--fa-animation-direction, normal);
+    -webkit-animation-duration: var(--fa-animation-duration, 1s);
+            animation-duration: var(--fa-animation-duration, 1s);
+    -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+    -webkit-animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.4, 0, 0.6, 1));
+            animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.4, 0, 0.6, 1)); }
+  .fa-flip {
+    -webkit-animation-name: fa-flip;
+            animation-name: fa-flip;
+    -webkit-animation-delay: var(--fa-animation-delay, 0s);
+            animation-delay: var(--fa-animation-delay, 0s);
+    -webkit-animation-direction: var(--fa-animation-direction, normal);
+            animation-direction: var(--fa-animation-direction, normal);
+    -webkit-animation-duration: var(--fa-animation-duration, 1s);
+            animation-duration: var(--fa-animation-duration, 1s);
+    -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+    -webkit-animation-timing-function: var(--fa-animation-timing, ease-in-out);
+            animation-timing-function: var(--fa-animation-timing, ease-in-out); }
+  .fa-shake {
+    -webkit-animation-name: fa-shake;
+            animation-name: fa-shake;
+    -webkit-animation-delay: var(--fa-animation-delay, 0s);
+            animation-delay: var(--fa-animation-delay, 0s);
+    -webkit-animation-direction: var(--fa-animation-direction, normal);
+            animation-direction: var(--fa-animation-direction, normal);
+    -webkit-animation-duration: var(--fa-animation-duration, 1s);
+            animation-duration: var(--fa-animation-duration, 1s);
+    -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+    -webkit-animation-timing-function: var(--fa-animation-timing, linear);
+            animation-timing-function: var(--fa-animation-timing, linear); }
+  .fa-spin {
+    -webkit-animation-name: fa-spin;
+            animation-name: fa-spin;
+    -webkit-animation-delay: var(--fa-animation-delay, 0s);
+            animation-delay: var(--fa-animation-delay, 0s);
+    -webkit-animation-direction: var(--fa-animation-direction, normal);
+            animation-direction: var(--fa-animation-direction, normal);
+    -webkit-animation-duration: var(--fa-animation-duration, 2s);
+            animation-duration: var(--fa-animation-duration, 2s);
+    -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+    -webkit-animation-timing-function: var(--fa-animation-timing, linear);
+            animation-timing-function: var(--fa-animation-timing, linear); }
+  .fa-spin-reverse {
+    --fa-animation-direction: reverse; }
+  .fa-pulse,
+  .fa-spin-pulse {
+    -webkit-animation-name: fa-spin;
+            animation-name: fa-spin;
+    -webkit-animation-direction: var(--fa-animation-direction, normal);
+            animation-direction: var(--fa-animation-direction, normal);
+    -webkit-animation-duration: var(--fa-animation-duration, 1s);
+            animation-duration: var(--fa-animation-duration, 1s);
+    -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+    -webkit-animation-timing-function: var(--fa-animation-timing, steps(8));
+            animation-timing-function: var(--fa-animation-timing, steps(8)); }
+  @media (prefers-reduced-motion: reduce) {
+    .fa-beat,
+    .fa-bounce,
+    .fa-fade,
+    .fa-beat-fade,
+    .fa-flip,
+    .fa-pulse,
+    .fa-shake,
+    .fa-spin,
+    .fa-spin-pulse {
+      -webkit-animation-delay: -1ms;
+              animation-delay: -1ms;
+      -webkit-animation-duration: 1ms;
+              animation-duration: 1ms;
+      -webkit-animation-iteration-count: 1;
+              animation-iteration-count: 1;
+      -webkit-transition-delay: 0s;
+              transition-delay: 0s;
+      -webkit-transition-duration: 0s;
+              transition-duration: 0s; } }
+  @-webkit-keyframes fa-beat {
+    0%, 90% {
+      -webkit-transform: scale(1);
+              transform: scale(1); }
+    45% {
+      -webkit-transform: scale(var(--fa-beat-scale, 1.25));
+              transform: scale(var(--fa-beat-scale, 1.25)); } }
+  @keyframes fa-beat {
+    0%, 90% {
+      -webkit-transform: scale(1);
+              transform: scale(1); }
+    45% {
+      -webkit-transform: scale(var(--fa-beat-scale, 1.25));
+              transform: scale(var(--fa-beat-scale, 1.25)); } }
+  @-webkit-keyframes fa-bounce {
+    0% {
+      -webkit-transform: scale(1, 1) translateY(0);
+              transform: scale(1, 1) translateY(0); }
+    10% {
+      -webkit-transform: scale(var(--fa-bounce-start-scale-x, 1.1), var(--fa-bounce-start-scale-y, 0.9)) translateY(0);
+              transform: scale(var(--fa-bounce-start-scale-x, 1.1), var(--fa-bounce-start-scale-y, 0.9)) translateY(0); }
+    30% {
+      -webkit-transform: scale(var(--fa-bounce-jump-scale-x, 0.9), var(--fa-bounce-jump-scale-y, 1.1)) translateY(var(--fa-bounce-height, -0.5em));
+              transform: scale(var(--fa-bounce-jump-scale-x, 0.9), var(--fa-bounce-jump-scale-y, 1.1)) translateY(var(--fa-bounce-height, -0.5em)); }
+    50% {
+      -webkit-transform: scale(var(--fa-bounce-land-scale-x, 1.05), var(--fa-bounce-land-scale-y, 0.95)) translateY(0);
+              transform: scale(var(--fa-bounce-land-scale-x, 1.05), var(--fa-bounce-land-scale-y, 0.95)) translateY(0); }
+    57% {
+      -webkit-transform: scale(1, 1) translateY(var(--fa-bounce-rebound, -0.125em));
+              transform: scale(1, 1) translateY(var(--fa-bounce-rebound, -0.125em)); }
+    64% {
+      -webkit-transform: scale(1, 1) translateY(0);
+              transform: scale(1, 1) translateY(0); }
+    100% {
+      -webkit-transform: scale(1, 1) translateY(0);
+              transform: scale(1, 1) translateY(0); } }
+  @keyframes fa-bounce {
+    0% {
+      -webkit-transform: scale(1, 1) translateY(0);
+              transform: scale(1, 1) translateY(0); }
+    10% {
+      -webkit-transform: scale(var(--fa-bounce-start-scale-x, 1.1), var(--fa-bounce-start-scale-y, 0.9)) translateY(0);
+              transform: scale(var(--fa-bounce-start-scale-x, 1.1), var(--fa-bounce-start-scale-y, 0.9)) translateY(0); }
+    30% {
+      -webkit-transform: scale(var(--fa-bounce-jump-scale-x, 0.9), var(--fa-bounce-jump-scale-y, 1.1)) translateY(var(--fa-bounce-height, -0.5em));
+              transform: scale(var(--fa-bounce-jump-scale-x, 0.9), var(--fa-bounce-jump-scale-y, 1.1)) translateY(var(--fa-bounce-height, -0.5em)); }
+    50% {
+      -webkit-transform: scale(var(--fa-bounce-land-scale-x, 1.05), var(--fa-bounce-land-scale-y, 0.95)) translateY(0);
+              transform: scale(var(--fa-bounce-land-scale-x, 1.05), var(--fa-bounce-land-scale-y, 0.95)) translateY(0); }
+    57% {
+      -webkit-transform: scale(1, 1) translateY(var(--fa-bounce-rebound, -0.125em));
+              transform: scale(1, 1) translateY(var(--fa-bounce-rebound, -0.125em)); }
+    64% {
+      -webkit-transform: scale(1, 1) translateY(0);
+              transform: scale(1, 1) translateY(0); }
+    100% {
+      -webkit-transform: scale(1, 1) translateY(0);
+              transform: scale(1, 1) translateY(0); } }
+  @-webkit-keyframes fa-fade {
+    50% {
+      opacity: var(--fa-fade-opacity, 0.4); } }
+  @keyframes fa-fade {
+    50% {
+      opacity: var(--fa-fade-opacity, 0.4); } }
+  @-webkit-keyframes fa-beat-fade {
+    0%, 100% {
+      opacity: var(--fa-beat-fade-opacity, 0.4);
+      -webkit-transform: scale(1);
+              transform: scale(1); }
+    50% {
+      opacity: 1;
+      -webkit-transform: scale(var(--fa-beat-fade-scale, 1.125));
+              transform: scale(var(--fa-beat-fade-scale, 1.125)); } }
+  @keyframes fa-beat-fade {
+    0%, 100% {
+      opacity: var(--fa-beat-fade-opacity, 0.4);
+      -webkit-transform: scale(1);
+              transform: scale(1); }
+    50% {
+      opacity: 1;
+      -webkit-transform: scale(var(--fa-beat-fade-scale, 1.125));
+              transform: scale(var(--fa-beat-fade-scale, 1.125)); } }
+  @-webkit-keyframes fa-flip {
+    50% {
+      -webkit-transform: rotate3d(var(--fa-flip-x, 0), var(--fa-flip-y, 1), var(--fa-flip-z, 0), var(--fa-flip-angle, -180deg));
+              transform: rotate3d(var(--fa-flip-x, 0), var(--fa-flip-y, 1), var(--fa-flip-z, 0), var(--fa-flip-angle, -180deg)); } }
+  @keyframes fa-flip {
+    50% {
+      -webkit-transform: rotate3d(var(--fa-flip-x, 0), var(--fa-flip-y, 1), var(--fa-flip-z, 0), var(--fa-flip-angle, -180deg));
+              transform: rotate3d(var(--fa-flip-x, 0), var(--fa-flip-y, 1), var(--fa-flip-z, 0), var(--fa-flip-angle, -180deg)); } }
+  @-webkit-keyframes fa-shake {
+    0% {
+      -webkit-transform: rotate(-15deg);
+              transform: rotate(-15deg); }
+    4% {
+      -webkit-transform: rotate(15deg);
+              transform: rotate(15deg); }
+    8%, 24% {
+      -webkit-transform: rotate(-18deg);
+              transform: rotate(-18deg); }
+    12%, 28% {
+      -webkit-transform: rotate(18deg);
+              transform: rotate(18deg); }
+    16% {
+      -webkit-transform: rotate(-22deg);
+              transform: rotate(-22deg); }
+    20% {
+      -webkit-transform: rotate(22deg);
+              transform: rotate(22deg); }
+    32% {
+      -webkit-transform: rotate(-12deg);
+              transform: rotate(-12deg); }
+    36% {
+      -webkit-transform: rotate(12deg);
+              transform: rotate(12deg); }
+    40%, 100% {
+      -webkit-transform: rotate(0deg);
+              transform: rotate(0deg); } }
+  @keyframes fa-shake {
+    0% {
+      -webkit-transform: rotate(-15deg);
+              transform: rotate(-15deg); }
+    4% {
+      -webkit-transform: rotate(15deg);
+              transform: rotate(15deg); }
+    8%, 24% {
+      -webkit-transform: rotate(-18deg);
+              transform: rotate(-18deg); }
+    12%, 28% {
+      -webkit-transform: rotate(18deg);
+              transform: rotate(18deg); }
+    16% {
+      -webkit-transform: rotate(-22deg);
+              transform: rotate(-22deg); }
+    20% {
+      -webkit-transform: rotate(22deg);
+              transform: rotate(22deg); }
+    32% {
+      -webkit-transform: rotate(-12deg);
+              transform: rotate(-12deg); }
+    36% {
+      -webkit-transform: rotate(12deg);
+              transform: rotate(12deg); }
+    40%, 100% {
+      -webkit-transform: rotate(0deg);
+              transform: rotate(0deg); } }
+  @-webkit-keyframes fa-spin {
+    0% {
+      -webkit-transform: rotate(0deg);
+              transform: rotate(0deg); }
+    100% {
+      -webkit-transform: rotate(360deg);
+              transform: rotate(360deg); } }
+  @keyframes fa-spin {
+    0% {
+      -webkit-transform: rotate(0deg);
+              transform: rotate(0deg); }
+    100% {
+      -webkit-transform: rotate(360deg);
+              transform: rotate(360deg); } }
+  .fa-rotate-90 {
+    -webkit-transform: rotate(90deg);
+            transform: rotate(90deg); }
+  .fa-rotate-180 {
+    -webkit-transform: rotate(180deg);
+            transform: rotate(180deg); }
+  .fa-rotate-270 {
+    -webkit-transform: rotate(270deg);
+            transform: rotate(270deg); }
+  .fa-flip-horizontal {
+    -webkit-transform: scale(-1, 1);
+            transform: scale(-1, 1); }
+  .fa-flip-vertical {
+    -webkit-transform: scale(1, -1);
+            transform: scale(1, -1); }
+  .fa-flip-both,
+  .fa-flip-horizontal.fa-flip-vertical {
+    -webkit-transform: scale(-1, -1);
+            transform: scale(-1, -1); }
+  .fa-rotate-by {
+    -webkit-transform: rotate(var(--fa-rotate-angle, 0));
+            transform: rotate(var(--fa-rotate-angle, 0)); }
+  .fa-stack {
+    display: inline-block;
+    height: 2em;
+    line-height: 2em;
+    position: relative;
+    vertical-align: middle;
+    width: 2.5em; }
+  .fa-stack-1x,
+  .fa-stack-2x {
+    left: 0;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    z-index: var(--fa-stack-z-index, auto); }
+  .fa-stack-1x {
+    line-height: inherit; }
+  .fa-stack-2x {
+    font-size: 2em; }
+  .fa-inverse {
+    color: var(--fa-inverse, #fff); }
+  
+  :root,:host{--fa-style-family-classic:"Font Awesome 6 Free";--fa-font-solid:normal 900 1em/1 "Font Awesome 6 Free";--fa-font-regular:normal 400 1em/1 "Font Awesome 6 Free";--fa-style-family-brands:"Font Awesome 6 Brands";--fa-font-brands:normal 400 1em/1 "Font Awesome 6 Brands"}
+  @font-face{font-family:"Font Awesome 6 Free";font-style:normal;font-weight:900;font-display:block;src:url("data:font/woff2;base64,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") format("woff2")}
+  @font-face{font-family:"Font Awesome 6 Free";font-style:normal;font-weight:400;font-display:block;src:url("data:font/woff2;base64,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") format("woff2")}
+  @font-face{font-family:"Font Awesome 6 Brands";font-style:normal;font-weight:400;font-display:block;src:url("data:font/woff2;base64,d09GMgABAAAAAAMkAAoAAAAABowAAALYAwUFAAAAAAAAAAAAAAAAAAAAAAAAAAAABmAAPAqEAINCATYCJAMMCwgABCAFhRQHIBuXBUCOwziGXELcRDGVRzx82EW93z3uJRlBzjYVdGIssPJzNFdyua/O2uqtDkAt3z2dtH0m838u/QPbBBL3AUc6keoLq9QqqwA7hG68A7x3Zge6p1wvy2z2Zyqpww1y8WuclCdmxFpgcp/9N5UfEvkUwaMO8D3Gzps10x/bfx/Hu9XniXcVgIAYF0+hDUCCFA2wBBpg6wIU5IQkR6ZaBZuqnxf7YIDhlOgXyfA8PgUgB/JCvihHNOtXp2WxXGfWvNnz5kYyNqtkCm32vDlz56S8+dnKnJi38ooi4kLnmnGv4bmmSVxscLZDjbjf6HyzdNEuecT5yuEGZ4lKaNDOhueyLAR0pPGFiMiCj+X5/ZWIdZWsIrJ4o/ujza50e2TQ3E+LEe+OiXhx9mexl0rvtb6ofJB4pfN5/OXy++35A4Sv2X2u6Hyv6cUOczxT47WuD9vZ5aEJ/y/4PRJQY8OzImiJ+fueLwyRDK7l977gB/P5bamqdvoe+LZPG+5v32PdZGvUqLqNf5CDtc48J046ifqkQKe0l7x8WW+iStOGtSdOvGl8dgIKthcpmiBZLG7fruiW0aInUF3fiqAP6X+vG1EXPfJ77Zc+hJr3k9c7d3vvfTeAIM3nPZd2/HOZYMTfpSwBP/d9Yx/80bLrDlB9Mf6LF4GSBAR/leIA/43Df5HGTuJFwoSSQGomDgiwK3NYKnJlDAAdD8P48UQtW/HUJLfRXBSet9o/XjAgOuEV82MhnukVz+B1WONHq24FN5ZAUGcbU2MTO8iszwKlESs7KOZoaItYGl5ZhYJQ3EbXygAwVKeP7S102+1hZXKrDkFOAU5ebUMbW1PECgoJ8XFy84gI8PHwCkDmmuOHfTIKa3gsd3bi8eAs2Rzhpklu5JjoMUEEw8R2BnmKoNFZNNV/gvDWMEbObKDFJIiFuanl/Er8OovainJxGcF4t4Wd+vpg3nIYi3BVv6ECAAAA") format("woff2")}
+  .fas,.fa-solid{font-weight:900}
+  .far,.fa-regular{font-weight:400}
+  .fab,.fa-brands{font-weight:400}
+  .fa-arrow-left::before{content:"\f060"}
+  .fa-arrow-right::before{content:"\f061"}
+  .fa-award::before{content:"\f559"}
+  .fa-bars::before{content:"\f0c9"}
+  .fa-bell::before{content:"\f0f3"}
+  .fa-book::before{content:"\f02d"}
+  .fa-book-open::before{content:"\f518"}
+  .fa-border-style::before{content:"\f853"}
+  .fa-briefcase::before{content:"\f0b1"}
+  .fa-bug::before{content:"\f188"}
+  .fa-bullseye::before{content:"\f140"}
+  .fa-calendar-check::before{content:"\f274"}
+  .fa-calendar-days::before{content:"\f073"}
+  .fa-calendar-plus::before{content:"\f271"}
+  .fa-camera::before{content:"\f030"}
+  .fa-certificate::before{content:"\f0a3"}
+  .fa-chart-column::before{content:"\e0e3"}
+  .fa-chart-simple::before{content:"\e473"}
+  .fa-check::before{content:"\f00c"}
+  .fa-check-double::before{content:"\f560"}
+  .fa-chevron-down::before{content:"\f078"}
+  .fa-chevron-left::before{content:"\f053"}
+  .fa-chevron-right::before{content:"\f054"}
+  .fa-chevron-up::before{content:"\f077"}
+  .fa-circle-check::before{content:"\f058"}
+  .fa-circle-half-stroke::before{content:"\f042"}
+  .fa-circle-info::before{content:"\f05a"}
+  .fa-clock::before{content:"\f017"}
+  .fa-coins::before{content:"\f51e"}
+  .fa-comment::before{content:"\f075"}
+  .fa-copy::before{content:"\f0c5"}
+  .fa-diagram-project::before{content:"\f542"}
+  .fa-display::before{content:"\e163"}
+  .fa-download::before{content:"\f019"}
+  .fa-ellipsis::before{content:"\f141"}
+  .fa-envelope::before{content:"\f0e0"}
+  .fa-file::before{content:"\f15b"}
+  .fa-file-arrow-down::before{content:"\f56d"}
+  .fa-file-excel::before{content:"\f1c3"}
+  .fa-file-image::before{content:"\f1c5"}
+  .fa-file-lines::before{content:"\f15c"}
+  .fa-file-pdf::before{content:"\f1c1"}
+  .fa-file-signature::before{content:"\f573"}
+  .fa-file-word::before{content:"\f1c2"}
+  .fa-filter::before{content:"\f0b0"}
+  .fa-fingerprint::before{content:"\f577"}
+  .fa-flask::before{content:"\f0c3"}
+  .fa-floppy-disk::before{content:"\f0c7"}
+  .fa-globe::before{content:"\f0ac"}
+  .fa-graduation-cap::before{content:"\f19d"}
+  .fa-hand::before{content:"\f256"}
+  .fa-house::before{content:"\f015"}
+  .fa-id-badge::before{content:"\f2c1"}
+  .fa-id-card::before{content:"\f2c2"}
+  .fa-lightbulb::before{content:"\f0eb"}
+  .fa-link::before{content:"\f0c1"}
+  .fa-list-check::before{content:"\f0ae"}
+  .fa-magnifying-glass::before{content:"\f002"}
+  .fa-microscope::before{content:"\f610"}
+  .fa-orcid::before{content:"\f8d2"}
+  .fa-paper-plane::before{content:"\f1d8"}
+  .fa-paperclip::before{content:"\f0c6"}
+  .fa-pen::before{content:"\f304"}
+  .fa-pen-to-square::before{content:"\f044"}
+  .fa-people-arrows::before{content:"\e068"}
+  .fa-people-group::before{content:"\e533"}
+  .fa-person-chalkboard::before{content:"\e53d"}
+  .fa-plane::before{content:"\f072"}
+  .fa-plus::before{content:"\2b"}
+  .fa-print::before{content:"\f02f"}
+  .fa-right-from-bracket::before{content:"\f2f5"}
+  .fa-rotate::before{content:"\f2f1"}
+  .fa-rotate-left::before{content:"\f2ea"}
+  .fa-spinner::before{content:"\f110"}
+  .fa-star::before{content:"\f005"}
+  .fa-stethoscope::before{content:"\f0f1"}
+  .fa-text-height::before{content:"\f034"}
+  .fa-trash-can::before{content:"\f2ed"}
+  .fa-triangle-exclamation::before{content:"\f071"}
+  .fa-upload::before{content:"\f093"}
+  .fa-user-check::before{content:"\f4fc"}
+  .fa-user-doctor::before{content:"\f0f0"}
+  .fa-user-graduate::before{content:"\f501"}
+  .fa-user-minus::before{content:"\f503"}
+  .fa-user-plus::before{content:"\f234"}
+  .fa-user-shield::before{content:"\f505"}
+  .fa-users::before{content:"\f0c0"}
+  .fa-wand-magic-sparkles::before{content:"\e2ca"}
+  .fa-xmark::before{content:"\f00d"}
+  
+</style>
 <style>
   /* Tema de AppSheet: claro · color principal rojo · Roboto */
   :root { --rojo:#e53935; --rojo-osc:#c62828; --rojo-claro:#fbe4e4; --rojo-sel:#f9d6d6; --fondo:#f6f7f9; --borde:#e3e6ea;
           --texto:#202124; --tenue:#5f6368; --gris:#f1f3f4; --verde:#2e7d32; --ambar:#a15c00; --cab:56px; --riel:56px; }
   * { box-sizing:border-box; }
   html, body { height:100%; }
-  body { margin:0; font-family:Roboto, -apple-system, "Segoe UI", Arial, sans-serif; color:var(--texto); background:var(--fondo); font-size:14px; }
+  /* Tipografía del sistema: San Francisco en iPhone/Mac, Roboto en Android, Segoe UI en Windows. No se descarga nada y la letra es la del propio dispositivo. */
+  body { margin:0; font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; color:var(--texto); background:var(--fondo); font-size:14px; }
   .oculto { display:none !important; }
   .tenue { color:var(--tenue); font-size:13px; }
   a { color:var(--rojo); }
@@ -678,6 +1202,27 @@
   #tabla .fila:not(.cabecera) { content-visibility:auto; contain-intrinsic-size:auto 38px; }
   #tarjetasMovil .tm { content-visibility:auto; contain-intrinsic-size:auto 86px; }
   @media print { #tabla .fila:not(.cabecera), #tarjetasMovil .tm { content-visibility:visible; } }
+
+
+  /* ===== v0.9: Acerca de, notificar un error, volver desde los documentos ===== */
+  .legal-cab #legalAtras, .legal-cab #errAtras { display:none; }
+  body.tactil .legal-cab #legalAtras, body.tactil .legal-cab #errAtras { display:inline-flex; }
+  @media (max-width: 899px) { .legal-cab #legalAtras, .legal-cab #errAtras { display:inline-flex; } }
+  .info-enlaces { display:grid; gap:8px; max-width:520px; margin:16px auto 10px; text-align:left; }
+  .info-enlaces a { display:flex; gap:12px; align-items:center; padding:12px 14px; border:1px solid var(--borde); border-radius:10px; text-decoration:none; color:var(--texto); font-size:13px; line-height:1.35; }
+  .info-enlaces a:hover { border-color:var(--rojo); }
+  .info-enlaces a i { color:var(--rojo); font-size:18px; width:22px; text-align:center; flex:none; }
+  .info-enlaces a b { font-weight:500; font-size:14.5px; }
+  .err-caja { max-width:620px; }
+  .err-intro { font-size:13px; color:var(--tenue); margin:0 0 10px; }
+  #dlgError label { display:block; font-size:12.5px; color:var(--tenue); margin:12px 0 4px; }
+  #dlgError textarea, #dlgError select { width:100%; box-sizing:border-box; font-family:inherit; font-size:14px; }
+  #dlgError .bt-rojo { width:100%; margin-top:16px; padding:11px; }
+  label.err-copia { display:flex; gap:8px; align-items:center; color:var(--texto) !important; font-size:13.5px !important; margin-top:14px !important; cursor:pointer; }
+  .err-copia input { width:auto; flex:none; }
+  .err-tecnico { margin-top:12px; font-size:12.5px; }
+  .err-tecnico summary { cursor:pointer; color:var(--tenue); }
+  .err-tecnico div { margin-top:6px; line-height:1.45; overflow-wrap:anywhere; }
 
   /* ===== Tema oscuro (v0.6.1). Variables a mano; el resto, generado a partir de los colores fijos de las reglas anteriores.
      Solo en pantalla: al imprimir se usa siempre el tema claro. ===== */
@@ -1351,10 +1896,34 @@
   <div id="dlgLegal" class="legal-lector oculto" role="dialog" aria-modal="true">
     <div class="legal-caja">
       <div class="legal-cab">
+        <button class="bt-icono" id="legalAtras" title="Volver" aria-label="Volver"><i class="fa-solid fa-chevron-left"></i></button>
         <div class="legal-pest"><button data-ldoc="privacidad">Política de privacidad</button><button data-ldoc="terminos">Términos de uso</button></div>
         <button class="bt-icono" id="legalCerrar" title="Cerrar" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <div class="legal-cuerpo" id="legalCuerpo"></div>
+    </div>
+  </div>
+  <!-- ===== Notificar un error (v0.9) ===== -->
+  <div id="dlgError" class="legal-lector oculto" role="dialog" aria-modal="true" aria-labelledby="errTitulo">
+    <div class="legal-caja err-caja">
+      <div class="legal-cab">
+        <button class="bt-icono" id="errAtras" title="Volver" aria-label="Volver"><i class="fa-solid fa-chevron-left"></i></button>
+        <div class="legal-pest"><button class="activo" id="errTitulo">Notificar un error</button></div>
+        <button class="bt-icono" id="errCerrar" title="Cerrar" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="legal-cuerpo">
+        <p class="err-intro">Cuéntanos qué ha pasado. El aviso llega a los administradores del Servicio con los datos técnicos de este dispositivo; no se envía ninguna captura de pantalla.</p>
+        <label for="errQue">¿Qué ha pasado? *</label>
+        <textarea id="errQue" rows="4" maxlength="1500" placeholder="Por ejemplo: al guardar una tutoría sale un error rojo y no se guarda."></textarea>
+        <label for="errDonde">¿Dónde ocurre?</label>
+        <select id="errDonde"></select>
+        <label for="errPasos">¿Cómo se reproduce? (opcional)</label>
+        <textarea id="errPasos" rows="3" maxlength="1000" placeholder="1. Entro en Docencia · 2. Pulso Nueva tutoría · 3. Relleno y guardo"></textarea>
+        <label class="err-copia"><input type="checkbox" id="errCopia" checked> Enviarme una copia por correo</label>
+        <details class="err-tecnico"><summary>Datos técnicos que se envían</summary><div class="tenue" id="errDatos"></div></details>
+        <button class="bt-rojo" id="errEnviar"><i class="fa-solid fa-paper-plane"></i> Enviar aviso</button>
+        <p class="mensaje" id="errMsg"></p>
+      </div>
     </div>
   </div>
   <div id="avisoVersion" class="aviso-version oculto"><span>Hay una versión nueva de la web.</span><button class="bt-rojo" id="btVersion">Actualizar</button></div>
@@ -1369,7 +1938,7 @@
   var MODULOS = {   // bloques aún no disponibles en la web
     asistencial: ["Asistencial", "fa-stethoscope", ""]
   };
-  var VERSION_WEB = "0.8";
+  var VERSION_WEB = "0.9.1";
   // Nombres visibles iguales a los de AppSheet (con las erratas corregidas) y orden de la ficha
   var ETIQ = { "Volúmen": "Volumen", "Notas_JCR": "Notas sobre JCR", "Investigadores Servicio": "Investigadores participantes",
                "Posiciones Servicio": "Posición en la autoría", "Es Correspondencia": "¿Es autor de correspondencia?",
@@ -2475,6 +3044,59 @@
       S.ano = ""; S.anoAuto = false; pintarLista();
     } };
   GC.push = PUSH; GC.irAviso = irAviso;
+  function adminsTexto() {
+    var a = (S.inicio && S.inicio.admins) || [];
+    return a.length ? a.map(function (x) { return x.nombre; }).join(", ") : "consulta con el Servicio";
+  }
+  // ---------- notificar un error (Acerca de) ----------
+  var INC = (function () {
+    var conHistoria = false;
+    function datos() {
+      var ua = navigator.userAgent || "", r = window.screen || {};
+      return { version: VERSION_WEB, vista: $("errDonde") ? $("errDonde").value : "", pantalla: (r.width || 0) + "×" + (r.height || 0) + " · ventana " + window.innerWidth + "×" + window.innerHeight,
+        escala: Math.round((S.escala || 1) * 100) + " %", tema: S.oscuro ? "oscuro" : "claro",
+        dispositivo: (/iPhone/.test(ua) ? "iPhone" : /iPad/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1) ? "iPad" : /Android/.test(ua) ? "Android" : /Mac/.test(ua) ? "Mac" : /Windows/.test(ua) ? "Windows" : "otro") +
+          " · " + (/Edg\//.test(ua) ? "Edge" : /Chrome\//.test(ua) ? "Chrome" : /Firefox\//.test(ua) ? "Firefox" : /Safari\//.test(ua) ? "Safari" : "navegador") +
+          (window.navigator.standalone === true || (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) ? " (app instalada)" : ""), ua: ua.substring(0, 180) };
+    }
+    var NOMBRES = { inicio: "Inicio", pubs: "Ciencia · Publicaciones", congresos: "Ciencia · Congresos y cursos", calendario: "Ciencia · Calendario y días",
+      estudios: "Ciencia · Estudios", pacientes: "Ciencia · Pacientes", meritos: "Ciencia · Otros méritos", docencia: "Docencia", revision: "Revisar",
+      perfil: "Mi ficha personal", memoria: "Memoria IdiPAZ", info: "Acerca de", acceso: "Pantalla de acceso", otro: "Otra pantalla o varias" };
+    function abrir() {
+      var sel = $("errDonde"), prev = S.vista && NOMBRES[S.vista] ? S.vista : "otro";
+      sel.innerHTML = Object.keys(NOMBRES).map(function (k) { return '<option value="' + k + '"' + (k === prev ? " selected" : "") + ">" + esc(NOMBRES[k]) + "</option>"; }).join("");
+      $("errMsg").textContent = ""; $("errEnviar").disabled = false;
+      var d = datos();
+      $("errDatos").textContent = "Versión " + d.version + " · " + d.dispositivo + " · pantalla " + d.pantalla + " · tamaño " + d.escala + " · tema " + d.tema;
+      if ($("dlgError").classList.contains("oculto")) { try { history.pushState({ gc: 1, inc: 1 }, ""); conHistoria = true; } catch (e) {} }
+      $("dlgError").classList.remove("oculto"); setTimeout(function () { $("errQue").focus(); }, 60);
+    }
+    function cerrar(desdeHistorial) {
+      if ($("dlgError").classList.contains("oculto")) return;
+      $("dlgError").classList.add("oculto");
+      if (conHistoria) { conHistoria = false; if (!desdeHistorial && GC.volverSinNavegar) GC.volverSinNavegar(); }
+    }
+    function enviar() {
+      var que = $("errQue").value.trim();
+      if (que.length < 10) { $("errMsg").textContent = "Cuéntanos un poco más de lo que ha pasado (al menos 10 caracteres)."; return; }
+      var d = datos();
+      d.que = que; d.pasos = $("errPasos").value.trim(); d.copia = $("errCopia").checked;
+      d.donde = $("errDonde").options[$("errDonde").selectedIndex].text;
+      $("errEnviar").disabled = true; $("errMsg").textContent = "Enviando…";
+      api("webIncidencia", S.token, d).then(function (r) {
+        if (!r.ok) { $("errMsg").textContent = r.mensaje; $("errEnviar").disabled = false; return; }
+        $("errQue").value = ""; $("errPasos").value = ""; cerrar(); aviso(r.mensaje, 6000);
+      }).catch(function (e) { $("errMsg").textContent = e.message; $("errEnviar").disabled = false; });
+    }
+    $("errEnviar").onclick = enviar;
+    $("errCerrar").onclick = function () { cerrar(); };
+    $("errAtras").onclick = function () { cerrar(); };
+    $("dlgError").addEventListener("click", function (ev) { if (ev.target === $("dlgError")) cerrar(); });
+    window.addEventListener("popstate", function () { cerrar(true); });
+    document.addEventListener("keydown", function (ev) { if (ev.key === "Escape") cerrar(); });
+    return { abrir: abrir, cerrar: cerrar };
+  })();
+  GC.incidencia = INC;
   GC.avisoVersion = function () { var a = $("avisoVersion"); if (a) a.classList.remove("oculto"); };
   if ($("btVersion")) $("btVersion").onclick = function () { location.reload(); };
   var CIENCIA = [["pubs", "Publicaciones", "fa-book"], ["congresos", "Congresos y cursos", "fa-people-group"], ["estudios", "Estudios", "fa-flask"], ["meritos", "Otros méritos", "fa-award"]];
@@ -2527,8 +3149,13 @@
       $("tituloProx").textContent = "Acerca de";
       $("textoProx").innerHTML = '<span class="hueco-logo" data-tam="64"></span><p><b>Gestión Científica CGyAD-GITIC</b> · versión web ' + VERSION_WEB + '</p>' +
         '<p>Servicio de Cirugía General y del Aparato Digestivo · Hospital Universitario La Paz · IdiPAZ</p>' +
-        '<p class="tenue">Los datos se guardan en las hojas de Google del Servicio. Para ir más rápido, este dispositivo guarda una copia de lo último que has consultado; se borra al cerrar sesión.<br>Dudas o errores: escribe al administrador del Servicio.</p>';
+        '<div class="info-enlaces">' +
+          '<a href="#" data-legal="privacidad"><i class="fa-solid fa-user-shield"></i><span><b>Política de privacidad</b><br>Qué datos se guardan, para qué, quién los ve y cuánto tiempo.</span></a>' +
+          '<a href="#" data-legal="terminos"><i class="fa-solid fa-file-signature"></i><span><b>Términos de uso</b><br>Quién puede usar la aplicación y cómo.</span></a>' +
+          '<a href="#" id="infoError"><i class="fa-solid fa-bug"></i><span><b>Notificar un error</b><br>Avisa a los administradores de un fallo o de algo que no funciona.</span></a>' +
+        '</div><p class="tenue">Administradores del Servicio: ' + esc(adminsTexto()) + ".</p>";
       ponerLogo();
+      if ($("infoError")) $("infoError").onclick = function (ev) { ev.preventDefault(); GC.incidencia.abrir(); };
     }
     if (v === "revision") { if (S.inicio && S.inicio.usuario.admin && REV.tab === "accesos") S.accesos = null; pintarRevision(); }
     if (GC.mod[v] && GC.mod[v].mostrar) GC.mod[v].mostrar();
@@ -2664,7 +3291,8 @@
   function dialogoAbierto() { return ["dlgForm", "dlgAlta"].filter(function (id) { return $(id) && !$(id).classList.contains("oculto"); })[0]; }
   // Antes de cambiar de pantalla, «atrás» cierra lo que esté abierto encima: diálogo, menú, filtros o detalles
   function cerrarCapa() {
-    if (GC.legal && GC.legal.abierto()) { GC.legal.cerrar(); return "capa"; }
+    if (GC.legal && GC.legal.abierto()) { GC.legal.cerrar(true); return "capa"; }
+    if (!$("dlgError").classList.contains("oculto")) { GC.incidencia.cerrar(true); return "capa"; }
     var dlg = dialogoAbierto();
     if (dlg) { if (dlg === "dlgForm") cerrarDialogo(); else $(dlg).classList.add("oculto"); return "capa"; }
     if (!$("cajon").classList.contains("oculto")) { $("cajon").classList.add("oculto"); return "capa"; }
@@ -2710,7 +3338,11 @@
   }
   // «Atrás» propio (gesto desde el borde en la app instalada del iPhone/iPad y botón ‹ de la cabecera en pantallas táctiles):
   // no depende del historial del navegador, que en la app instalada puede perderse al volver de segundo plano.
+  // Quita el paso de historial de una capa (documentos legales, formularios) sin que la web navegue a otra pantalla
+  GC.volverSinNavegar = function () { HIST.ignorar = true; try { history.back(); } catch (e) {} setTimeout(function () { HIST.ignorar = false; }, 600); };
   function atras() {
+    if (GC.legal && GC.legal.abierto()) { GC.legal.cerrar(); return; }
+    if (!$("dlgError").classList.contains("oculto")) { GC.incidencia.cerrar(); return; }
     if (!S.inicio) return;
     if (cerrarCapa()) return;
     for (var n = 0; n < 6 && PILA.length > 1; n++) {
@@ -2731,7 +3363,7 @@
     if (!ios || !instalada || !document.addEventListener) return;     // en Safari y en Android el gesto «atrás» del sistema ya usa el historial
     var x0 = null, y0 = 0, ind = document.createElement("div");
     ind.className = "gesto-atras"; ind.innerHTML = '<i class="fa-solid fa-chevron-left"></i>'; document.body.appendChild(ind);
-    document.addEventListener("touchstart", function (e) { var t = e.touches[0]; if (e.touches.length === 1 && t.clientX <= 22 && S.inicio) { x0 = t.clientX; y0 = t.clientY; } else x0 = null; }, { passive: true });
+    document.addEventListener("touchstart", function (e) { var t = e.touches[0]; if (e.touches.length === 1 && t.clientX <= 22 && S.inicio && !(GC.legal && GC.legal.abierto())) { x0 = t.clientX; y0 = t.clientY; } else x0 = null; }, { passive: true });
     document.addEventListener("touchmove", function (e) {
       if (x0 === null) return;
       var t = e.touches[0], dx = t.clientX - x0, dy = Math.abs(t.clientY - y0);
@@ -6376,7 +7008,7 @@
   <script>
 // ===== Privacidad y términos de uso (v0.8): lector de los documentos y aceptación obligatoria al entrar =====
 (function () {
-  var G = window.GC, $ = G.$, esc = G.esc, S = G.S, DOC = null, actual = "privacidad", pidiendo = null;
+  var G = window.GC, $ = G.$, esc = G.esc, S = G.S, DOC = null, actual = "privacidad", pidiendo = null, conHistoria = false;
   function cargar(fresco) {
     if (DOC && !fresco) return Promise.resolve(DOC);
     if (!pidiendo) pidiendo = G.api("webLegal").then(function (r) { DOC = r; pidiendo = null; return r; }, function (e) { pidiendo = null; throw e; });
@@ -6396,17 +7028,36 @@
   }
   function abrir(doc) {
     actual = doc === "terminos" ? "terminos" : "privacidad";
+    // Un paso de historial propio: así el gesto «atrás» del móvil y el botón del navegador cierran los documentos
+    // y vuelven a la pantalla anterior, también antes de iniciar sesión.
+    if ($("dlgLegal").classList.contains("oculto")) { try { history.pushState({ gc: 1, legal: 1 }, ""); conHistoria = true; } catch (e) {} }
     $("dlgLegal").classList.remove("oculto"); pintar();
     cargar().then(pintar, function (e) { $("legalCuerpo").innerHTML = '<p class="mensaje">' + esc(e.message) + "</p>"; });
   }
-  function cerrar() { $("dlgLegal").classList.add("oculto"); }
+  function cerrar(desdeHistorial) {
+    if ($("dlgLegal").classList.contains("oculto")) return;
+    $("dlgLegal").classList.add("oculto");
+    if (conHistoria) { conHistoria = false; if (!desdeHistorial && G.volverSinNavegar) G.volverSinNavegar(); }
+  }
+  window.addEventListener("popstate", function () { cerrar(true); });
+  // iPhone con la app instalada: deslizar desde el borde izquierdo también cierra los documentos (en la pantalla de acceso no hay sesión)
+  (function () {
+    var x0 = null, y0 = 0;
+    document.addEventListener("touchstart", function (e) { var t = e.touches[0]; x0 = (e.touches.length === 1 && t.clientX <= 24 && !$("dlgLegal").classList.contains("oculto")) ? t.clientX : null; y0 = t ? t.clientY : 0; }, { passive: true });
+    document.addEventListener("touchend", function (e) {
+      if (x0 === null) return;
+      var t = e.changedTouches[0], dx = t.clientX - x0; x0 = null;
+      if (dx > 70 && Math.abs(t.clientY - y0) < 60) cerrar();
+    }, { passive: true });
+  })();
   document.addEventListener("click", function (ev) {
     var a = ev.target.closest && ev.target.closest("[data-legal]");
     if (a) { ev.preventDefault(); ev.stopPropagation(); if ($("menuUsuario")) $("menuUsuario").classList.add("oculto"); abrir(a.getAttribute("data-legal")); return; }
     var t = ev.target.closest && ev.target.closest("#dlgLegal [data-ldoc]"); if (t) { actual = t.getAttribute("data-ldoc"); pintar(); return; }
     if (ev.target === $("dlgLegal")) cerrar();
   }, true);
-  $("legalCerrar").onclick = cerrar;
+  $("legalCerrar").onclick = function () { cerrar(); };
+  $("legalAtras").onclick = function () { cerrar(); };
   document.addEventListener("keydown", function (ev) { if (ev.key === "Escape" && !$("dlgLegal").classList.contains("oculto")) cerrar(); });
 
   // ---- aceptación obligatoria: se muestra por encima de la aplicación hasta que se acepta la versión vigente ----

@@ -1,12 +1,10 @@
-// Service worker de Gestión Científica CGyAD-GITIC (v0.8)
-// 1) Guarda la INTERFAZ (página, fuentes e iconos; nunca los datos) para que la web abra al instante, también con mala conexión.
+// Service worker de Gestión Científica CGyAD-GITIC (v0.9)
+// 1) Guarda la INTERFAZ (la página lleva dentro la letra y los iconos; los datos nunca se guardan) para que la web abra al instante, también con mala conexión.
 //    La página guardada se muestra enseguida y, a la vez, se pide la publicada: si es distinta, se guarda y la web avisa
 //    («Hay una versión nueva · Actualizar»).
 // 2) Recibe las notificaciones push. El aviso llega vacío: el texto se pide al servidor con el código propio de este dispositivo.
-var CACHE = "gc-app-v1";
-var ESTATICOS = ["fuentes/roboto.css", "fuentes/iconos.css", "fuentes/roboto-latin-400-normal.woff2", "fuentes/roboto-latin-500-normal.woff2",
-  "fuentes/roboto-latin-700-normal.woff2", "fuentes/fa-solid-900.woff2", "fuentes/fa-regular-400.woff2", "fuentes/fa-brands-400.woff2",
-  "manifest.webmanifest", "icon-192.png", "favicon-32.png", "apple-touch-icon.png"];
+var CACHE = "gc-app-v2";
+var ESTATICOS = ["manifest.webmanifest", "icon-192.png", "favicon-32.png", "apple-touch-icon.png", "badge-96.png"];
 
 self.addEventListener("install", function (e) {
   self.skipWaiting();
@@ -48,7 +46,7 @@ self.addEventListener("fetch", function (e) {
     }).catch(function () { return fetch(req); }));
     return;
   }
-  if (/^(fuentes\/|icon-|favicon-|apple-touch-icon|badge-|manifest\.webmanifest)/.test(ruta)) {
+  if (/^(icon-|favicon-|apple-touch-icon|badge-|manifest\.webmanifest)/.test(ruta)) {
     e.respondWith(caches.open(CACHE).then(function (c) {
       return c.match(req, { ignoreSearch: true }).then(function (g) {
         return g || fetch(req).then(function (r) { if (r && r.ok) c.put(req, r.clone()); return r; });
