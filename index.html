@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<!-- Gestión Científica CGyAD-GITIC · web publicada (GitHub Pages) · versión 0.7.1 · generado el 11/11/2026 a partir de Web_App + Web_Estilos + Web_Cliente + Web_Estudios_Cliente + Web_Congresos_Cliente + Web_Docencia_Cliente + Web_Perfil_Cliente.
+<!-- Gestión Científica CGyAD-GITIC · web publicada (GitHub Pages) · versión 0.8 · generado el 13/11/2026 a partir de Web_App + Web_Estilos + Web_Cliente + Web_Estudios_Cliente + Web_Congresos_Cliente + Web_Docencia_Cliente + Web_Perfil_Cliente.
      No edites este archivo: la dirección del servidor está en config.js. -->
 <html lang="es">
 <head>
   <base target="_top">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!-- SEGURIDAD (v0.8): la página solo puede cargar archivos propios y hablar con el servidor de Apps Script. Si algo dejara de cargarse tras subir esta versión, borra la línea siguiente. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob: https://lh3.googleusercontent.com https://drive.google.com; connect-src 'self' https://script.google.com https://script.googleusercontent.com; object-src 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'">
+  <meta name="referrer" content="no-referrer">
   <meta name="theme-color" content="#e53935">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
@@ -19,9 +22,10 @@
 
   <title>Gestión Científica CGyAD-GITIC</title>
   <script>try { var gcT = localStorage.getItem("gc_tema"); if (gcT === "oscuro" || (gcT !== "claro" && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches)) document.documentElement.classList.add("tema-oscuro"); } catch (e) {}</script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="preload" href="fuentes/roboto-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fuentes/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="fuentes/roboto.css">
+  <link rel="stylesheet" href="fuentes/iconos.css">
 <style>
   /* Tema de AppSheet: claro · color principal rojo · Roboto */
   :root { --rojo:#e53935; --rojo-osc:#c62828; --rojo-claro:#fbe4e4; --rojo-sel:#f9d6d6; --fondo:#f6f7f9; --borde:#e3e6ea;
@@ -628,6 +632,53 @@
   .acceso.arrancando .acceso-cargando { display:block; }
   .acceso.arrancando #pasoEmail, .acceso.arrancando #pasoCodigo, .acceso.arrancando #pasoBio, .acceso.arrancando #pasoAlta, .acceso.arrancando #msgAcceso { display:none !important; }
 
+
+  /* ===== v0.8: privacidad y términos, aviso de versión y listas largas ===== */
+  .acceso-legal, .menu-legal { font-size:12px; color:var(--tenue); margin:18px 0 0; }
+  .menu-legal { margin:10px 0 0; text-align:center; }
+  .acceso-legal a, .menu-legal a, .alta-acepto a { color:var(--tenue); text-decoration:underline; }
+  .alta-acepto a { color:var(--rojo); }
+  .legal-puerta { position:fixed; inset:0; z-index:200; background:var(--fondo); display:flex; align-items:flex-start; justify-content:center; padding:24px 16px; overflow:auto; }
+  .legal-tarjeta { width:100%; max-width:520px; margin:auto; background:#fff; border:1px solid var(--borde); border-radius:14px; padding:24px 22px; }
+  .legal-tarjeta h2 { font-size:20px; font-weight:500; margin:0 0 6px; }
+  .legal-tarjeta p { margin:0 0 12px; font-size:14px; line-height:1.45; }
+  .legal-docs { display:grid; gap:8px; margin-bottom:14px; }
+  .legal-docs a { display:flex; gap:12px; align-items:center; padding:12px 14px; border:1px solid var(--borde); border-radius:10px; text-decoration:none; color:var(--texto); font-size:13px; line-height:1.35; }
+  .legal-docs a:hover { border-color:var(--rojo); }
+  .legal-docs a i { color:var(--rojo); font-size:18px; width:22px; text-align:center; flex:none; }
+  .legal-docs a b { font-weight:500; font-size:14.5px; }
+  .legal-resumen { margin:0 0 14px; padding-left:18px; font-size:13px; line-height:1.45; color:var(--tenue); }
+  .legal-resumen li { margin-bottom:4px; }
+  .legal-check { display:flex; gap:10px; align-items:flex-start; font-size:14px; line-height:1.4; margin:0 0 14px; cursor:pointer; }
+  .legal-check input { margin-top:3px; flex:none; width:auto; }
+  .legal-tarjeta .bt-rojo { width:100%; padding:11px; }
+  .legal-tarjeta .bt-texto { width:100%; margin-top:8px; }
+  body.legal-pendiente #vApp { visibility:hidden; }
+  .legal-lector { position:fixed; inset:0; z-index:210; background:rgba(0,0,0,.35); display:flex; align-items:center; justify-content:center; padding:16px; }
+  .legal-caja { width:100%; max-width:760px; max-height:100%; background:#fff; border-radius:14px; display:flex; flex-direction:column; overflow:hidden; }
+  .legal-cab { display:flex; align-items:center; gap:8px; padding:8px 10px 0 14px; border-bottom:1px solid var(--borde); }
+  .legal-pest { display:flex; gap:4px; flex:1; overflow:auto; }
+  .legal-pest button { border:none; background:none; padding:10px 12px; font-size:14px; color:var(--tenue); border-bottom:2px solid transparent; cursor:pointer; white-space:nowrap; font-family:inherit; }
+  .legal-pest button.activo { color:var(--rojo); border-bottom-color:var(--rojo); font-weight:500; }
+  .legal-cuerpo { padding:18px 22px 26px; overflow:auto; font-size:14px; line-height:1.55; }
+  .legal-cuerpo h2 { font-size:20px; font-weight:500; margin:0 0 2px; }
+  .legal-cuerpo h3 { font-size:15px; font-weight:500; margin:20px 0 6px; }
+  .legal-cuerpo p { margin:0 0 9px; }
+  .legal-tabla { overflow:auto; border:1px solid var(--borde); border-radius:10px; margin:8px 0 4px; }
+  .legal-tabla table { width:100%; border-collapse:collapse; font-size:13px; }
+  .legal-tabla th { text-align:left; font-weight:500; background:var(--gris); padding:8px 10px; }
+  .legal-tabla td { padding:8px 10px; border-top:1px solid var(--borde); vertical-align:top; }
+  .legal-tabla td:first-child { width:40%; }
+  @media (max-width: 899px) { .legal-lector { padding:0; } .legal-caja { max-width:none; height:100%; border-radius:0; } .legal-cuerpo { padding:14px 16px 30px; } .legal-tarjeta { padding:20px 16px; } }
+  .aviso-version { position:fixed; left:50%; bottom:18px; transform:translateX(-50%); z-index:190; display:flex; align-items:center; gap:12px; background:#323232; color:#fff;
+    padding:10px 12px 10px 16px; border-radius:10px; font-size:13.5px; box-shadow:0 6px 20px rgba(0,0,0,.25); max-width:calc(100% - 24px); }
+  .aviso-version .bt-rojo { padding:6px 12px; white-space:nowrap; }
+  @media (max-width: 899px) { .aviso-version { bottom:74px; } }
+  /* Listas largas: el navegador no calcula ni pinta las filas que quedan fuera de la pantalla */
+  #tabla .fila:not(.cabecera) { content-visibility:auto; contain-intrinsic-size:auto 38px; }
+  #tarjetasMovil .tm { content-visibility:auto; contain-intrinsic-size:auto 86px; }
+  @media print { #tabla .fila:not(.cabecera), #tarjetasMovil .tm { content-visibility:visible; } }
+
   /* ===== Tema oscuro (v0.6.1). Variables a mano; el resto, generado a partir de los colores fijos de las reglas anteriores.
      Solo en pantalla: al imprimir se usa siempre el tema claro. ===== */
   @media screen {
@@ -731,6 +782,9 @@
     html.tema-oscuro .mm-obj { background:#1c1e22; }
     html.tema-oscuro .mm-obj label { color:#b3dbe5; }
     html.tema-oscuro .mm-otras { background:#1c1e22; }
+    html.tema-oscuro .legal-tarjeta { background:#1c1e22; }
+    html.tema-oscuro .legal-caja { background:#1c1e22; }
+    html.tema-oscuro .aviso-version { box-shadow:0 6px 20px rgba(0,0,0,0.6); }
   }
   /* ===== fin tema oscuro ===== */
 </style>
@@ -786,7 +840,7 @@
           <label for="alComentario">Comentario para el administrador</label><textarea id="alComentario" rows="2" maxlength="500" placeholder="Por ejemplo: residente de 2.º año, rotación en la Unidad HBP…"></textarea>
         </details>
         <input id="alWeb" class="alta-trampa" tabindex="-1" autocomplete="off" aria-hidden="true">
-        <label class="alta-acepto"><input type="checkbox" id="alAcepto"> Acepto que estos datos se guarden en las hojas del Servicio para gestionar mi acceso.</label>
+        <label class="alta-acepto"><input type="checkbox" id="alAcepto"> <span>He leído la <a href="#" data-legal="privacidad">Política de privacidad</a> y acepto los <a href="#" data-legal="terminos">Términos de uso</a>.</span></label>
         <button class="bt-rojo" id="btAltaEnviar">Enviar solicitud</button>
         <button class="bt-texto" id="btAltaVolver">Volver</button>
       </div>
@@ -803,6 +857,7 @@
       </div>
       <p class="mensaje" id="msgAcceso"></p>
       <p class="acceso-cargando" id="txtArranque" aria-live="polite">Cargando…</p>
+      <p class="acceso-legal"><a href="#" data-legal="privacidad">Política de privacidad</a> · <a href="#" data-legal="terminos">Términos de uso</a></p>
     </div>
   </div>
 
@@ -829,6 +884,7 @@
       <p class="menu-nota" id="txtPush"></p>
       <button class="bt" id="btMiFicha" style="margin-bottom:8px"><i class="fa-solid fa-id-badge"></i> Mi ficha personal</button>
       <button class="bt" id="btSalir"><i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión</button>
+      <p class="menu-legal"><a href="#" data-legal="privacidad">Privacidad</a> · <a href="#" data-legal="terminos">Términos de uso</a></p>
     </div>
 
     <!-- Riel de iconos (escritorio) -->
@@ -1270,6 +1326,38 @@
 
   <div id="aviso" class="aviso oculto"></div>
   <div id="cargando" class="cargando oculto"></div>
+
+  <!-- ===== Aceptación obligatoria de la política de privacidad y los términos (v0.8) ===== -->
+  <div id="vLegal" class="legal-puerta oculto" role="dialog" aria-modal="true" aria-labelledby="legalPuertaTitulo">
+    <div class="legal-tarjeta">
+      <h2 id="legalPuertaTitulo">Antes de continuar</h2>
+      <p>Para usar la aplicación tienes que leer y aceptar dos documentos breves:</p>
+      <div class="legal-docs">
+        <a href="#" data-legal="privacidad"><i class="fa-solid fa-user-shield"></i><span><b>Política de privacidad</b><br>Qué datos se guardan, para qué, quién los ve y cuánto tiempo.</span></a>
+        <a href="#" data-legal="terminos"><i class="fa-solid fa-file-signature"></i><span><b>Términos de uso</b><br>Quién puede usar la aplicación y cómo.</span></a>
+      </div>
+      <ul class="legal-resumen">
+        <li>Solo se guardan datos profesionales y de actividad científica y docente. Nada de pacientes.</li>
+        <li>Tus correos y tu foto se borran a los <span id="legalMeses">12</span> meses de dejar el Servicio; tu actividad se conserva como historial.</li>
+        <li>Puedes pedir el acceso, la corrección o el borrado de tus datos en cualquier momento.</li>
+      </ul>
+      <label class="legal-check"><input type="checkbox" id="legalAcepto"> <span>He leído la Política de privacidad y acepto los Términos de uso <span class="tenue" id="legalVersion"></span>.</span></label>
+      <button class="bt-rojo" id="legalAceptar" disabled>Aceptar y continuar</button>
+      <button class="bt-texto" id="legalSalir">No acepto: cerrar sesión</button>
+      <p class="mensaje" id="legalMsg"></p>
+    </div>
+  </div>
+  <!-- ===== Lector de los documentos ===== -->
+  <div id="dlgLegal" class="legal-lector oculto" role="dialog" aria-modal="true">
+    <div class="legal-caja">
+      <div class="legal-cab">
+        <div class="legal-pest"><button data-ldoc="privacidad">Política de privacidad</button><button data-ldoc="terminos">Términos de uso</button></div>
+        <button class="bt-icono" id="legalCerrar" title="Cerrar" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="legal-cuerpo" id="legalCuerpo"></div>
+    </div>
+  </div>
+  <div id="avisoVersion" class="aviso-version oculto"><span>Hay una versión nueva de la web.</span><button class="bt-rojo" id="btVersion">Actualizar</button></div>
   <script>
 (function () {
   "use strict";
@@ -1281,7 +1369,7 @@
   var MODULOS = {   // bloques aún no disponibles en la web
     asistencial: ["Asistencial", "fa-stethoscope", ""]
   };
-  var VERSION_WEB = "0.7.1";
+  var VERSION_WEB = "0.8";
   // Nombres visibles iguales a los de AppSheet (con las erratas corregidas) y orden de la ficha
   var ETIQ = { "Volúmen": "Volumen", "Notas_JCR": "Notas sobre JCR", "Investigadores Servicio": "Investigadores participantes",
                "Posiciones Servicio": "Posición en la autoría", "Es Correspondencia": "¿Es autor de correspondencia?",
@@ -1308,7 +1396,7 @@
   function guardar(k, v) { try { if (v === null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) {} }
   function leer(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
   // Sesión del dispositivo: con Face ID / huella activado se guarda solo mientras la pestaña está abierta (sessionStorage);
-  // sin él, se guarda en el dispositivo (localStorage) y no se vuelve a pedir el código en 180 días sin uso.
+  // sin él, se guarda en el dispositivo (localStorage) y no se vuelve a pedir el código en 30 días sin uso.
   function bioActivo() { return leer("gc_bio") === "1" && !!leer("gc_pk"); }
   function guardarToken(t) {
     try { if (t && bioActivo()) { sessionStorage.setItem("gc_token", t); localStorage.removeItem("gc_token"); }
@@ -1317,6 +1405,8 @@
   }
   function leerToken() { try { return sessionStorage.getItem("gc_token") || (bioActivo() ? null : localStorage.getItem("gc_token")); } catch (e) { return leer("gc_token"); } }
   function aviso(t, ms) { var a = $("aviso"); a.textContent = t; a.classList.remove("oculto"); clearTimeout(aviso._t); aviso._t = setTimeout(function () { a.classList.add("oculto"); }, ms || 3500); }
+  // Solo se abren enlaces http(s): un valor como «javascript:…» escrito a mano en la hoja no llega a ser un enlace
+  function urlSegura(u) { u = String(u === null || u === undefined ? "" : u).trim(); return /^https?:\/\/\S+$/i.test(u) ? u : ""; }
   function cargando(on) { $("cargando").classList.toggle("oculto", !on); }
   function esMovil() { return window.matchMedia("(max-width: 899px)").matches; }
   // Servidor: dentro de Apps Script se usa google.script.run; en la web publicada (GitHub Pages), fetch a la URL de config.js (window.GC_API)
@@ -1418,6 +1508,7 @@
         if (!leer("gc_cuenta")) return Promise.resolve();
         return abrir().then(function (d) { if (d) try { d.transaction("d", "readwrite").objectStore("d").put({ t: Date.now(), ver: CACHE_VER, v: v }, clave(k)); } catch (e) {} });
       },
+      quitar: function (k) { return abrir().then(function (d) { if (d) try { d.transaction("d", "readwrite").objectStore("d").delete(clave(k)); } catch (e) {} }); },
       vaciar: function () { return abrir().then(function (d) { if (d) try { d.transaction("d", "readwrite").objectStore("d").clear(); } catch (e) {} }); }
     };
   })();
@@ -1870,6 +1961,7 @@
       pararLogo(); finArranque();
       var primera = !S.inicio;
       S.inicio = ini; guardar("gc_logo", ini.logo || null); ponerLogo();
+      if (GC.legal) GC.legal.comprobar(ini);
       $("vAcceso").classList.add("oculto"); $("vApp").classList.remove("oculto");
       var u = ini.usuario;
       $("lblNombre").textContent = u.nombre; $("lblEmail").textContent = u.email; $("lblRol").textContent = u.rol || "";
@@ -1884,6 +1976,7 @@
         PILA = [{ v: "inicio", sub: "" }];
         mostrarVista("inicio", { sinHistoria: true });     // pantalla de bienvenida; las publicaciones se cargan en segundo plano
         cargarPubs(conCache).then(precargar);
+        CACHE.quitar("webListarPublicaciones");            // copia del formato anterior (v0.7): ya no se usa
         var irA0 = (location.hash.match(/^#ir=([a-z:]+)$/) || [])[1];
         if (irA0) { try { history.replaceState({ gc: 1, v: "inicio" }, "", location.pathname + location.search); } catch (e) {} setTimeout(function () { irAviso(irA0); }, 400); }
         setTimeout(function () { PUSH.sincronizar().then(PUSH.pintar); }, 1500);
@@ -1908,8 +2001,10 @@
   }
   function cargarPubs(usarCache, fresco) {
     if (!S.pubs.length) cargando(true);
-    return apiCache("webListarPublicaciones", fresco ? [S.token, true] : [S.token], function (lista) {
-      S.pubs = lista;
+    return apiCache("webPublicaciones", fresco ? [S.token, true] : [S.token], function (resp) {
+      // el servidor envía la lista «en columnas» ({ c: [nombres], f: [[valores]…] }): aquí se convierte en objetos
+      var lista = Array.isArray(resp) ? resp : (resp && resp.f ? resp.f.map(function (f) { var o = {}; for (var k = 0; k < resp.c.length; k++) o[resp.c[k]] = f[k]; return o; }) : []);
+      S.pubs = lista; HAY = new WeakMap();
       var fil = {}, pers = {};
       lista.forEach(function (p) { if (p["Filiación La Paz"]) fil[p["Filiación La Paz"]] = 1; personasDe(p).forEach(function (n) { pers[n] = 1; }); });
       opciones($("fFil"), Object.keys(fil).sort(), "Cualquier filiación");
@@ -1930,18 +2025,27 @@
   }
 
   // ---------- lista (tabla agrupada como en AppSheet) ----------
+  var HAY = new WeakMap(), FILTROS = null;
+  function leerFiltros() {
+    return { t: $("fTexto").value.trim().toLowerCase(), tipo: $("fTipo").value, per: $("fPersona").value, ix: $("fIndex").value, fil: $("fFil").value,
+      est: S.inicio.usuario.admin ? $("fEstado").value : "", mias: $("fMias").checked, cat: $("fCat").value, cq: $("fCuartil").value,
+      pdf: $("fPdf").value, desde: $("fDesde").value, hasta: $("fHasta").value, pf: $("fPosicion").value };
+  }
+  function textoDe(p) {
+    var h = HAY.get(p);
+    if (h === undefined) { h = [p["Título del artículo"], p.Revista, p.PMID, p.DOI, p.Autores, p["Personas Servicio"], p["Tipo de Artículo"], anoDe(p)].join(" ").toLowerCase(); HAY.set(p, h); }
+    return h;
+  }
   function pasaFiltros(p, conAno) {
-    var t = $("fTexto").value.trim().toLowerCase(), tipo = $("fTipo").value, per = $("fPersona").value, ix = $("fIndex").value,
-        fil = $("fFil").value, est = S.inicio.usuario.admin ? $("fEstado").value : "", mias = $("fMias").checked,
-        cat = $("fCat").value, cq = $("fCuartil").value;
+    var F = FILTROS || leerFiltros(), t = F.t, tipo = F.tipo, per = F.per, ix = F.ix, fil = F.fil, est = F.est, mias = F.mias, cat = F.cat, cq = F.cq;
     if (est === "") { if (!confirmada(p)) return false; } else if (est !== "*" && estadoDe(p) !== est) return false;
     if (conAno && S.ano && anoDe(p) !== S.ano) return false;
-    if ($("fPdf").value === "si" && vacio(p["PDF_Artículo"])) return false;
-    if ($("fPdf").value === "no" && !vacio(p["PDF_Artículo"])) return false;
-    var desde = $("fDesde").value, hasta = $("fHasta").value;
+    if (F.pdf === "si" && vacio(p["PDF_Artículo"])) return false;
+    if (F.pdf === "no" && !vacio(p["PDF_Artículo"])) return false;
+    var desde = F.desde, hasta = F.hasta;
     if (desde && anoDe(p) < desde) return false;
     if (hasta && anoDe(p) > hasta) return false;
-    var pf = $("fPosicion").value;
+    var pf = F.pf;
     if (pf) {
       var r = papeles(p, personaReferencia());
       if (pf === "primero" && !r.primero) return false;
@@ -1964,10 +2068,7 @@
       var mq = mejorCuartil(p, cat);
       if (cq === "D1" ? mejorDecil(p, cat) !== "D1" : cq === "Q12" ? (mq !== "Q1" && mq !== "Q2") : mq !== cq) return false;
     }
-    if (t) {
-      var hay = [p["Título del artículo"], p.Revista, p.PMID, p.DOI, p.Autores, p["Personas Servicio"], p["Tipo de Artículo"], anoDe(p)].join(" ").toLowerCase();
-      if (hay.indexOf(t) === -1) return false;
-    }
+    if (t && textoDe(p).indexOf(t) === -1) return false;
     return true;
   }
   function posTipo(t) { var i = ORDEN_TIPOS.indexOf(t); return i === -1 ? 99 : i; }
@@ -1977,6 +2078,10 @@
   }
   function pintarLista() {
     if (!S.inicio) return;
+    FILTROS = leerFiltros();
+    try { pintarListaAhora(); } finally { FILTROS = null; }
+  }
+  function pintarListaAhora() {
     var todos = S.pubs.filter(function (p) { return pasaFiltros(p, false); });
     var base = todos.filter(function (p) { return tabDe(p) === S.pubTab; });
     Object.keys(PUB_TABS).forEach(function (k) { $("cntPub_" + k).textContent = todos.filter(function (p) { return tabDe(p) === k && (!S.ano || (anoDe(p) || "Sin año") === S.ano); }).length; });
@@ -2124,8 +2229,10 @@
     return e.join("") + etiquetaEstado(p);
   }
   ["fTexto", "fTipo", "fPersona", "fIndex", "fFil", "fEstado", "fMias", "fPosicion", "fDesde", "fHasta", "fCat", "fCuartil", "fPdf"].forEach(function (id) {
-    $(id).addEventListener(id === "fTexto" ? "input" : "change", function () { if (id === "fTexto" && GC.mod[S.vista]) { if (GC.mod[S.vista].buscar) GC.mod[S.vista].buscar(); return; }
-      if (id === "fTexto" && S.vista !== "pubs") mostrarVista("pubs"); pintarLista(); });
+    var alCambiar = function () { if (id === "fTexto" && GC.mod[S.vista]) { if (GC.mod[S.vista].buscar) GC.mod[S.vista].buscar(); return; }
+      if (id === "fTexto" && S.vista !== "pubs") mostrarVista("pubs"); pintarLista(); };
+    var espera = null;
+    $(id).addEventListener(id === "fTexto" ? "input" : "change", id !== "fTexto" ? alCambiar : function () { clearTimeout(espera); espera = setTimeout(alCambiar, 140); });
   });
   $("grupos").addEventListener("click", function (ev) { var b = ev.target.closest("[data-ano]"); if (b) { S.ano = b.getAttribute("data-ano"); S.anoAuto = false; pintarLista(); } });
   $("fAnoMovil").onchange = function () { S.ano = this.value; S.anoAuto = false; pintarLista(); };
@@ -2229,7 +2336,7 @@
       if (c === "Categoría") return campoCategorias(d);
       return '<div class="campo"><div class="et-campo">' + esc(et) + '</div><div class="valor">' + valorCampo(c, d) + '</div></div>'; }).join("") + '</div>';
     $("ficha").innerHTML = '<div class="col">' + col1 + col2 + '</div>';       // una sola columna: acciones encima de los detalles
-    $("ficha").querySelectorAll("[data-url]").forEach(function (b) { b.onclick = function () { window.open(b.getAttribute("data-url"), "_blank", "noopener"); }; });
+    $("ficha").querySelectorAll("[data-url]").forEach(function (b) { b.onclick = function () { var u = urlSegura(b.getAttribute("data-url")); if (u) window.open(u, "_blank", "noopener"); }; });
     var on = function (id, fn) { if ($(id)) $(id).onclick = fn; };
     on("acReclamar", formReclamar);
     $("ficha").querySelectorAll("[data-cat]").forEach(function (b) { b.onclick = function () { filtrarCategoria(b.getAttribute("data-cat")); }; });
@@ -2355,7 +2462,7 @@
   // ---------- navegación entre vistas ----------
   // Módulos (Estudios, Congresos, Docencia…) en archivos aparte: GC.registrar("vista", {secciones, buscar, mostrar, ocultar, placeholder, bloque, grupo})
   // Tres bloques: Ciencia (Publicaciones · Congresos y cursos · Estudios · Otros méritos), Docencia (Trabajos · Tutorías · ANECA) y Asistencial.
-  var GC = window.GC = { mod: {}, S: S, $: $, api: api, apiCache: apiCache, cache: CACHE, esc: esc, aviso: aviso, cargando: cargando, dialogo: dialogo, cerrarDialogo: cerrarDialogo,
+  var GC = window.GC = { url: urlSegura, mod: {}, S: S, $: $, api: api, apiCache: apiCache, cache: CACHE, esc: esc, aviso: aviso, cargando: cargando, dialogo: dialogo, cerrarDialogo: cerrarDialogo,
     bajar: bajar, libroXlsx: libroXlsx, numero: numero, dec: dec, pct: pct, guardar: guardar, leer: leer, esMovil: esMovil,
     registrar: function (v, m) { GC.mod[v] = m; }, mostrarVista: function (v, o) { mostrarVista(v, o); }, cambiarTabPub: function (t) { cambiarTabPub(t); },
     datosCambiados: function (m) { datosCambiados(m); }, ponerAvatar: function () { ponerAvatar(); }, abrirPublicacion: function (id) { mostrarVista("pubs"); abrirFicha(id); },
@@ -2368,6 +2475,8 @@
       S.ano = ""; S.anoAuto = false; pintarLista();
     } };
   GC.push = PUSH; GC.irAviso = irAviso;
+  GC.avisoVersion = function () { var a = $("avisoVersion"); if (a) a.classList.remove("oculto"); };
+  if ($("btVersion")) $("btVersion").onclick = function () { location.reload(); };
   var CIENCIA = [["pubs", "Publicaciones", "fa-book"], ["congresos", "Congresos y cursos", "fa-people-group"], ["estudios", "Estudios", "fa-flask"], ["meritos", "Otros méritos", "fa-award"]];
   function bloqueDe(v) { return v === "pubs" ? "ciencia" : (GC.mod[v] && GC.mod[v].bloque) || ""; }
   function grupoDe(v) { return (GC.mod[v] && GC.mod[v].grupo) || v; }
@@ -2555,6 +2664,7 @@
   function dialogoAbierto() { return ["dlgForm", "dlgAlta"].filter(function (id) { return $(id) && !$(id).classList.contains("oculto"); })[0]; }
   // Antes de cambiar de pantalla, «atrás» cierra lo que esté abierto encima: diálogo, menú, filtros o detalles
   function cerrarCapa() {
+    if (GC.legal && GC.legal.abierto()) { GC.legal.cerrar(); return "capa"; }
     var dlg = dialogoAbierto();
     if (dlg) { if (dlg === "dlgForm") cerrarDialogo(); else $(dlg).classList.add("oculto"); return "capa"; }
     if (!$("cajon").classList.contains("oculto")) { $("cajon").classList.add("oculto"); return "capa"; }
@@ -4007,7 +4117,7 @@
   function pintarFicha(c) {
     var admin = G.S.inicio.usuario.admin, ia = {}, acc = [];
     c.iaCampos.forEach(function (k) { if (IA_CAMPO[k]) ia[IA_CAMPO[k]] = 1; });
-    if (c.web) acc.push('<a class="accion" href="' + esc(c.web) + '" target="_blank" rel="noopener"><i class="fa-solid fa-globe"></i>Web del congreso</a>');
+    if (G.url(c.web)) acc.push('<a class="accion" href="' + esc(G.url(c.web)) + '" target="_blank" rel="noopener"><i class="fa-solid fa-globe"></i>Web del congreso</a>');
     if (c.tienePrograma) acc.push('<button class="accion" data-bajar="programa"><i class="fa-regular fa-file-pdf"></i>Programa</button>');
     if (c.puedeEditar && (!c.tienePrograma || admin)) acc.push('<button class="accion" data-subir="programa"><i class="fa-solid fa-upload"></i>' + (c.tienePrograma ? "Sustituir programa" : "Subir programa") + "</button>");
     acc.push(c.soyAsistente ? '<button class="accion" id="acDejar"><i class="fa-solid fa-user-minus"></i>Dejar de asistir</button>'
@@ -4029,7 +4139,7 @@
       campo(ETQ.inicio, fecha(c.inicio), ia.inicio) + campo(ETQ.fin, fecha(c.fin), ia.fin) +
       campo("Fecha límite de abstracts", fecha(c.plazoAbstracts), c.iaPlazos.indexOf("abstracts") !== -1) +
       campo("Fecha límite de inscripción reducida", fecha(c.plazoInscripcion), c.iaPlazos.indexOf("inscripcion") !== -1) + campo(ETQ.asistentes, c.asistentes) +
-      (c.web ? '<div class="campo"><div class="et-campo">' + ETQ.web + (ia.web ? ' <span class="et ia">IA</span>' : "") + '</div><div class="valor"><a href="' + esc(c.web) + '" target="_blank" rel="noopener">' + esc(c.web) + "</a></div></div>" : "") +
+      (G.url(c.web) ? '<div class="campo"><div class="et-campo">' + ETQ.web + (ia.web ? ' <span class="et ia">IA</span>' : "") + '</div><div class="valor"><a href="' + esc(G.url(c.web)) + '" target="_blank" rel="noopener">' + esc(c.web) + "</a></div></div>" : "") +
       campo(ETQ.obs, c.obs) + "</div>";
     // aportaciones
     var aps = c.aportaciones.slice().sort(function (a, b) { return a.tipo.localeCompare(b.tipo, "es") || a.titulo.localeCompare(b.titulo, "es"); });
@@ -4947,7 +5057,7 @@
   $("btIndDoc").onclick = function () { var on = $("indicadoresDoc").classList.toggle("oculto") === false; G.guardar("gc_ind_doc", on ? "1" : "0"); pintar(); };
   document.querySelectorAll("#panelFiltrosDoc [data-ultdoc]").forEach(function (b) { b.onclick = function () {
     var y = DC.datos.anioActual, n = Number(b.getAttribute("data-ultdoc"));
-    var setA = function (sel, v) { if (!Array.prototype.some.call(sel.options || [], function (o) { return o.value === String(v); })) sel.insertAdjacentHTML("beforeend", "<option>" + v + "</option>"); sel.value = String(v); };
+    var setA = function (sel, v) { if (!Array.prototype.some.call(sel.options || [], function (o) { return o.value === String(v); })) sel.insertAdjacentHTML("beforeend", "<option>" + esc(v) + "</option>"); sel.value = String(v); };
     setA($("fdDesde"), y - n + 1); setA($("fdHasta"), y); pintar(); }; });
 
   // ---------- ficha ----------
@@ -4971,7 +5081,7 @@
     if (v === "" || v === null || v === undefined || v === false || (Array.isArray(v) && !v.length)) return "";
     return '<div class="campo"><div class="et-campo">' + esc(et) + '</div><div class="valor">' + (html ? v : Array.isArray(v) ? esc(v.join(", ")) : esc(v === true ? "Sí" : v)) + "</div></div>";
   }
-  function enlace(u) { return u ? '<a href="' + esc(u) + '" target="_blank" rel="noopener">' + esc(u) + "</a>" : ""; }
+  function enlace(u) { return !u ? "" : G.url(u) ? '<a href="' + esc(G.url(u)) + '" target="_blank" rel="noopener">' + esc(u) + "</a>" : esc(u); }
   function pintarFicha(t, r) {
     var admin = G.S.inicio.usuario.admin, acc = [];
     $("tituloFichaDoc").textContent = t === "trabajos" ? "Detalles del " + (r.tipo === "Tesis doctoral" ? "trabajo (tesis)" : r.tipo || "trabajo") : t === "rotantes" ? "Detalles del rotante" : esTut(t) ? "Detalles de la tutoría" : t === "aneca" ? "Detalles de la acreditación" : "Detalles del mérito";
@@ -5012,7 +5122,7 @@
     on("acRechazarDoc", function () { dialogoRechazo(t, r); });
     on("acVerDoc", function () { verDocumento(t, r); });
     on("acSubirDoc", function () { subirDocumento(t, r); });
-    on("acEnlaceDoc", function () { window.open(r.enlace, "_blank", "noopener"); });
+    on("acEnlaceDoc", function () { var u = G.url(r.enlace); if (u) window.open(u, "_blank", "noopener"); else G.aviso("El enlace no es una dirección web válida."); });
     $("btEditarDoc").classList.toggle("oculto", !r.puedeEditar);
     $("btBorrarDoc").classList.toggle("oculto", !r.puedeBorrar);
   }
@@ -6264,8 +6374,71 @@
 </script>
 
   <script>
-    // Aplicación instalable (PWA): el service worker no guarda datos, solo permite instalarla en el teléfono
-    if ("serviceWorker" in navigator) window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function () {}); });
+// ===== Privacidad y términos de uso (v0.8): lector de los documentos y aceptación obligatoria al entrar =====
+(function () {
+  var G = window.GC, $ = G.$, esc = G.esc, S = G.S, DOC = null, actual = "privacidad", pidiendo = null;
+  function cargar(fresco) {
+    if (DOC && !fresco) return Promise.resolve(DOC);
+    if (!pidiendo) pidiendo = G.api("webLegal").then(function (r) { DOC = r; pidiendo = null; return r; }, function (e) { pidiendo = null; throw e; });
+    return pidiendo;
+  }
+  function pintar() {
+    document.querySelectorAll("#dlgLegal [data-ldoc]").forEach(function (b) { b.classList.toggle("activo", b.getAttribute("data-ldoc") === actual); });
+    var cu = $("legalCuerpo");
+    if (!DOC) { cu.innerHTML = '<p class="tenue"><i class="fa-solid fa-spinner fa-spin"></i> Cargando…</p>'; return; }
+    var secs = DOC[actual] || [], h = ['<h2>' + (actual === "privacidad" ? "Política de privacidad" : "Términos de uso") + '</h2><p class="tenue">' + esc(DOC.titulo || "") + " · versión " + esc(DOC.version) + " · " + esc(DOC.fecha) + "</p>"];
+    secs.forEach(function (s) {
+      h.push("<h3>" + esc(s.t) + "</h3>" + (s.p || []).map(function (p) { return "<p>" + esc(p) + "</p>"; }).join(""));
+      if (s.plazos) h.push('<div class="legal-tabla"><table><thead><tr><th>Dato</th><th>Cuánto se conserva</th></tr></thead><tbody>' +
+        (DOC.plazos || []).map(function (f) { return "<tr><td>" + esc(f[0]) + "</td><td>" + esc(f[1]) + "</td></tr>"; }).join("") + "</tbody></table></div>");
+    });
+    cu.innerHTML = h.join(""); cu.scrollTop = 0;
+  }
+  function abrir(doc) {
+    actual = doc === "terminos" ? "terminos" : "privacidad";
+    $("dlgLegal").classList.remove("oculto"); pintar();
+    cargar().then(pintar, function (e) { $("legalCuerpo").innerHTML = '<p class="mensaje">' + esc(e.message) + "</p>"; });
+  }
+  function cerrar() { $("dlgLegal").classList.add("oculto"); }
+  document.addEventListener("click", function (ev) {
+    var a = ev.target.closest && ev.target.closest("[data-legal]");
+    if (a) { ev.preventDefault(); ev.stopPropagation(); if ($("menuUsuario")) $("menuUsuario").classList.add("oculto"); abrir(a.getAttribute("data-legal")); return; }
+    var t = ev.target.closest && ev.target.closest("#dlgLegal [data-ldoc]"); if (t) { actual = t.getAttribute("data-ldoc"); pintar(); return; }
+    if (ev.target === $("dlgLegal")) cerrar();
+  }, true);
+  $("legalCerrar").onclick = cerrar;
+  document.addEventListener("keydown", function (ev) { if (ev.key === "Escape" && !$("dlgLegal").classList.contains("oculto")) cerrar(); });
+
+  // ---- aceptación obligatoria: se muestra por encima de la aplicación hasta que se acepta la versión vigente ----
+  function comprobar(ini) {
+    var l = ini && ini.legal, falta = !!(l && l.aceptada === false);
+    $("vLegal").classList.toggle("oculto", !falta);
+    if (document.body && document.body.classList) document.body.classList.toggle("legal-pendiente", falta);
+    if (falta) { $("legalVersion").textContent = "(versión " + l.version + ")"; $("legalAcepto").checked = false; $("legalAceptar").disabled = true; $("legalMsg").textContent = "";
+      if (DOC && DOC.version !== l.version) DOC = null; }
+  }
+  $("legalAcepto").onchange = function () { $("legalAceptar").disabled = !$("legalAcepto").checked; };
+  $("legalAceptar").onclick = function () {
+    var l = S.inicio && S.inicio.legal; if (!l || !$("legalAcepto").checked) return;
+    $("legalAceptar").disabled = true; $("legalMsg").textContent = "Guardando…";
+    G.api("webAceptarLegal", S.token, l.version, navigator.userAgent).then(function (r) {
+      if (!r.ok) { l.version = r.version || l.version; DOC = null; comprobar(S.inicio); $("legalMsg").textContent = r.mensaje; return; }
+      l.aceptada = true; if (G.cache && G.cache.set) G.cache.set("webInicio", S.inicio);
+      comprobar(S.inicio); G.aviso("Gracias. Aceptación guardada.", 3000);
+    }).catch(function (e) { $("legalMsg").textContent = e.message; $("legalAceptar").disabled = false; });
+  };
+  $("legalSalir").onclick = function () { $("vLegal").classList.add("oculto"); if (document.body && document.body.classList) document.body.classList.remove("legal-pendiente"); $("btSalir").click(); };
+  G.legal = { abrir: abrir, cerrar: cerrar, comprobar: comprobar, abierto: function () { return !$("dlgLegal").classList.contains("oculto"); } };
+  if (S.inicio) comprobar(S.inicio);
+})();
+</script>
+
+  <script>
+    // Aplicación instalable (PWA): el service worker guarda la interfaz (no los datos) para abrir al instante y avisa cuando hay una versión nueva.
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.addEventListener("message", function (ev) { if (ev.data && ev.data.nuevaVersion && window.GC && GC.avisoVersion) GC.avisoVersion(); });
+      window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function () {}); });
+    }
   </script>
 </body>
 </html>
