@@ -1,7 +1,7 @@
 {
-  "name": "Gestión Científica CGyAD-GITIC",
+  "name": "Gestión CGyAD-GITIC",
   "short_name": "CGyAD-GITIC",
-  "description": "Gestión científica del Servicio de Cirugía General y del Aparato Digestivo · H. U. La Paz · IdiPAZ",
+  "description": "Gestión de la actividad investigadora y docente del Servicio de Cirugía General y del Aparato Digestivo · H. U. La Paz · IdiPAZ",
   "lang": "es",
   "start_url": "./",
   "scope": "./",

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Gestión Científica CGyAD-GITIC · web publicada (GitHub Pages) · versión 0.9.1 · generado el 13/11/2026 a partir de Web_App + Web_Estilos + Web_Cliente + Web_Estudios_Cliente + Web_Congresos_Cliente + Web_Docencia_Cliente + Web_Perfil_Cliente.
+<!-- Gestión CGyAD-GITIC · web publicada (GitHub Pages) · versión 0.9.2 · generado el 14/11/2026 a partir de Web_App + Web_Estilos + Web_Cliente + Web_Estudios_Cliente + Web_Congresos_Cliente + Web_Docencia_Cliente + Web_Perfil_Cliente.
      No edites este archivo: la dirección del servidor está en config.js. -->
 <html lang="es">
 <head>
@@ -20,7 +20,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=4">
   <script src="config.js"></script>
 
-  <title>Gestión Científica CGyAD-GITIC</title>
+  <title>Gestión CGyAD-GITIC</title>
   <script>try { var gcT = localStorage.getItem("gc_tema"); if (gcT === "oscuro" || (gcT !== "claro" && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches)) document.documentElement.classList.add("tema-oscuro"); } catch (e) {}</script>
   <style>
 /*! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com · License: https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT) · Subconjunto con los 89 iconos que usa esta web, incrustado en esta misma página */
@@ -864,7 +864,7 @@
     .dialogo { max-height:calc(92 * var(--vh, 1vh)); }
   }
 
-  /* ===== v0.5: bloques (Ciencia · Docencia · Asistencial), Revisar unificado, ficha personal, gesto atrás ===== */
+  /* ===== v0.5: bloques (Investigación · Docencia · Asistencial), Revisar unificado, ficha personal, gesto atrás ===== */
   .bloque-bar { display:flex; align-items:center; gap:4px; padding:6px 10px; border-bottom:1px solid var(--borde); background:#fafbfc; overflow-x:auto; flex-shrink:0; scrollbar-width:none; }
   .bloque-bar::-webkit-scrollbar { display:none; }
   .bloque-bar .bloque-nom { font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--tenue); margin-right:6px; white-space:nowrap; }
@@ -988,7 +988,7 @@
     .tarjeta-inicio:hover { transform:scale(1.025); border-color:var(--rojo); box-shadow:0 6px 18px rgba(0,0,0,.10); z-index:2; }
     .tarjeta-inicio:hover .ti-ir { color:var(--rojo); }
   }
-  /* desplegables de Ciencia y Docencia */
+  /* desplegables de Investigación y Docencia */
   .tarjeta-inicio.con-lista .ti-subs { display:none; }
   .tarjeta-inicio.con-lista .ti-ir i { transition:transform .18s ease; }
   @media (hover: hover) and (pointer: fine) {
@@ -1109,9 +1109,32 @@
   @media (max-width: 899px) { .mm-cuerpo { padding:8px 8px 90px; } #vistaMemoria .barra-vista h2 { display:none; } .mm-estado { display:none; } }
 
   /* ===== v0.6.1: botón «atrás» en pantallas táctiles ===== */
+  /* v0.9.2: en pantallas táctiles la flecha ocupa siempre su sitio (aunque esté oculta en Inicio),
+     así el botón de menú ≡ y el título no se desplazan al entrar o salir de una sección. */
   #btAtras { display:none; }
-  body.tactil:not(.en-inicio) #btAtras { display:inline-flex; }
-  @media (max-width: 899px) { body.tactil:not(.en-inicio) .cab .hueco-logo { display:none; } }
+  body.tactil #btAtras { display:inline-flex; visibility:hidden; }
+  body.tactil:not(.en-inicio) #btAtras { visibility:visible; }
+  @media (max-width: 899px) { body.tactil .cab .hueco-logo { display:none; } }
+
+  /* ===== v0.9.2: cambio de pantalla con movimiento (gesto «atrás» fluido) =====
+     Al volver, la pantalla entra desde la izquierda; al avanzar, desde la derecha.
+     Solo en pantallas táctiles y solo con transform/opacity (lo mueve la tarjeta gráfica). */
+  @keyframes gc-entra-izq { from { opacity:.45; transform:translate3d(-28px,0,0); } to { opacity:1; transform:none; } }
+  @keyframes gc-entra-der { from { opacity:.45; transform:translate3d(28px,0,0); } to { opacity:1; transform:none; } }
+  body.tactil main.area.va-atras { animation:gc-entra-izq .24s cubic-bezier(.22,.61,.36,1); }
+  body.tactil main.area.va-adelante { animation:gc-entra-der .24s cubic-bezier(.22,.61,.36,1); }
+  /* «Investigación» es más largo que «Ciencia»: la barra inferior aprieta un poco el texto para que quepa en el móvil */
+  @media (max-width: 899px) {
+    .inferior button { padding:6px 8px; }
+    .inferior button small { font-size:10px; white-space:nowrap; }
+  }
+  @media (max-width: 374px) { .inferior button { padding:6px 5px; } .inferior button small { font-size:9.5px; } }
+  main.area.arrastrando { transition:none; }                          /* sigue al dedo, sin retardo */
+  main.area.volviendo { transition:transform .2s ease-out, opacity .2s ease-out; }
+  @media (prefers-reduced-motion: reduce) {
+    body.tactil main.area.va-atras, body.tactil main.area.va-adelante { animation:none; }
+    main.area.volviendo { transition:none; }
+  }
 
 
   /* ===== v0.7: solicitud de alta, accesos y notificaciones ===== */
@@ -1352,14 +1375,14 @@
   <div id="vAcceso" class="acceso arrancando">
     <div class="tarjeta-acceso">
       <!-- Logo de la pantalla de acceso: los arcos rojos giran mientras la web carga o espera al servidor -->
-      <svg class="logo-acceso girando" id="logoAcceso" viewBox="0 0 64 64" role="img" aria-label="Gestión Científica CGyAD-GITIC">
+      <svg class="logo-acceso girando" id="logoAcceso" viewBox="0 0 64 64" role="img" aria-label="Gestión CGyAD-GITIC">
         <circle cx="32" cy="32" r="30" fill="#fff" stroke="#1e5a96" stroke-width="3"/>
         <g class="arcos" fill="none" stroke="#e53935" stroke-width="4" stroke-linecap="round"><path d="M32 6a26 26 0 0 1 24 16"/><path d="M32 58A26 26 0 0 1 8 42"/></g>
         <circle cx="24" cy="25" r="5" fill="#1e5a96"/><circle cx="40" cy="25" r="5" fill="#1e5a96"/><circle cx="32" cy="21" r="5.5" fill="#e53935"/>
         <path d="M15 44c0-8 4-12 9-12s9 4 9 12z M31 44c0-8 4-12 9-12s9 4 9 12z" fill="#1e5a96"/>
         <path d="M22 42c0-9 4.5-13.5 10-13.5S42 33 42 42z" fill="#e53935"/>
       </svg>
-      <h1>Gestión Científica CGyAD-GITIC</h1>
+      <h1>Gestión CGyAD-GITIC</h1>
       <p class="sub">Cirugía General y del Aparato Digestivo · H. U. La Paz · IdiPAZ</p>
       <div id="pasoEmail">
         <label for="inEmail">Correo del Servicio</label>
@@ -1412,7 +1435,7 @@
       <button class="bt-icono" id="btAtras" title="Atrás" aria-label="Atrás"><i class="fa-solid fa-chevron-left"></i></button>
       <button class="bt-icono" id="btMenu" title="Menú"><i class="fa-solid fa-bars"></i></button>
       <span class="hueco-logo" data-tam="32"></span>
-      <span class="titulo">Gestión Científica CGyAD-GITIC</span>
+      <span class="titulo">Gestión CGyAD-GITIC</span>
       <div class="buscador"><div><i class="fa-solid fa-magnifying-glass"></i><input id="fTexto" type="search" placeholder="Buscar Publicaciones"></div></div>
       <button class="bt-icono" id="btSync" title="Actualizar datos"><i class="fa-solid fa-rotate"></i></button>
       <button class="avatar" id="avatar" title="Mi cuenta">?</button>
@@ -1435,7 +1458,7 @@
     <!-- Riel de iconos (escritorio) -->
     <nav class="riel" id="riel">
       <button data-vista="inicio" data-tip="Inicio"><i class="fa-solid fa-house"></i></button>
-      <button data-vista="ciencia" data-tip="Ciencia: publicaciones, congresos, estudios y méritos"><i class="fa-solid fa-microscope"></i><span class="contador" id="cntDiasRiel"></span></button>
+      <button data-vista="ciencia" data-tip="Investigación: publicaciones, congresos, estudios y méritos"><i class="fa-solid fa-microscope"></i><span class="contador" id="cntDiasRiel"></span></button>
       <button data-vista="docencia" data-tip="Docencia: trabajos dirigidos, tutorías, rotantes y ANECA"><i class="fa-solid fa-user-graduate"></i></button>
       <button data-vista="asistencial" data-tip="Asistencial"><i class="fa-solid fa-stethoscope"></i></button>
       <hr>
@@ -1448,7 +1471,7 @@
     <!-- Menú lateral con nombres (botón ≡) -->
     <div id="cajon" class="cajon oculto">
       <button data-vista="inicio"><i class="fa-solid fa-house"></i>Inicio</button>
-      <div class="cajon-tit">Ciencia</div>
+      <div class="cajon-tit">Investigación</div>
       <button data-vista="pubs" class="sub"><i class="fa-solid fa-book"></i>Publicaciones</button>
       <button data-vista="congresos" class="sub"><i class="fa-solid fa-people-group"></i>Congresos y cursos <span class="contador" id="cntDiasCajon"></span></button>
       <button data-vista="estudios" class="sub"><i class="fa-solid fa-flask"></i>Estudios</button>
@@ -1478,9 +1501,9 @@
           <p class="inicio-sub">¿A qué quieres acceder?</p>
           <div class="inicio-tarjetas" id="carrusel">
             <div class="inicio-fila bloques">
-            <div class="tarjeta-inicio bloque con-lista" data-ir="ciencia" tabindex="0" role="button" aria-expanded="false" aria-label="Ciencia">
+            <div class="tarjeta-inicio bloque con-lista" data-ir="ciencia" tabindex="0" role="button" aria-expanded="false" aria-label="Investigación">
               <div class="ti-cab"><span class="ti-ico"><i class="fa-solid fa-microscope"></i></span>
-                <div class="ti-tit"><h3>Ciencia</h3><button class="info-bt" data-info="ciencia" aria-label="¿Qué se registra en Ciencia?" title="¿Qué se registra aquí?"><i class="fa-solid fa-circle-info"></i></button></div></div>
+                <div class="ti-tit"><h3>Investigación</h3><button class="info-bt" data-info="ciencia" aria-label="¿Qué se registra en Investigación?" title="¿Qué se registra aquí?"><i class="fa-solid fa-circle-info"></i></button></div></div>
               <div class="ti-subs"><button data-vista="pubs"><i class="fa-solid fa-chevron-right"></i>Publicaciones</button><button data-vista="congresos"><i class="fa-solid fa-chevron-right"></i>Congresos y cursos</button><button data-vista="estudios"><i class="fa-solid fa-chevron-right"></i>Estudios</button><button data-vista="meritos"><i class="fa-solid fa-chevron-right"></i>Otros méritos</button></div><span class="contador oculto" id="cntDiasInicio"></span>
               <span class="ti-ir" aria-hidden="true"><i class="fa-solid fa-chevron-down"></i></span>
               <div class="pop-info oculto" role="dialog"></div>
@@ -1803,7 +1826,7 @@
     <!-- Barra inferior (móvil) -->
     <nav class="inferior" id="inferior">
       <button data-vista="inicio"><i class="fa-solid fa-house"></i><small>Inicio</small></button>
-      <button data-vista="ciencia"><i class="fa-solid fa-microscope"></i><small>Ciencia</small></button>
+      <button data-vista="ciencia"><i class="fa-solid fa-microscope"></i><small>Investigación</small></button>
       <button data-vista="docencia"><i class="fa-solid fa-user-graduate"></i><small>Docencia</small></button>
       <button data-vista="revision"><i class="fa-solid fa-list-check"></i><small>Revisar</small><span class="contador oculto" id="cntRevisionInferior"></span></button>
       <button id="btMas"><i class="fa-solid fa-ellipsis"></i><small>Más</small></button>
@@ -1938,7 +1961,7 @@
   var MODULOS = {   // bloques aún no disponibles en la web
     asistencial: ["Asistencial", "fa-stethoscope", ""]
   };
-  var VERSION_WEB = "0.9.1";
+  var VERSION_WEB = "0.9.2";
   // Nombres visibles iguales a los de AppSheet (con las erratas corregidas) y orden de la ficha
   var ETIQ = { "Volúmen": "Volumen", "Notas_JCR": "Notas sobre JCR", "Investigadores Servicio": "Investigadores participantes",
                "Posiciones Servicio": "Posición en la autoría", "Es Correspondencia": "¿Es autor de correspondencia?",
@@ -3030,7 +3053,7 @@
 
   // ---------- navegación entre vistas ----------
   // Módulos (Estudios, Congresos, Docencia…) en archivos aparte: GC.registrar("vista", {secciones, buscar, mostrar, ocultar, placeholder, bloque, grupo})
-  // Tres bloques: Ciencia (Publicaciones · Congresos y cursos · Estudios · Otros méritos), Docencia (Trabajos · Tutorías · ANECA) y Asistencial.
+  // Tres bloques: Investigación (Publicaciones · Congresos y cursos · Estudios · Otros méritos), Docencia (Trabajos · Tutorías · ANECA) y Asistencial.
   var GC = window.GC = { url: urlSegura, mod: {}, S: S, $: $, api: api, apiCache: apiCache, cache: CACHE, esc: esc, aviso: aviso, cargando: cargando, dialogo: dialogo, cerrarDialogo: cerrarDialogo,
     bajar: bajar, libroXlsx: libroXlsx, numero: numero, dec: dec, pct: pct, guardar: guardar, leer: leer, esMovil: esMovil,
     registrar: function (v, m) { GC.mod[v] = m; }, mostrarVista: function (v, o) { mostrarVista(v, o); }, cambiarTabPub: function (t) { cambiarTabPub(t); },
@@ -3059,8 +3082,8 @@
           " · " + (/Edg\//.test(ua) ? "Edge" : /Chrome\//.test(ua) ? "Chrome" : /Firefox\//.test(ua) ? "Firefox" : /Safari\//.test(ua) ? "Safari" : "navegador") +
           (window.navigator.standalone === true || (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) ? " (app instalada)" : ""), ua: ua.substring(0, 180) };
     }
-    var NOMBRES = { inicio: "Inicio", pubs: "Ciencia · Publicaciones", congresos: "Ciencia · Congresos y cursos", calendario: "Ciencia · Calendario y días",
-      estudios: "Ciencia · Estudios", pacientes: "Ciencia · Pacientes", meritos: "Ciencia · Otros méritos", docencia: "Docencia", revision: "Revisar",
+    var NOMBRES = { inicio: "Inicio", pubs: "Investigación · Publicaciones", congresos: "Investigación · Congresos y cursos", calendario: "Investigación · Calendario y días",
+      estudios: "Investigación · Estudios", pacientes: "Investigación · Pacientes", meritos: "Investigación · Otros méritos", docencia: "Docencia", revision: "Revisar",
       perfil: "Mi ficha personal", memoria: "Memoria IdiPAZ", info: "Acerca de", acceso: "Pantalla de acceso", otro: "Otra pantalla o varias" };
     function abrir() {
       var sel = $("errDonde"), prev = S.vista && NOMBRES[S.vista] ? S.vista : "otro";
@@ -3102,15 +3125,30 @@
   var CIENCIA = [["pubs", "Publicaciones", "fa-book"], ["congresos", "Congresos y cursos", "fa-people-group"], ["estudios", "Estudios", "fa-flask"], ["meritos", "Otros méritos", "fa-award"]];
   function bloqueDe(v) { return v === "pubs" ? "ciencia" : (GC.mod[v] && GC.mod[v].bloque) || ""; }
   function grupoDe(v) { return (GC.mod[v] && GC.mod[v].grupo) || v; }
-  // barra del bloque Ciencia en la cabecera de cada una de sus secciones
+  // barra del bloque Investigación en la cabecera de cada una de sus secciones
   (function () {
-    var html = '<nav class="bloque-bar"><span class="bloque-nom"><i class="fa-solid fa-microscope"></i> Ciencia</span>' +
+    var html = '<nav class="bloque-bar"><span class="bloque-nom"><i class="fa-solid fa-microscope"></i> Investigación</span>' +
       CIENCIA.map(function (x) { return '<button data-bvista="' + x[0] + '"><i class="fa-solid ' + x[2] + '"></i> ' + x[1] + "</button>"; }).join("") + "</nav>";
     ["vistaPubs", "vistaCongresos", "vistaCalendario", "vistaEstudios", "vistaPacientes", "vistaDocencia"].forEach(function (id) { var s = $(id); if (s) s.insertAdjacentHTML("afterbegin", html); });
     document.addEventListener("click", function (ev) { var b = ev.target.closest && ev.target.closest("[data-bvista]"); if (b) mostrarVista(b.getAttribute("data-bvista")); });
     document.addEventListener("click", function (ev) { var b = ev.target.closest && ev.target.closest("[data-tvista]"); if (b && S.vista !== b.getAttribute("data-tvista")) mostrarVista(b.getAttribute("data-tvista")); });
   })();
   var textoPorVista = {};
+  // ---------- movimiento al cambiar de pantalla (v0.9.2) ----------
+  // La pantalla nueva entra desde la izquierda al volver atrás y desde la derecha al avanzar,
+  // de modo que el gesto del dedo, el botón ‹ y el «atrás» del sistema se vean igual de fluidos.
+  var areaCache = null, DIR_CAMBIO = "";
+  function area() { if (!areaCache) areaCache = document.querySelector("main.area"); return areaCache; }
+  GC.sentidoAtras = function () { DIR_CAMBIO = "atras"; };
+  function animarCambio() {
+    var a = area(), dir = DIR_CAMBIO; DIR_CAMBIO = "";
+    if (!a || !document.body.classList.contains("tactil")) return;
+    try { if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return; } catch (e) {}
+    a.classList.remove("va-atras", "va-adelante", "arrastrando", "volviendo");
+    a.style.transform = ""; a.style.opacity = "";
+    void a.offsetWidth;                                   // reinicia la animación aunque se repita el mismo sentido
+    a.classList.add(dir === "atras" ? "va-atras" : "va-adelante");
+  }
   function mostrarVista(v, opc) {
     opc = opc || {};
     if (v === "recl") { REV.tab = "autoria"; v = "revision"; }
@@ -3118,6 +3156,7 @@
     var anterior = S.vista;
     if (anterior) textoPorVista[anterior] = $("fTexto").value;
     if (anterior && anterior !== v && GC.mod[anterior] && GC.mod[anterior].ocultar) GC.mod[anterior].ocultar();
+    if (anterior && anterior !== v) animarCambio();                   // la pantalla nueva entra con movimiento
     var visibles = (GC.mod[v] && GC.mod[v].secciones) || [];          // varias vistas pueden compartir sección (Docencia / Otros méritos)
     Object.keys(GC.mod).forEach(function (k) { (GC.mod[k].secciones || []).forEach(function (id) { $(id).classList.toggle("oculto", visibles.indexOf(id) === -1); }); });
     if (anterior !== v) $("fTexto").value = textoPorVista[v] || "";
@@ -3143,11 +3182,11 @@
       $("tituloProx").textContent = MODULOS[v][0];
       $("textoProx").innerHTML = '<i class="fa-solid ' + MODULOS[v][1] + '"></i>' + (v === "asistencial" ?
         "<p><b>Bloque Asistencial</b></p><p>Tendrá una estructura integral similar a la de LYA2. Está en fase de diseño con el Servicio y se incorporará en una próxima versión.</p>" :
-        "<p><b>" + esc(MODULOS[v][0]) + "</b> se incorporará a la web en la versión " + MODULOS[v][2] + ".</p><p>Reunirá en un documento la actividad de todos los bloques (Ciencia, Docencia y Asistencial).</p>");
+        "<p><b>" + esc(MODULOS[v][0]) + "</b> se incorporará a la web en la versión " + MODULOS[v][2] + ".</p><p>Reunirá en un documento la actividad de todos los bloques (Investigación, Docencia y Asistencial).</p>");
     }
     if (v === "info") {
       $("tituloProx").textContent = "Acerca de";
-      $("textoProx").innerHTML = '<span class="hueco-logo" data-tam="64"></span><p><b>Gestión Científica CGyAD-GITIC</b> · versión web ' + VERSION_WEB + '</p>' +
+      $("textoProx").innerHTML = '<span class="hueco-logo" data-tam="64"></span><p><b>Gestión CGyAD-GITIC</b> · versión web ' + VERSION_WEB + '</p>' +
         '<p>Servicio de Cirugía General y del Aparato Digestivo · Hospital Universitario La Paz · IdiPAZ</p>' +
         '<div class="info-enlaces">' +
           '<a href="#" data-legal="privacidad"><i class="fa-solid fa-user-shield"></i><span><b>Política de privacidad</b><br>Qué datos se guardan, para qué, quién los ve y cuánto tiempo.</span></a>' +
@@ -3197,7 +3236,7 @@
   (function () {
     var car = $("carrusel"); if (!car) return;
     function cerrarPops(excepto) { car.querySelectorAll(".pop-info").forEach(function (p) { if (p !== excepto) { p.classList.add("oculto"); var t = p.closest(".tarjeta-inicio"); if (t) t.classList.remove("con-pop"); } }); }
-    // Ciencia y Docencia son desplegables: con ratón, la lista sale al pasar por encima; en pantallas táctiles (tablet, app), al tocar la tarjeta
+    // Investigación y Docencia son desplegables: con ratón, la lista sale al pasar por encima; en pantallas táctiles (tablet, app), al tocar la tarjeta
     var hoverMQ = window.matchMedia ? window.matchMedia("(hover: hover) and (pointer: fine)") : null;
     function conRaton() { return !!(hoverMQ && hoverMQ.matches); }
     function marcarTactil() { if (document.body && document.body.classList) document.body.classList.toggle("tactil", !conRaton()); }
@@ -3325,6 +3364,7 @@
       v = pilaTope().v; sub = pilaTope().sub;
       try { history.replaceState({ gc: 1, v: v, sub: sub }, ""); } catch (e) {}
     }
+    DIR_CAMBIO = "atras";                   // «atrás» del sistema: la pantalla entra desde la izquierda
     var cambio = irA(v, sub);
     if (cambio || capa) { HIST.saltos = 0; return; }
     if (v !== "inicio" && history.length > 1 && HIST.saltos < 3) { HIST.saltos++; history.back(); }     // paso sin cambios visibles: se salta
@@ -3345,6 +3385,7 @@
     if (!$("dlgError").classList.contains("oculto")) { GC.incidencia.cerrar(); return; }
     if (!S.inicio) return;
     if (cerrarCapa()) return;
+    DIR_CAMBIO = "atras";                   // flecha ‹ y gesto del dedo: la pantalla entra desde la izquierda
     for (var n = 0; n < 6 && PILA.length > 1; n++) {
       PILA.pop(); var t = pilaTope();
       try { history.replaceState({ gc: 1, v: t.v, sub: t.sub }, ""); } catch (e) {}
@@ -3364,17 +3405,29 @@
     var x0 = null, y0 = 0, ind = document.createElement("div");
     ind.className = "gesto-atras"; ind.innerHTML = '<i class="fa-solid fa-chevron-left"></i>'; document.body.appendChild(ind);
     document.addEventListener("touchstart", function (e) { var t = e.touches[0]; if (e.touches.length === 1 && t.clientX <= 22 && S.inicio && !(GC.legal && GC.legal.abierto())) { x0 = t.clientX; y0 = t.clientY; } else x0 = null; }, { passive: true });
+    // La pantalla acompaña al dedo mientras se arrastra (amortiguada) y vuelve a su sitio si no se completa el gesto
+    function soltarArea(conVuelta) {
+      var a = area(); if (!a) return;
+      a.classList.remove("arrastrando");
+      if (conVuelta) { a.classList.add("volviendo"); setTimeout(function () { a.classList.remove("volviendo"); }, 260); }
+      a.style.transform = ""; a.style.opacity = "";
+    }
     document.addEventListener("touchmove", function (e) {
       if (x0 === null) return;
       var t = e.touches[0], dx = t.clientX - x0, dy = Math.abs(t.clientY - y0);
-      if (dy > 50 && dy > dx) { x0 = null; ind.style.opacity = 0; return; }
+      if (dy > 50 && dy > dx) { x0 = null; ind.style.opacity = 0; soltarArea(true); return; }
       ind.style.opacity = Math.max(0, Math.min(1, dx / 80)); ind.style.transform = "translate(" + Math.max(0, Math.min(dx, 80)) / 2 + "px, -50%)";
+      var a = area(), d = Math.max(0, Math.min(dx, 140));
+      if (a) { a.classList.add("arrastrando"); a.classList.remove("volviendo", "va-atras", "va-adelante");
+               a.style.transform = "translate3d(" + (d * 0.32).toFixed(1) + "px,0,0)"; a.style.opacity = (1 - d / 700).toFixed(3); }
     }, { passive: true });
     document.addEventListener("touchend", function (e) {
       if (x0 === null) return;
       var dx = e.changedTouches[0].clientX - x0; x0 = null; ind.style.opacity = 0; ind.style.transform = "";
-      if (dx > 70) atras();
+      if (dx > 70) { soltarArea(false); atras(); }      // al soltar, la pantalla anterior entra desde la izquierda
+      else soltarArea(true);                            // gesto incompleto: vuelve a su sitio
     }, { passive: true });
+    document.addEventListener("touchcancel", function () { if (x0 === null) return; x0 = null; ind.style.opacity = 0; ind.style.transform = ""; soltarArea(true); }, { passive: true });
   })();
   // ---------- pantalla de inicio (bienvenida) ----------
   function pintarInicio() {
@@ -3575,7 +3628,7 @@
         h.push('<h3 class="rev-sub">Pendientes de resolver</h3>' + (pr.map(function (r) { return tarjetaRecl(r, true); }).join("") || vacioHtml("No hay reclamaciones pendientes.")));
         if (rs.length) h.push('<h3 class="rev-sub">Resueltas recientemente</h3>' + rs.map(function (r) { return tarjetaRecl(r, false); }).join(""));
       } else {
-        h.push('<p class="rev-ayuda">Para reclamar una publicación en la que figuras, ábrela en Ciencia → Publicaciones y pulsa «Reclamar autoría».</p>');
+        h.push('<p class="rev-ayuda">Para reclamar una publicación en la que figuras, ábrela en Investigación → Publicaciones y pulsa «Reclamar autoría».</p>');
         h.push(S.recl.map(function (r) { return tarjetaRecl(r, false); }).join("") || vacioHtml("No tienes reclamaciones."));
       }
       cu.innerHTML = h.join(""); enlazarRecl(cu);
@@ -3839,7 +3892,7 @@
     var kIx = cols.indexOf("Ranking") + 1 || cols.length;
     cols.splice(kIx, 0, "Indexación JCR"); cab.splice(kIx, 0, "Indexación JCR");
     var datos = filas.map(function (p) { return cols.map(function (c) { return c === "Indexación JCR" ? indexacionTxt(p) : p[c]; }); });
-    var info = [["Gestión Científica CGyAD-GITIC · Publicaciones"], ["Generado", new Date().toLocaleString("es-ES")], ["Por", S.inicio.usuario.nombre],
+    var info = [["Gestión CGyAD-GITIC · Publicaciones"], ["Generado", new Date().toLocaleString("es-ES")], ["Por", S.inicio.usuario.nombre],
                 ["Publicaciones", filas.length], ["Filtros", descripcionFiltros()]];
     var k = S.indicadores;
     var firmaXl = [["Primer autor/a", k && k.primero], ["Último autor/a", k && k.ultimo], ["Correspondencia", k && k.corr], ["1º, último o corresp.", k && k.lider], ["En grupo colaborativo", k && k.grupo]];
@@ -4490,7 +4543,7 @@
   $("btDescEst").onclick = function () {
     if (!ES.datos) return;
     var l = ES.orden.map(estudio).filter(Boolean), k = indicadores(l);
-    var info = [["Gestión Científica CGyAD-GITIC · Estudios del Servicio"], ["Generado", new Date().toLocaleString("es-ES")], ["Por", G.S.inicio.usuario.nombre],
+    var info = [["Gestión CGyAD-GITIC · Estudios del Servicio"], ["Generado", new Date().toLocaleString("es-ES")], ["Por", G.S.inicio.usuario.nombre],
       ["Filtros", descripcionFiltros()], [""], ["Estudios", k.n], ["Activos", k.activos], ["Finalizados", k.finalizados], ["Propios", k.propios], ["Internos", k.internos],
       ["Externos nacionales", k.extNac], ["Externos internacionales", k.extInt], ["Con financiación", k.conFin], ["Con financiación pública", k.finPub], ["Con financiación privada", k.finPriv],
       ["Cuantía concedida (€)", Math.round(k.cuantia * 100) / 100], ["Pacientes incluidos (total)", k.pacientes]].concat(k.periodo ? [["Pacientes en el periodo", k.pacPeriodo]] : [])
@@ -5082,7 +5135,7 @@
     l.forEach(function (c) { c.aportaciones.forEach(function (a) { if (!aportDe(a, p)) return;
       filasA.push([c.anio || "", c.nombre, fecha(c.inicio), c.ciudad, c.pais, c.ambito, a.tipo, a.titulo, a.ponente, a.autores.join(", "), a.autores.filter(esServicio).join(", "), a.autores.filter(function (n) { return !esServicio(n); }).join(", "), a.estudio ? estudioTxt(a.estudio) : "",
         a.premio ? "Sí" : "No", a.detallePremio, a.tieneCertificado ? "Sí" : "No", a.obs]); }); });
-    var info = [["Gestión Científica CGyAD-GITIC · Congresos y Cursos"], ["Generado", new Date().toLocaleString("es-ES")], ["Por", G.S.inicio.usuario.nombre],
+    var info = [["Gestión CGyAD-GITIC · Congresos y Cursos"], ["Generado", new Date().toLocaleString("es-ES")], ["Por", G.S.inicio.usuario.nombre],
       ["Filtros", descripcionFiltros()], ["Indicadores de", k.persona || "todo el Servicio"], [""], ["Actividades", k.n], ["Congresos", k.congresos], ["Cursos / talleres", k.cursos],
       ["Otras actividades", k.otros], ["Internacionales", k.int], ["Nacionales", k.nac], ["Locales / regionales", k.loc], ["Organizadas por el Servicio", k.org], ["Asistencias", k.asist],
       ["Trabajos presentados (sin moderaciones ni pendientes)", k.trab], ["Ponencias invitadas", k.inv], ["Comunicaciones orales", k.oral], ["Pósteres", k.poster],
@@ -5460,7 +5513,7 @@
   var G = window.GC, $ = G.$, esc = G.esc;
   var DC = { datos: null, tab: "trabajos", modo: "docencia", sel: null, orden: [], cargando: null };
   var ANECA = "Acreditación (ANECA, ACAP…)";
-  // Dos modos sobre la misma vista: «docencia» (bloque Docencia) y «ciencia» (Ciencia → Otros méritos). Las acreditaciones ANECA son
+  // Dos modos sobre la misma vista: «docencia» (bloque Docencia) y «ciencia» (Investigación → Otros méritos). Las acreditaciones ANECA son
   // filas de Otros_Meritos con ese tipo: se muestran en Docencia y se excluyen de «Otros méritos».
   var MODOS = { docencia: ["trabajos", "tutorias", "rotantes", "aneca"], ciencia: ["meritos"] };
   var ROTANTE = /^Rotante/;
@@ -5806,7 +5859,7 @@
   }
 
 
-  // ---------- formulario de cada tipo de mérito (Ciencia → Otros méritos) y de las acreditaciones (Docencia → ANECA) ----------
+  // ---------- formulario de cada tipo de mérito (Investigación → Otros méritos) y de las acreditaciones (Docencia → ANECA) ----------
   // Para cada dato: [etiqueta, ejemplo] o [etiqueta, opciones]; si no aparece, no se pide. req = obligatorios;
   // auto = cómo se compone el título cuando no se pide; doc = justificante recomendado.
   var CAMPOS_MER = ["titulo", "rol", "entidad", "detalle", "referencia", "cantidad"];
@@ -6171,7 +6224,7 @@
       return { nombre: TABS[t].nombre, filas: filasXlsx(t, l), anchos: t === "trabajos" ? [7, 14, 12, 12, 26, 60, 30, 30, 32, 26, 22, 12, 12, 18, 10, 30, 30, 20, 26, 10] :
         esTut(t) ? [7, 30, 28, 24, 26, 10, 30, 12, 12, 30, 20, 26, 10] : [7, 24, 30, 60, 30, 30, 30, 20, 12, 14, 12, 12, 8, 30, 30, 20, 26, 10], cabecera: true, n: l.length };
     });
-    var info = [["Gestión Científica CGyAD-GITIC · " + (DC.modo === "ciencia" ? "Otros méritos" : "Docencia")], ["Generado", new Date().toLocaleString("es-ES")], ["Por", G.S.inicio.usuario.nombre], ["Filtros", descripcionFiltros()],
+    var info = [["Gestión CGyAD-GITIC · " + (DC.modo === "ciencia" ? "Otros méritos" : "Docencia")], ["Generado", new Date().toLocaleString("es-ES")], ["Por", G.S.inicio.usuario.nombre], ["Filtros", descripcionFiltros()],
       ["Nota", "Tipo y estado se aplican solo a la pestaña «" + TABS[DC.tab].nombre + "»; el resto de filtros, a todas las hojas."], [""]]
       .concat(hojas.map(function (h) { return [h.nombre, h.n]; }));
     G.bajar(G.libroXlsx(hojas.concat([{ nombre: "Información", filas: info, anchos: [26, 90] }])), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", nombreArchivo(DC.modo === "ciencia" ? "Otros_meritos_CGyAD" : "Docencia_CGyAD"));
@@ -6389,7 +6442,7 @@
   function contactoAdmin(d) {
     var a = (d.admins || []).filter(function (x) { return x.email; });
     if (!a.length) return '<p class="ayuda">Cualquier error en los datos, contacta con el administrador.</p>';
-    var asunto = encodeURIComponent("Gestión Científica CGyAD-GITIC · corrección de datos de " + (d.nombre || ""));
+    var asunto = encodeURIComponent("Gestión CGyAD-GITIC · corrección de datos de " + (d.nombre || ""));
     return '<p class="ayuda pf-contacto">Cualquier error en los datos, contacta con el <a href="mailto:' + a.map(function (x) { return encodeURIComponent(x.email).replace(/%40/g, "@"); }).join(",") +
       "?subject=" + asunto + '" title="' + esc(a.map(function (x) { return x.nombre + " <" + x.email + ">"; }).join(", ")) + '">administrador</a>.</p>';
   }
@@ -6487,8 +6540,8 @@
       kpi(dec1(mp.fi), "FI acumulado", mp.jcr ? "medio " + dec1(mp.fi / mp.jcr) : "") + kpi(mp.h, "índice h", mp.citas.toLocaleString("es-ES") + " citas") + "</div></section>");
     h.push('<p class="pf-per">Métricas de <b>' + esc(per[2]) + "</b> · solo registros confirmados o validados (no se cuentan los rechazados)." +
       (md && md.pend ? " Incluye " + md.pend + " registro" + (md.pend === 1 ? "" : "s") + " de docencia o méritos pendiente" + (md.pend === 1 ? "" : "s") + " de validar." : "") + "</p>");
-    // ---- Ciencia ----
-    h.push(grupo("fa-microscope", "Ciencia"));
+    // ---- Investigación ----
+    h.push(grupo("fa-microscope", "Investigación"));
     h.push('<div class="pf-fila">' +
       card("s7", "fa-book", "Publicaciones", tiles(4,
         tile(mp.jcr, "indexados JCR", mp.art ? Math.round(mp.jcr / mp.art * 100) + " % de los artículos" : "") + tile(mp.q1, "en Q1", "", "destacado") + tile(mp.d1, "en D1") +
@@ -6766,11 +6819,11 @@
     cu.querySelectorAll("[data-ex]").forEach(function (e) { e.addEventListener("change", function () { var id = e.closest("tr").getAttribute("data-id"); extra(clave, id)[e.getAttribute("data-ex")] = e.value.trim(); marcarSucio(true); pintarPestanas(); }); });
   }
   var AYUDA = {
-    estancias: "Estancias de los miembros del grupo que coinciden con el año (Ciencia → Otros méritos → «Estancia en otro centro»). Ciudad y país salen de «Ciudad y país»; corrígelos aquí si hace falta.",
-    proyectos: "Estudios con financiación pública activos en el año en los que participa algún miembro del grupo (Ciencia → Estudios). Fechas, tipo y centro gestor se completan aquí.",
+    estancias: "Estancias de los miembros del grupo que coinciden con el año (Investigación → Otros méritos → «Estancia en otro centro»). Ciudad y país salen de «Ciudad y país»; corrígelos aquí si hace falta.",
+    proyectos: "Estudios con financiación pública activos en el año en los que participa algún miembro del grupo (Investigación → Estudios). Fechas, tipo y centro gestor se completan aquí.",
     tesis: "Tesis, TFM y TFG defendidos en el año con director/a o tutor/a del grupo (Docencia → Trabajos dirigidos). Ciudad, proyecto financiador, mención europea y posición actual se completan aquí.",
-    ensayos: "Estudios activos en el año en los que participa algún miembro del grupo (Ciencia → Estudios). Indica si la base de datos bruta se ha liberado públicamente.",
-    patentes: "Patentes y registros de los miembros del grupo hasta el año (Ciencia → Otros méritos → «Patente o propiedad intelectual»).",
+    ensayos: "Estudios activos en el año en los que participa algún miembro del grupo (Investigación → Estudios). Indica si la base de datos bruta se ha liberado públicamente.",
+    patentes: "Patentes y registros de los miembros del grupo hasta el año (Investigación → Otros méritos → «Patente o propiedad intelectual»).",
     redes: "CIBER y RETIC a los que pertenece el grupo. Se guardan en la pestaña IdiPAZ_Redes; indica el periodo si ya no está activo."
   };
   function pintar() {

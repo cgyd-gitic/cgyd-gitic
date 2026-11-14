@@ -1,4 +1,4 @@
-// Service worker de Gestión Científica CGyAD-GITIC (v0.9)
+// Service worker de Gestión CGyAD-GITIC (v0.9.2)
 // 1) Guarda la INTERFAZ (la página lleva dentro la letra y los iconos; los datos nunca se guardan) para que la web abra al instante, también con mala conexión.
 //    La página guardada se muestra enseguida y, a la vez, se pide la publicada: si es distinta, se guarda y la web avisa
 //    («Hay una versión nueva · Actualizar»).
@@ -73,9 +73,9 @@ function pedirAvisos(cfg) {
 }
 self.addEventListener("push", function (e) {
   e.waitUntil(leerCfg().then(pedirAvisos).then(function (lista) {
-    if (!lista.length) lista = [{ id: "general", titulo: "Gestión Científica CGyAD-GITIC", texto: "Tienes avisos nuevos. Abre la app para verlos.", vista: "inicio" }];
+    if (!lista.length) lista = [{ id: "general", titulo: "Gestión CGyAD-GITIC", texto: "Tienes avisos nuevos. Abre la app para verlos.", vista: "inicio" }];
     return Promise.all(lista.map(function (a) {
-      return self.registration.showNotification(a.titulo || "Gestión Científica CGyAD-GITIC", {
+      return self.registration.showNotification(a.titulo || "Gestión CGyAD-GITIC", {
         body: a.texto || "", icon: "icon-192.png", badge: "badge-96.png", tag: "gc-" + (a.id || "general"), silent: !!a.repetido, data: { vista: a.vista || "inicio" } });
     }));
   }));
