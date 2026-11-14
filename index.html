@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Gestión CGyAD-GITIC · web publicada (GitHub Pages) · versión 0.9.2 · generado el 14/11/2026 a partir de Web_App + Web_Estilos + Web_Cliente + Web_Estudios_Cliente + Web_Congresos_Cliente + Web_Docencia_Cliente + Web_Perfil_Cliente.
+<!-- Gestión CGyAD-GITIC · web publicada (GitHub Pages) · versión 0.9.3 · generado el 14/11/2026 a partir de Web_App + Web_Estilos + Web_Cliente + Web_Estudios_Cliente + Web_Congresos_Cliente + Web_Docencia_Cliente + Web_Perfil_Cliente.
      No edites este archivo: la dirección del servidor está en config.js. -->
 <html lang="es">
 <head>
@@ -1129,6 +1129,24 @@
     .inferior button small { font-size:10px; white-space:nowrap; }
   }
   @media (max-width: 374px) { .inferior button { padding:6px 5px; } .inferior button small { font-size:9.5px; } }
+  /* ===== v0.9.3: formularios en el móvil =====
+     Filas de dos campos (fechas, «desde/hasta»): rejilla que alinea los cuadros aunque una etiqueta
+     ocupe dos líneas y que pasa sola a una columna cuando no caben dos. Así no se solapan ni se salen. */
+  .fila-rango.campos { display:grid; grid-template-columns:repeat(auto-fit, minmax(190px, 1fr)); gap:0 10px; align-items:end; }
+  .fila-rango.campos > div { min-width:0; }
+  .fila-rango.campos label { display:block; }
+  .fila-rango.campos input, .fila-rango.campos select { max-width:100%; }
+  .dialogo { overflow-x:hidden; overscroll-behavior:contain; }        /* nada de desplazamiento lateral */
+  @media (max-width: 899px) {
+    /* Formularios largos: hoja a pantalla completa, con el título arriba y los botones abajo siempre visibles */
+    #dlgForm.hoja { padding:0; align-items:stretch; justify-content:stretch; }
+    #dlgForm.hoja .dialogo { width:100%; max-width:none; height:100%; max-height:none; border-radius:0;
+      display:flex; flex-direction:column; overflow:hidden; padding:14px 14px 0; }
+    #dlgForm.hoja #dlgCuerpo { flex:1 1 auto; overflow-y:auto; overflow-x:hidden; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; padding-bottom:4px; }
+    #dlgForm.hoja .botones { flex:0 0 auto; margin-top:8px; padding:10px 0 calc(10px + env(safe-area-inset-bottom)); border-top:1px solid var(--borde); }
+    #dlgForm.hoja .botones .bt, #dlgForm.hoja .botones .bt-rojo { flex:1; padding:12px 14px; font-size:15px; }
+    .chips input { min-width:120px; }
+  }
   main.area.arrastrando { transition:none; }                          /* sigue al dedo, sin retardo */
   main.area.volviendo { transition:transform .2s ease-out, opacity .2s ease-out; }
   @media (prefers-reduced-motion: reduce) {
@@ -1432,8 +1450,8 @@
   <!-- ===== Aplicación ===== -->
   <div id="vApp" class="oculto">
     <header class="cab">
-      <button class="bt-icono" id="btAtras" title="Atrás" aria-label="Atrás"><i class="fa-solid fa-chevron-left"></i></button>
       <button class="bt-icono" id="btMenu" title="Menú"><i class="fa-solid fa-bars"></i></button>
+      <button class="bt-icono" id="btAtras" title="Atrás" aria-label="Atrás"><i class="fa-solid fa-chevron-left"></i></button>
       <span class="hueco-logo" data-tam="32"></span>
       <span class="titulo">Gestión CGyAD-GITIC</span>
       <div class="buscador"><div><i class="fa-solid fa-magnifying-glass"></i><input id="fTexto" type="search" placeholder="Buscar Publicaciones"></div></div>
@@ -1961,7 +1979,7 @@
   var MODULOS = {   // bloques aún no disponibles en la web
     asistencial: ["Asistencial", "fa-stethoscope", ""]
   };
-  var VERSION_WEB = "0.9.2";
+  var VERSION_WEB = "0.9.3";
   // Nombres visibles iguales a los de AppSheet (con las erratas corregidas) y orden de la ficha
   var ETIQ = { "Volúmen": "Volumen", "Notas_JCR": "Notas sobre JCR", "Investigadores Servicio": "Investigadores participantes",
                "Posiciones Servicio": "Posición en la autoría", "Es Correspondencia": "¿Es autor de correspondencia?",
@@ -3007,7 +3025,13 @@
     document.querySelector("#dlgForm .dialogo").classList.remove("ancho");
     $("dlgTitulo").textContent = titulo; $("dlgCuerpo").innerHTML = cuerpo; $("dlgAceptar").textContent = textoOk;
     $("dlgAceptar").onclick = alAceptar; $("dlgAceptar").removeAttribute("data-pk"); $("dlgAceptar").classList.remove("preparando"); $("dlgForm").classList.remove("oculto");
-    var primero = $("dlgCuerpo").querySelector("input, textarea, select"); if (primero) primero.focus();
+    // En el móvil, los formularios largos se abren como una hoja a pantalla completa (título arriba, botones abajo);
+    // los avisos y confirmaciones cortos siguen siendo una tarjeta centrada.
+    var controles = $("dlgCuerpo").querySelectorAll("input, textarea, select").length;
+    $("dlgForm").classList.toggle("hoja", controles >= 4);
+    var tactil = document.body.classList.contains("tactil");
+    var primero = $("dlgCuerpo").querySelector("input, textarea, select");
+    if (primero && !tactil) primero.focus();        // en pantallas táctiles no se abre solo el teclado
   }
   function cerrarDialogo() { $("dlgForm").classList.add("oculto"); }
   $("dlgCancelar").onclick = cerrarDialogo;
@@ -5009,10 +5033,10 @@
       '<div id="bloqueLugar"><label for="fcCiudad">' + ETQ.ciudad + '</label><input id="fcCiudad" list="dlCiudades" autocomplete="off" value="' + esc(c.ciudad) + '"' + (bloq("ciudad") ? " disabled" : "") + ">" +
       (bloq("ciudad") ? ayudaBloq : '<div class="ayuda" id="ayudaCiudad"></div>') +
       '<label for="fcPais">' + ETQ.pais + '</label><input id="fcPais" value="' + esc(c.pais) + '"' + (bloq("ciudad") ? " disabled" : "") + "></div>" +
-      '<div class="fila-rango"><div style="flex:1"><label for="fcIni">' + ETQ.inicio + '</label><input type="date" id="fcIni" value="' + esc(c.inicio) + '"></div>' +
-      '<div style="flex:1"><label for="fcFin">' + ETQ.fin + '</label><input type="date" id="fcFin" value="' + esc(c.fin) + '"' + (bloq("fin") ? " disabled" : "") + "></div></div>" +
-      '<div class="fila-rango"><div style="flex:1"><label for="fcPlAbs">Fecha límite de abstracts</label><input type="date" id="fcPlAbs" value="' + esc(c.plazoAbstracts || "") + '"></div>' +
-      '<div style="flex:1"><label for="fcPlIns">Fecha límite de inscripción reducida</label><input type="date" id="fcPlIns" value="' + esc(c.plazoInscripcion || "") + '"></div></div>' +
+      '<div class="fila-rango campos"><div><label for="fcIni">' + ETQ.inicio + '</label><input type="date" id="fcIni" value="' + esc(c.inicio) + '"></div>' +
+      '<div><label for="fcFin">' + ETQ.fin + '</label><input type="date" id="fcFin" value="' + esc(c.fin) + '"' + (bloq("fin") ? " disabled" : "") + "></div></div>" +
+      '<div class="fila-rango campos"><div><label for="fcPlAbs">Fecha límite de abstracts</label><input type="date" id="fcPlAbs" value="' + esc(c.plazoAbstracts || "") + '"></div>' +
+      '<div><label for="fcPlIns">Fecha límite de inscripción reducida</label><input type="date" id="fcPlIns" value="' + esc(c.plazoInscripcion || "") + '"></div></div>' +
       "<label>" + ETQ.asistentes + "</label>" + chips("fcAsis", c.asistentes) +
       '<label for="fcWeb">' + ETQ.web + '</label><input id="fcWeb" inputmode="url" placeholder="https://…" value="' + esc(c.web) + '"' + (bloq("web") ? " disabled" : "") + ">" + (bloq("web") ? ayudaBloq : "") +
       '<label for="fcObs">' + ETQ.obs + '</label><textarea id="fcObs" rows="2">' + esc(c.obs) + "</textarea>" +
@@ -5024,7 +5048,6 @@
     document.querySelector("#dlgForm .dialogo").classList.add("ancho");
     ["fcOrgs", "fcAsis"].forEach(function (id) { activarChips(id); });
     $("fcOrg2").onchange = visibilidad; $("fcForm2").onchange = visibilidad;
-    $("fcAmb2").onchange = function () { if ($("fcAmb2").value === "Local / Regional" && !$("fcCiudad").value && !$("fcCiudad").disabled) { $("fcCiudad").value = "Madrid"; ciudadCambiada(); } };
     $("fcCiudad").addEventListener("input", ciudadCambiada); $("fcCiudad").addEventListener("change", ciudadCambiada);
     $("fcIni").addEventListener("change", function () { if ($("fcFin").value && $("fcFin").value < $("fcIni").value && !$("fcFin").disabled) $("fcFin").value = $("fcIni").value; refrescarSugerencias(); });
     refrescarSugerencias(); visibilidad(); if (!c.pais) ciudadCambiada();
@@ -5193,8 +5216,8 @@
     var html = '<p class="tenue" style="margin-top:0">Para el apartado <b>«Trabajos presentados en congresos»</b> del Editor CVN de la FECYT: ' +
       "<i>Importar</i> → <i>CICYT o personalizado</i> (pegar el texto) o <i>BibTeX</i> (subir el archivo .bib).</p>" +
       '<label for="cvPersona">Investigador/a</label>' + selectHtml("cvPersona", pers, pIni, admin ? "Todo el Servicio" : undefined) +
-      '<div class="fila-rango"><div style="flex:1"><label for="cvDesde">Desde</label>' + selectHtml("cvDesde", ks, $("fcDesde").value, "…") + "</div>" +
-      '<div style="flex:1"><label for="cvHasta">Hasta</label>' + selectHtml("cvHasta", ks, $("fcHasta").value, "…") + "</div></div>" +
+      '<div class="fila-rango campos"><div><label for="cvDesde">Desde</label>' + selectHtml("cvDesde", ks, $("fcDesde").value, "…") + "</div>" +
+      '<div><label for="cvHasta">Hasta</label>' + selectHtml("cvHasta", ks, $("fcHasta").value, "…") + "</div></div>" +
       '<label class="check" style="margin-top:10px"><input type="checkbox" id="cvExtra"> Incluir moderaciones de mesa y abstracts pendientes</label>' +
       '<label for="cvTexto">Vista previa (formato CICYT) · <span id="cvCuenta"></span></label><textarea id="cvTexto" rows="12" readonly style="font-family:monospace;font-size:12px"></textarea>' +
       '<div class="botones" style="justify-content:flex-start;gap:8px;margin-top:8px"><button class="bt" id="cvCopiar"><i class="fa-regular fa-copy"></i> Copiar texto CICYT</button>' +
@@ -5927,8 +5950,8 @@
       else h.push(lab(id, et) + inp(id, val, ph(f[1])));
     });
     if (c.ambito) h.push(lab("dmAmbito", "Ámbito") + sel("dmAmbito", E.ambito, v.ambito, "—"));
-    h.push('<div class="fila-rango"><div style="flex:1">' + lab("dmInicio", c.inicio + " *") + inp("dmInicio", v.inicio, ' type="date"') + "</div>" +
-      (c.fin ? '<div style="flex:1" id="bqDmFin">' + lab("dmFin", c.fin + (c.finReq ? " *" : "")) + inp("dmFin", v.fin, ' type="date"') + "</div>" : "") + "</div>");
+    h.push('<div class="fila-rango campos"><div>' + lab("dmInicio", c.inicio + " *") + inp("dmInicio", v.inicio, ' type="date"') + "</div>" +
+      (c.fin ? '<div id="bqDmFin">' + lab("dmFin", c.fin + (c.finReq ? " *" : "")) + inp("dmFin", v.fin, ' type="date"') + "</div>" : "") + "</div>");
     if (c.enCurso) h.push('<label class="check"><input type="checkbox" id="dmEnCurso"' + (v.enCurso ? " checked" : "") + "> " + esc(c.enCurso) + "</label>");
     h.push(lab("dmEnlace", c.enlace ? c.enlace[0] : "Enlace") + inp("dmEnlace", v.enlace, ' type="url" placeholder="' + esc(c.enlace && c.enlace[1] ? c.enlace[1] : "https://…") + '"'));
     h.push(lab("dmObs", "Observaciones") + '<textarea id="dmObs" rows="2">' + esc(v.obs || "") + "</textarea>");
@@ -6055,8 +6078,8 @@
     if (t === "trabajos") {
       titulo = nuevo ? "Añadir trabajo dirigido" : "Editar trabajo dirigido";
       var dirs = nuevo ? [yo] : r.directores;
-      html = '<div class="fila-rango"><div style="flex:1"><label for="dtTipo">Tipo *</label>' + sel("dtTipo", E.tipoTrabajo, r.tipo, "Elige…") + "</div>" +
-        '<div style="flex:1"><label for="dtEstado">Estado *</label>' + sel("dtEstado", E.estadoTrabajo, r.estado || "En curso") + "</div></div>" +
+      html = '<div class="fila-rango campos"><div><label for="dtTipo">Tipo *</label>' + sel("dtTipo", E.tipoTrabajo, r.tipo, "Elige…") + "</div>" +
+        '<div><label for="dtEstado">Estado *</label>' + sel("dtEstado", E.estadoTrabajo, r.estado || "En curso") + "</div></div>" +
         '<label for="dtCurso">Curso académico *</label>' + inp("dtCurso", r.curso || cursoActual(), ' placeholder="2025-2026" inputmode="numeric"') +
         '<label for="dtTitulo">Título *</label><textarea id="dtTitulo" rows="2">' + esc(r.titulo || "") + "</textarea>" +
         '<label for="dtAlumno">Alumno/a *</label>' + inp("dtAlumno", r.alumno) +
@@ -6065,8 +6088,8 @@
         '<label>Directores del Servicio</label><div class="chips" id="dtDirs">' + dirs.map(chipHtml).join("") + '<input list="dlDtPers" placeholder="Escribe parte del nombre y pulsa Intro" autocomplete="off"></div>' + dl("dlDtPers", []) +
         '<label for="dtOtros">Otros directores (externos, separados por «; »)</label>' + inp("dtOtros", r.otrosDirectores) +
         '<label for="dtTutor">Tutor/a del Servicio (si no dirige)</label>' + sel("dtTutor", D.personas, r.tutor, "—") + '<div class="ayuda" id="ayPersDoc"></div>' +
-        '<div class="fila-rango"><div style="flex:1"><label for="dtInicio">Fecha de inicio</label>' + inp("dtInicio", r.inicio, ' type="date"') + "</div>" +
-        '<div style="flex:1" id="bqDtDefensa"><label for="dtDefensa">Fecha de defensa</label>' + inp("dtDefensa", r.defensa, ' type="date"') + "</div></div>" +
+        '<div class="fila-rango campos"><div><label for="dtInicio">Fecha de inicio</label>' + inp("dtInicio", r.inicio, ' type="date"') + "</div>" +
+        '<div id="bqDtDefensa"><label for="dtDefensa">Fecha de defensa</label>' + inp("dtDefensa", r.defensa, ' type="date"') + "</div></div>" +
         '<div id="bqDtCalif"><label for="dtCalif">Calificación</label>' + sel("dtCalif", E.calificacion, r.calificacion, "—") + "</div>" +
         '<label class="check" id="bqDtMencion"><input type="checkbox" id="dtMencion"' + (r.mencion ? " checked" : "") + "> Mención internacional</label>" +
         '<label for="dtEnlace">Enlace (TESEO o repositorio)</label>' + inp("dtEnlace", r.enlace, ' type="url" placeholder="https://…"') +
@@ -6081,8 +6104,8 @@
         '<div id="bqDuRes"><label for="duAnioRes">Año de residencia</label>' + sel("duAnioRes", E.anioRes, r.anioRes, rot ? "No es residente / no consta" : "—") + '<div class="ayuda" id="ayDuRes"></div></div>' +
         '<div id="bqDuCentro"><label for="duCentro" id="lbDuCentro">Centro de procedencia</label>' + inp("duCentro", r.centro, ' list="dlDuCen"') + dl("dlDuCen", D.sugerencias.centros) + "</div>" +
         '<label for="duTutor">' + (rot ? "Responsable de la rotación en el Servicio *" : "Tutor/a del Servicio *") + "</label>" + personaSel("duTutor", r.tutor || yo) + '<div class="ayuda" id="ayPersDoc"></div>' +
-        '<div class="fila-rango"><div style="flex:1"><label for="duInicio">' + (rot ? "Inicio de la rotación *" : "Fecha de inicio *") + "</label>" + inp("duInicio", r.inicio, ' type="date"') + "</div>" +
-        '<div style="flex:1"><label for="duFin">' + (rot ? "Fin de la rotación *" : "Fecha de fin") + "</label>" + inp("duFin", r.fin, ' type="date"') + "</div></div>" +
+        '<div class="fila-rango campos"><div><label for="duInicio">' + (rot ? "Inicio de la rotación *" : "Fecha de inicio *") + "</label>" + inp("duInicio", r.inicio, ' type="date"') + "</div>" +
+        '<div><label for="duFin">' + (rot ? "Fin de la rotación *" : "Fecha de fin") + "</label>" + inp("duFin", r.fin, ' type="date"') + "</div></div>" +
         '<label for="duObs">Observaciones</label><textarea id="duObs" rows="2"' + (rot ? ' placeholder="Unidad en la que rota, objetivos de la rotación…"' : "") + ">" + esc(r.obs || "") + "</textarea>";
     } else {
       var esAneca = t === "aneca", tipo0 = esAneca ? ANECA : (r.tipo || "");
@@ -6284,8 +6307,8 @@
     var html = '<p class="tenue" style="margin-top:0">Texto para la <b>memoria anual</b> (IdiPAZ / HULP) o para copiar al <b>Editor CVN</b> de la FECYT ' +
       "(«Actividad docente → Dirección de tesis doctorales y/o trabajos fin de estudios»). El Editor CVN no importa este apartado: copia cada trabajo campo a campo.</p>" +
       '<label for="mdPersona">Investigador/a</label>' + sel("mdPersona", admin ? DC.datos.personas : [yo], admin ? ($("fdPersona").value || "") : yo, admin ? "Todo el Servicio" : undefined) +
-      '<div class="fila-rango"><div style="flex:1"><label for="mdDesde">Desde</label>' + sel("mdDesde", ks, $("fdDesde").value || (ks.indexOf(y) !== -1 ? y : ""), "…") + "</div>" +
-      '<div style="flex:1"><label for="mdHasta">Hasta</label>' + sel("mdHasta", ks, $("fdHasta").value || (ks.indexOf(y) !== -1 ? y : ""), "…") + "</div></div>" +
+      '<div class="fila-rango campos"><div><label for="mdDesde">Desde</label>' + sel("mdDesde", ks, $("fdDesde").value || (ks.indexOf(y) !== -1 ? y : ""), "…") + "</div>" +
+      '<div><label for="mdHasta">Hasta</label>' + sel("mdHasta", ks, $("fdHasta").value || (ks.indexOf(y) !== -1 ? y : ""), "…") + "</div></div>" +
       '<label for="mdFormato">Formato</label><select id="mdFormato"><option value="memoria">Memoria (una línea por registro)</option><option value="cvn">CVN (campos de dirección de trabajos)</option></select>' +
       '<label class="check" style="margin-top:8px"><input type="checkbox" id="mdSoloVal" checked> Solo registros validados</label>' +
       '<label for="mdTexto">Vista previa · <span id="mdCuenta"></span></label><textarea id="mdTexto" rows="14" readonly style="font-family:monospace;font-size:12px"></textarea>' +
