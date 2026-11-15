@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<!-- Gestión CGyAD-GITIC · web publicada (GitHub Pages) · versión 0.9.3 · generado el 14/11/2026 a partir de Web_App + Web_Estilos + Web_Cliente + Web_Estudios_Cliente + Web_Congresos_Cliente + Web_Docencia_Cliente + Web_Perfil_Cliente.
+<!-- Gestión CGyAD-GITIC · web publicada (GitHub Pages) · versión 0.9.4 · generado el 14/11/2026 a partir de Web_App + Web_Estilos + Web_Cliente + Web_Estudios_Cliente + Web_Congresos_Cliente + Web_Docencia_Cliente + Web_Perfil_Cliente.
      No edites este archivo: la dirección del servidor está en config.js. -->
 <html lang="es">
 <head>
   <base target="_top">
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
   <!-- SEGURIDAD (v0.8): la página solo puede cargar archivos propios y hablar con el servidor de Apps Script. Si algo dejara de cargarse tras subir esta versión, borra la línea siguiente. -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: blob: https://lh3.googleusercontent.com https://drive.google.com; connect-src 'self' https://script.google.com https://script.googleusercontent.com; object-src 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'">
   <meta name="referrer" content="no-referrer">
@@ -1147,6 +1147,46 @@
     #dlgForm.hoja .botones .bt, #dlgForm.hoja .botones .bt-rojo { flex:1; padding:12px 14px; font-size:15px; }
     .chips input { min-width:120px; }
   }
+  /* ===== v0.9.4: zonas seguras del iPhone, fechas, botones fijos y cabecera =====
+     --sa-b / --sa-t: lo que ocupan la barra de inicio y la barra de estado (0 en ordenador y Android sin gestos). */
+  :root { --sa-b:env(safe-area-inset-bottom, 0px); --sa-t:env(safe-area-inset-top, 0px); --sa-l:env(safe-area-inset-left, 0px); --sa-r:env(safe-area-inset-right, 0px); }
+  .cab { height:calc(var(--cab) + var(--sa-t)); padding-top:var(--sa-t); padding-left:calc(12px + var(--sa-l)); padding-right:calc(12px + var(--sa-r)); }
+  .riel, .cajon, .area, .cargando { top:calc(var(--cab) + var(--sa-t)); }
+  .aviso { bottom:calc(24px + var(--sa-b)); }
+  .legal-cab { padding-top:calc(8px + var(--sa-t)); }
+  .legal-cuerpo { padding-bottom:calc(30px + var(--sa-b)); }
+  @media (max-width: 899px) {
+    .buscador { top:calc(var(--cab) + var(--sa-t)); }
+    .area { top:calc(var(--cab) + var(--sa-t) + 54px); bottom:calc(58px + var(--sa-b)); }
+    body.en-inicio .area { top:calc(var(--cab) + var(--sa-t)); bottom:0; padding-bottom:var(--sa-b); }
+    .inferior { height:calc(58px + var(--sa-b)); padding-bottom:var(--sa-b); padding-left:var(--sa-l); padding-right:var(--sa-r); }
+    .filtros { bottom:calc(66px + var(--sa-b)); }
+    .velo { padding-bottom:calc(16px + var(--sa-b)); }
+    /* «Mi cuenta» siempre en la esquina superior derecha: en el móvil el buscador va en otra fila y ya no empuja los botones */
+    .cab .titulo { flex:0 1 auto; min-width:0; }
+    .cab #btSync { margin-left:auto; }
+  }
+
+  /* Botones «Cancelar / Guardar» siempre visibles: quedan fijos al pie del diálogo aunque el contenido sea largo */
+  .dialogo > .botones { position:sticky; bottom:-20px; margin:16px -20px -20px; padding:12px 20px; background:inherit; border-top:1px solid var(--borde); z-index:2; }
+  @media (max-width: 899px) {
+    #dlgForm.hoja .dialogo { padding:calc(14px + var(--sa-t)) calc(14px + var(--sa-r)) 0 calc(14px + var(--sa-l)); }
+    #dlgForm.hoja .dialogo > .botones { position:static; margin:8px -14px 0; padding:10px 14px calc(12px + var(--sa-b)); }
+    #dlgForm.hoja .botones .bt, #dlgForm.hoja .botones .bt-rojo { min-height:46px; }
+  }
+
+  /* Fechas: dos columnas que siempre caben (cada una puede encogerse) y cuadros de la misma altura que el resto */
+  .fila-rango.campos { grid-template-columns:minmax(0, 1fr) minmax(0, 1fr); }
+  input[type="date"], input[type="month"], input[type="time"], input[type="datetime-local"] { min-width:0; max-width:100%; }
+  @supports (-webkit-touch-callout: none) {          /* iPhone / iPad: el campo de fecha de iOS ignora la anchura y cambia de altura vacío */
+    input[type="date"], input[type="month"], input[type="time"], input[type="datetime-local"] {
+      -webkit-appearance:none; appearance:none; display:block; width:100%; height:40px; line-height:20px; text-align:left; }
+    input::-webkit-date-and-time-value { text-align:left; margin:0; min-height:20px; }
+  }
+  /* En pantallas táctiles los cuadros de texto van a 16 px: por debajo, el iPhone amplía la página al tocarlos y deja moverla de lado */
+  body.tactil input:not([type="checkbox"]):not([type="radio"]), body.tactil select, body.tactil textarea { font-size:16px; }
+  body.tactil .dialogo input:not([type="checkbox"]):not([type="radio"]):not([type="file"]), body.tactil .dialogo select { min-height:40px; }
+  body.tactil .chips input { min-height:0; }
   main.area.arrastrando { transition:none; }                          /* sigue al dedo, sin retardo */
   main.area.volviendo { transition:transform .2s ease-out, opacity .2s ease-out; }
   @media (prefers-reduced-motion: reduce) {
@@ -1979,7 +2019,7 @@
   var MODULOS = {   // bloques aún no disponibles en la web
     asistencial: ["Asistencial", "fa-stethoscope", ""]
   };
-  var VERSION_WEB = "0.9.3";
+  var VERSION_WEB = "0.9.4";
   // Nombres visibles iguales a los de AppSheet (con las erratas corregidas) y orden de la ficha
   var ETIQ = { "Volúmen": "Volumen", "Notas_JCR": "Notas sobre JCR", "Investigadores Servicio": "Investigadores participantes",
                "Posiciones Servicio": "Posición en la autoría", "Es Correspondencia": "¿Es autor de correspondencia?",
@@ -3004,13 +3044,9 @@
         var f = inp.files && inp.files[0]; if (!f) return;
         if (!/\.pdf$/i.test(f.name) && f.type !== "application/pdf") { aviso("Elige el artículo en PDF.", 5000); return; }
         if (f.size > 25 * 1024 * 1024) { aviso("El PDF supera 25 MB.", 6000); return; }
-        var rd = new FileReader();
-        rd.onerror = function () { aviso("No se pudo leer el archivo.", 6000); };
-        rd.onload = function () {
-          aviso("Subiendo el PDF (" + Math.round(f.size / 1024) + " KB)…", 8000);
-          accion(api("webSubirPdfArticulo", S.token, d.ID_Articulo, f.name, "application/pdf", String(rd.result).split(",")[1] || ""), true);
-        };
-        rd.readAsDataURL(f);
+        aviso("Subiendo el PDF (" + Math.round(f.size / 1024) + " KB)…", 60000);
+        aBase64(f).then(function (b64) { return accion(api("webSubirPdfArticulo", S.token, d.ID_Articulo, f.name, "application/pdf", b64), true); })
+          .catch(function (e) { aviso(e.message || "No se pudo leer el archivo.", 6000); });
       };
       inp.click();
     };
@@ -3019,6 +3055,65 @@
       function () { cerrarDialogo(); hacer(); });
   }
   function validar(estado, motivo) { accion(api("webValidarPublicacion", S.token, S.ficha.datos.ID_Articulo, estado, motivo), true); }
+
+  // ---------- archivos: preparación para subir (v0.9.4) ----------
+  // Lo que más tarda en una subida es el viaje del archivo. Las fotos (JPG, PNG, HEIC, WebP) se reducen en el propio
+  // dispositivo antes de enviarlas: lado mayor 2000 px y JPEG al 82 %, que sigue siendo perfectamente legible para un
+  // certificado o un programa. Los PDF y documentos de Office van tal cual (no se pueden reducir sin perder calidad).
+  var SUBIDA_LADO = 2000, SUBIDA_CALIDAD = 0.82, SUBIDA_MIN = 400 * 1024;
+  function aBase64(blob) {
+    return new Promise(function (ok, ko) {
+      var l = new FileReader();
+      l.onload = function () { var s = String(l.result); ok(s.substring(s.indexOf(",") + 1)); };
+      l.onerror = function () { ko(new Error("No se pudo leer el archivo.")); };
+      l.readAsDataURL(blob);
+    });
+  }
+  function reducirFoto(f) {
+    return new Promise(function (ok) {
+      if (!/^image\/(jpeg|jpg|png|webp|heic|heif)$/i.test(f.type || "") || f.size < SUBIDA_MIN || !window.URL || !URL.createObjectURL) return ok(null);
+      var prueba = document.createElement("canvas"), ctx2d = null;
+      try { ctx2d = prueba.getContext && prueba.getContext("2d"); } catch (e) {}
+      if (!ctx2d) return ok(null);                                                  // sin lienzo: se sube el original
+      var url = URL.createObjectURL(f), img = new Image(), hecho = false;
+      var fin = function (r) { if (hecho) return; hecho = true; try { URL.revokeObjectURL(url); } catch (e) {} ok(r); };
+      setTimeout(function () { fin(null); }, 8000);                                  // si el navegador no puede, se sube el original
+      img.onerror = function () { fin(null); };
+      img.onload = function () {
+        try {
+          var w = img.naturalWidth || img.width, h = img.naturalHeight || img.height, k = Math.min(1, SUBIDA_LADO / Math.max(w, h));
+          var cv = document.createElement("canvas"); cv.width = Math.max(1, Math.round(w * k)); cv.height = Math.max(1, Math.round(h * k));
+          var cx = cv.getContext("2d"); cx.fillStyle = "#fff"; cx.fillRect(0, 0, cv.width, cv.height); cx.drawImage(img, 0, 0, cv.width, cv.height);
+          if (!cv.toBlob) return fin(null);
+          cv.toBlob(function (b) { fin(b && b.size < f.size * 0.9 ? b : null); }, "image/jpeg", SUBIDA_CALIDAD);
+        } catch (e) { fin(null); }
+      };
+      img.src = url;
+    });
+  }
+  // → Promise {nombre, tipo, b64, kb, kbOriginal, reducida}
+  function leerParaSubir(f, maxMB) {
+    maxMB = maxMB || 25;
+    if (!f) return Promise.resolve(null);
+    return reducirFoto(f).then(function (b) {
+      var blob = b || f, nombre = f.name || "archivo", tipo = f.type || "application/octet-stream";
+      if (b) { nombre = String(nombre).replace(/\.[^.]+$/, "") + ".jpg"; tipo = "image/jpeg"; }
+      if (blob.size > maxMB * 1024 * 1024) throw new Error("«" + f.name + "» supera " + maxMB + " MB.");
+      return aBase64(blob).then(function (b64) {
+        return { nombre: nombre, tipo: tipo, b64: b64, kb: Math.max(1, Math.round(blob.size / 1024)), kbOriginal: Math.max(1, Math.round(f.size / 1024)), reducida: !!b };
+      });
+    });
+  }
+  // Varias subidas: la primera sola (crea la carpeta en Drive) y el resto de tres en tres, en paralelo
+  function subirVarios(lista, subirUno) {
+    if (!lista.length) return Promise.resolve([]);
+    var res = new Array(lista.length);
+    return subirUno(lista[0], 0).then(function (r) { res[0] = r; }).then(function () {
+      var i = 1;
+      function hilo() { if (i >= lista.length) return Promise.resolve(); var k = i++; return subirUno(lista[k], k).then(function (r) { res[k] = r; }).then(hilo); }
+      return Promise.all([hilo(), hilo(), hilo()]);
+    }).then(function () { return res; });
+  }
 
   // ---------- diálogos ----------
   function dialogo(titulo, cuerpo, textoOk, alAceptar) {
@@ -3078,7 +3173,7 @@
   // ---------- navegación entre vistas ----------
   // Módulos (Estudios, Congresos, Docencia…) en archivos aparte: GC.registrar("vista", {secciones, buscar, mostrar, ocultar, placeholder, bloque, grupo})
   // Tres bloques: Investigación (Publicaciones · Congresos y cursos · Estudios · Otros méritos), Docencia (Trabajos · Tutorías · ANECA) y Asistencial.
-  var GC = window.GC = { url: urlSegura, mod: {}, S: S, $: $, api: api, apiCache: apiCache, cache: CACHE, esc: esc, aviso: aviso, cargando: cargando, dialogo: dialogo, cerrarDialogo: cerrarDialogo,
+  var GC = window.GC = { url: urlSegura, mod: {}, S: S, $: $, api: api, leerParaSubir: leerParaSubir, subirVarios: subirVarios, apiCache: apiCache, cache: CACHE, esc: esc, aviso: aviso, cargando: cargando, dialogo: dialogo, cerrarDialogo: cerrarDialogo,
     bajar: bajar, libroXlsx: libroXlsx, numero: numero, dec: dec, pct: pct, guardar: guardar, leer: leer, esMovil: esMovil,
     registrar: function (v, m) { GC.mod[v] = m; }, mostrarVista: function (v, o) { mostrarVista(v, o); }, cambiarTabPub: function (t) { cambiarTabPub(t); },
     datosCambiados: function (m) { datosCambiados(m); }, ponerAvatar: function () { ponerAvatar(); }, abrirPublicacion: function (id) { mostrarVista("pubs"); abrirFicha(id); },
@@ -3166,7 +3261,7 @@
   GC.sentidoAtras = function () { DIR_CAMBIO = "atras"; };
   function animarCambio() {
     var a = area(), dir = DIR_CAMBIO; DIR_CAMBIO = "";
-    if (!a || !document.body.classList.contains("tactil")) return;
+    if (!a || dir === "nada" || !document.body.classList.contains("tactil")) return;
     try { if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return; } catch (e) {}
     a.classList.remove("va-atras", "va-adelante", "arrastrando", "volviendo");
     a.style.transform = ""; a.style.opacity = "";
@@ -3388,7 +3483,7 @@
       v = pilaTope().v; sub = pilaTope().sub;
       try { history.replaceState({ gc: 1, v: v, sub: sub }, ""); } catch (e) {}
     }
-    DIR_CAMBIO = "atras";                   // «atrás» del sistema: la pantalla entra desde la izquierda
+    DIR_CAMBIO = GC.gestoNativo ? "nada" : "atras";   // «atrás» del sistema: entra desde la izquierda (en Safari ya anima el iPhone)
     var cambio = irA(v, sub);
     if (cambio || capa) { HIST.saltos = 0; return; }
     if (v !== "inicio" && history.length > 1 && HIST.saltos < 3) { HIST.saltos++; history.back(); }     // paso sin cambios visibles: se salta
@@ -3425,33 +3520,65 @@
   (function gestoAtras() {
     var ua = navigator.userAgent || "", ios = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
     var instalada = window.navigator.standalone === true || (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches);
+    // En Safari (sin instalar) el propio iPhone hace el gesto y su animación: la web no añade la suya para no duplicarla
+    GC.gestoNativo = ios && !instalada;
     if (!ios || !instalada || !document.addEventListener) return;     // en Safari y en Android el gesto «atrás» del sistema ya usa el historial
-    var x0 = null, y0 = 0, ind = document.createElement("div");
+    var BORDE = 28, x0 = null, y0 = 0, t0 = 0, capa = null, esArea = false, decidido = false, ind = document.createElement("div");
     ind.className = "gesto-atras"; ind.innerHTML = '<i class="fa-solid fa-chevron-left"></i>'; document.body.appendChild(ind);
-    document.addEventListener("touchstart", function (e) { var t = e.touches[0]; if (e.touches.length === 1 && t.clientX <= 22 && S.inicio && !(GC.legal && GC.legal.abierto())) { x0 = t.clientX; y0 = t.clientY; } else x0 = null; }, { passive: true });
-    // La pantalla acompaña al dedo mientras se arrastra (amortiguada) y vuelve a su sitio si no se completa el gesto
-    function soltarArea(conVuelta) {
-      var a = area(); if (!a) return;
-      a.classList.remove("arrastrando");
-      if (conVuelta) { a.classList.add("volviendo"); setTimeout(function () { a.classList.remove("volviendo"); }, 260); }
-      a.style.transform = ""; a.style.opacity = "";
+    // Qué se mueve con el dedo: lo que está encima (formulario, detalles a pantalla completa) o, si no hay nada, la pantalla
+    function capaArrastre() {
+      var vis = function (id) { var e = $(id); return e && !e.classList.contains("oculto") ? e : null; };
+      var dlg = vis("dlgForm") || vis("dlgAlta") || vis("dlgDescarga");
+      if (dlg) return dlg.querySelector(".dialogo");
+      if (document.body.classList.contains("ficha-abierta")) { var f = fichaAbierta(); if (f && $(f[0])) return $(f[0]); }
+      return area();
     }
+    function limpiar(el) { if (!el) return; el.classList.remove("arrastrando", "volviendo"); el.style.transform = ""; el.style.opacity = ""; el.style.transition = ""; }
+    function soltar(conVuelta) {
+      var el = capa; capa = null; if (!el) return;
+      if (!conVuelta) { limpiar(el); return; }
+      el.classList.remove("arrastrando"); el.style.transition = "transform .2s ease-out, opacity .2s ease-out";
+      el.style.transform = ""; el.style.opacity = "";
+      setTimeout(function () { el.style.transition = ""; }, 230);
+    }
+    document.addEventListener("touchstart", function (e) {
+      var t = e.touches[0]; x0 = null; decidido = false;
+      if (e.touches.length !== 1 || t.clientX > BORDE || !S.inicio || (GC.legal && GC.legal.abierto())) return;
+      x0 = t.clientX; y0 = t.clientY; t0 = Date.now(); capa = null;
+    }, { passive: true });
     document.addEventListener("touchmove", function (e) {
       if (x0 === null) return;
       var t = e.touches[0], dx = t.clientX - x0, dy = Math.abs(t.clientY - y0);
-      if (dy > 50 && dy > dx) { x0 = null; ind.style.opacity = 0; soltarArea(true); return; }
-      ind.style.opacity = Math.max(0, Math.min(1, dx / 80)); ind.style.transform = "translate(" + Math.max(0, Math.min(dx, 80)) / 2 + "px, -50%)";
-      var a = area(), d = Math.max(0, Math.min(dx, 140));
-      if (a) { a.classList.add("arrastrando"); a.classList.remove("volviendo", "va-atras", "va-adelante");
-               a.style.transform = "translate3d(" + (d * 0.32).toFixed(1) + "px,0,0)"; a.style.opacity = (1 - d / 700).toFixed(3); }
+      if (!decidido) {                                   // primero se decide si el gesto es horizontal (atrás) o vertical (desplazar)
+        if (dy > 12 && dy > dx) { x0 = null; return; }
+        if (dx < 8) return;
+        decidido = true; capa = capaArrastre(); esArea = capa === area();
+        if (capa) { capa.classList.add("arrastrando"); capa.classList.remove("volviendo", "va-atras", "va-adelante"); }
+      }
+      var d = Math.max(0, dx);
+      ind.style.opacity = Math.max(0, Math.min(1, d / 80)); ind.style.transform = "translate(" + Math.min(d, 80) / 2 + "px, -50%)";
+      if (!capa) return;
+      if (esArea) { var a = Math.min(d, 140); capa.style.transform = "translate3d(" + (a * 0.32).toFixed(1) + "px,0,0)"; capa.style.opacity = (1 - a / 700).toFixed(3); }
+      else capa.style.transform = "translate3d(" + d.toFixed(1) + "px,0,0)";      // el formulario o los detalles siguen al dedo, como en iOS
     }, { passive: true });
     document.addEventListener("touchend", function (e) {
       if (x0 === null) return;
-      var dx = e.changedTouches[0].clientX - x0; x0 = null; ind.style.opacity = 0; ind.style.transform = "";
-      if (dx > 70) { soltarArea(false); atras(); }      // al soltar, la pantalla anterior entra desde la izquierda
-      else soltarArea(true);                            // gesto incompleto: vuelve a su sitio
+      var dx = e.changedTouches[0].clientX - x0, ms = Math.max(1, Date.now() - t0); x0 = null;
+      ind.style.opacity = 0; ind.style.transform = "";
+      if (!decidido) return;
+      var ancho = window.innerWidth || 390;
+      var vale = dx > Math.min(100, ancho * 0.28) || (dx > 30 && dx / ms > 0.45);     // recorrido suficiente o un golpe rápido de dedo
+      if (!vale) { soltar(true); return; }                                           // gesto incompleto: vuelve a su sitio
+      if (capa && !esArea) {                                                         // la capa sale por la derecha y se cierra
+        var el = capa; capa = null; el.classList.remove("arrastrando");
+        el.style.transition = "transform .18s ease-out"; el.style.transform = "translate3d(" + ancho + "px,0,0)";
+        setTimeout(function () { atras(); setTimeout(function () { limpiar(el); }, 30); }, 170);
+        return;
+      }
+      soltar(false); atras();                                                        // la pantalla anterior entra desde la izquierda
     }, { passive: true });
-    document.addEventListener("touchcancel", function () { if (x0 === null) return; x0 = null; ind.style.opacity = 0; ind.style.transform = ""; soltarArea(true); }, { passive: true });
+    document.addEventListener("touchcancel", function () { if (x0 === null) return; x0 = null; ind.style.opacity = 0; ind.style.transform = ""; soltar(true); }, { passive: true });
+    GC.capaArrastre = capaArrastre;
   })();
   // ---------- pantalla de inicio (bienvenida) ----------
   function pintarInicio() {
@@ -4277,14 +4404,12 @@
     var inp = document.createElement("input"); inp.type = "file"; inp.accept = ".pdf,.doc,.docx,.odt,.jpg,.jpeg,.png"; inp.multiple = campo === "protocolo";
     inp.onchange = function () {
       var fs = Array.prototype.slice.call(inp.files || []); if (!fs.length) return;
+      G.aviso(fs.length > 1 ? "Subiendo " + fs.length + " archivos…" : "Subiendo «" + fs[0].name + "»…", 60000);
       leerArchivos(inp).then(function (lista) {
-        var res = [];
-        return lista.reduce(function (p, x) {
-          return p.then(function () {
-            G.aviso("Subiendo «" + x.nombre + "»…", 4000);
-            return G.api("webSubirArchivoEstudio", G.S.token, e.id, campo, x.nombre, x.tipo, x.b64).then(function (s) { res.push(s.ok ? "Subido «" + x.nombre + "»." : s.mensaje); });
-          });
-        }, Promise.resolve()).then(function () { G.aviso(res.join(" "), 7000); return cargar(); });
+        return G.subirVarios(lista, function (x) {
+          return G.api("webSubirArchivoEstudio", G.S.token, e.id, campo, x.nombre, x.tipo, x.b64)
+            .then(function (s) { return s.ok ? "Subido «" + x.nombre + "»." : s.mensaje; }, function (err) { return "No se pudo subir «" + x.nombre + "»: " + err.message; });
+        }).then(function (res) { G.aviso(res.join(" "), 7000); return cargar(); });
       }).catch(function (err) { G.aviso(err.message, 7000); });
     };
     inp.click();
@@ -4410,16 +4535,9 @@
     return (yaHay ? '<div class="ayuda"><i class="fa-solid fa-paperclip"></i> Ya hay un documento adjunto. Si eliges otro, lo sustituirá.</div>' : "") +
       '<input type="file" id="' + id + '" accept=".pdf,.doc,.docx,.odt,.jpg,.jpeg,.png">';
   }
-  function leerArchivo(inp) {                 // → Promise {nombre, tipo, b64} o null
+  function leerArchivo(inp) {                 // → Promise {nombre, tipo, b64} o null (las fotos se reducen antes de subir)
     var f = inp && inp.files && inp.files[0];
-    if (!f) return Promise.resolve(null);
-    if (f.size > 25 * 1024 * 1024) return Promise.reject(new Error("«" + f.name + "» supera 25 MB."));
-    return new Promise(function (ok, ko) {
-      var l = new FileReader();
-      l.onload = function () { ok({ nombre: f.name, tipo: f.type, b64: String(l.result).split(",")[1] || "" }); };
-      l.onerror = function () { ko(new Error("No se pudo leer «" + f.name + "».")); };
-      l.readAsDataURL(f);
-    });
+    return f ? G.leerParaSubir(f, 25) : Promise.resolve(null);
   }
   function pintarDocsPend() {
     var l = ES.docsPend || [];
@@ -4429,11 +4547,9 @@
     $("listaDocProt").querySelectorAll("[data-quitar]").forEach(function (b) { b.onclick = function () { ES.docsPend.splice(Number(b.getAttribute("data-quitar")), 1); pintarDocsPend(); }; });
     $("btDocProt").innerHTML = '<i class="fa-solid fa-paperclip"></i> ' + (l.length ? "Añadir más archivos…" : "Añadir archivos…");
   }
-  function leerArchivos(inp) {                // varios archivos → Promise [{nombre, tipo, b64}]
+  function leerArchivos(inp) {                // varios archivos → Promise [{nombre, tipo, b64}], leídos a la vez
     var fs = inp && inp.files ? Array.prototype.slice.call(inp.files) : [];
-    return fs.reduce(function (p, f) {
-      return p.then(function (acum) { return leerArchivo({ files: [f] }).then(function (x) { acum.push(x); return acum; }); });
-    }, Promise.resolve([]));
+    return Promise.all(fs.map(function (f) { return G.leerParaSubir(f, 25); }));
   }
   function visibilidad() {
     var ori = $("feOri").value, fin = $("feFin2").value, ceim = $("feCeim2").value, est = $("feEst2").value;
@@ -4456,29 +4572,29 @@
       inicio: $("feIni").value, fin: $("feFinAnio").value, previos: $("fePrev").value };
     if (!nuevo && e.estado !== FINAL && datos.estado === FINAL && ["Aprobado", "No aplica"].indexOf(datos.ceim) !== -1 &&
         !window.confirm("ATENCIÓN: has seleccionado «Inactivo (Finalizado)». Una vez guardado, solo un administrador podrá volver a ponerlo como activo. ¿Confirmas el cambio?")) return;
-    var docs = [];
-    $("msgEst").textContent = "Leyendo documentos…";
-    Promise.all([leerArchivos({ files: ES.docsPend || [] }), datos.ceim === "Aprobado" ? leerArchivo($("feDocCeim")) : Promise.resolve(null)]).then(function (r) {
-      r[0].forEach(function (x) { docs.push(["protocolo", x, "«" + x.nombre + "»"]); }); if (r[1]) docs.push(["resolucion", r[1], "resolución del CEIm"]);
-      $("msgEst").textContent = "Guardando…";
-      return G.api("webGuardarEstudio", G.S.token, datos);
-    }).then(function (res) {
+    // Los documentos se leen (y las fotos se reducen) mientras se guarda el estudio; al guardarlo se cierra el formulario
+    // y los documentos terminan de subirse en segundo plano, varios a la vez.
+    var lectura = Promise.all([leerArchivos({ files: ES.docsPend || [] }), datos.ceim === "Aprobado" ? leerArchivo($("feDocCeim")) : Promise.resolve(null)]);
+    lectura.catch(function () {});
+    $("msgEst").textContent = "Guardando…"; $("dlgAceptar").disabled = true;
+    G.api("webGuardarEstudio", G.S.token, datos).then(function (res) {
       if (!res) return;
       if (!res.ok) { $("msgEst").textContent = res.mensaje; return; }
-      var avisos = [res.mensaje];
-      // documentos: se suben uno a uno cuando el estudio ya existe
-      return docs.reduce(function (p, d) {
-        return p.then(function () {
-          $("msgEst").textContent = "Subiendo " + d[2] + "…";
+      return lectura.then(function (r) {
+        var docs = [];
+        r[0].forEach(function (x) { docs.push(["protocolo", x, "«" + x.nombre + "»"]); }); if (r[1]) docs.push(["resolucion", r[1], "resolución del CEIm"]);
+        G.cerrarDialogo();
+        if (!docs.length) { G.aviso(res.mensaje, 6000); return cargar().then(function () { abrirFicha(res.id); }); }
+        G.aviso(res.mensaje + " Subiendo " + (docs.length > 1 ? docs.length + " documentos" : "el documento") + "…", 60000);
+        return G.subirVarios(docs, function (d) {
           return G.api("webSubirArchivoEstudio", G.S.token, res.id, d[0], d[1].nombre, d[1].tipo, d[1].b64)
-            .then(function (s) { avisos.push(s.ok ? "Adjuntado: " + d[2] + "." : s.mensaje); })
-            .catch(function (err) { avisos.push("No se pudo adjuntar " + d[2] + ": " + err.message); });
+            .then(function (s) { return s.ok ? "Adjuntado: " + d[2] + "." : s.mensaje; }, function (err) { return "No se pudo adjuntar " + d[2] + ": " + err.message; });
+        }).then(function (avisos) {
+          G.aviso([res.mensaje].concat(avisos).join(" "), 8000);
+          return cargar().then(function () { abrirFicha(res.id); });
         });
-      }, Promise.resolve()).then(function () {
-        G.cerrarDialogo(); G.aviso(avisos.join(" "), 8000);
-        return cargar().then(function () { abrirFicha(res.id); });
-      });
-    }).catch(function (err) { $("msgEst").textContent = err.message; });
+      }, function (err) { G.cerrarDialogo(); G.aviso(res.mensaje + " Los documentos no se pudieron leer: " + err.message, 9000); return cargar(); });
+    }).catch(function (err) { $("msgEst").textContent = err.message; }).then(function () { if ($("dlgAceptar")) $("dlgAceptar").disabled = false; });
   }
   $("btAnadirEst").onclick = function () { formEstudio(null); };
 
@@ -4933,23 +5049,15 @@
   }
 
   // ---------- archivos ----------
-  function leerArchivo(f) {
-    if (f.size > 25 * 1024 * 1024) return Promise.reject(new Error("«" + f.name + "» supera 25 MB."));
-    return new Promise(function (ok, ko) {
-      var l = new FileReader();
-      l.onload = function () { ok({ nombre: f.name, tipo: f.type, b64: String(l.result).split(",")[1] || "" }); };
-      l.onerror = function () { ko(new Error("No se pudo leer «" + f.name + "».")); };
-      l.readAsDataURL(f);
-    });
-  }
+  function leerArchivo(f) { return G.leerParaSubir(f, 25); }          // las fotos se reducen antes de subir
   function elegirArchivo(fn) {
     var inp = document.createElement("input"); inp.type = "file"; inp.accept = ".pdf,.jpg,.jpeg,.png";
     inp.onchange = function () { if (inp.files && inp.files[0]) fn(inp.files[0]); };
     inp.click();
   }
-  function subir(tipo, id, f) {
-    G.aviso("Subiendo «" + f.name + "»…", 4000);
-    return leerArchivo(f).then(function (x) { return accion(G.api("webSubirArchivoCongreso", G.S.token, tipo, id, x.nombre, x.tipo, x.b64), false); })
+  function subir(tipo, id, f, leido) {          // leido: lectura ya empezada (mientras se guardaba el congreso)
+    G.aviso("Subiendo «" + f.name + "»…", 60000);
+    return (leido || leerArchivo(f)).then(function (x) { return accion(G.api("webSubirArchivoCongreso", G.S.token, tipo, id, x.nombre, x.tipo, x.b64), false); })
       .catch(function (e) { G.aviso(e.message, 7000); });
   }
   function bajarArchivo(tipo, id) {
@@ -5081,10 +5189,11 @@
     enviarCongreso(d, f, nuevo);
   }
   function enviarCongreso(d, f, nuevo) {
+    var leido = f ? leerArchivo(f) : null; if (leido) leido.catch(function () {});     // el programa se prepara a la vez que se guarda
     accion(G.api("webGuardarCongreso", G.S.token, d), true, true).then(function (r) {
       if (r && r.duplicado) { confirmarDuplicado(r.duplicado, d, f, nuevo); return; }
       if (r && r.ok && r.id) {
-        CN.sel = r.id; abrirFicha(r.id); if (f) subir("programa", r.id, f);
+        CN.sel = r.id; abrirFicha(r.id); if (f) subir("programa", r.id, f, leido);
         var c2 = congreso(r.id), yo = G.S.inicio.usuario.nombre;
         if (nuevo && c2 && c2.inicio && c2.asistentes.indexOf(yo) !== -1) setTimeout(function () { dialogoDias(c2, null, "Congreso guardado. "); }, 300);
       }
@@ -5866,11 +5975,7 @@
       G.bajar(bytes, x.mime || "application/octet-stream", x.nombre);
     }).catch(function (e) { G.aviso(e.message, 7000); }).then(function () { G.cargando(false); });
   }
-  function leerArchivo(f) {
-    if (f.size > 25 * 1024 * 1024) return Promise.reject(new Error("«" + f.name + "» supera 25 MB."));
-    return new Promise(function (ok, ko) { var l = new FileReader(); l.onload = function () { ok({ nombre: f.name, tipo: f.type, b64: String(l.result).split(",")[1] || "" }); };
-      l.onerror = function () { ko(new Error("No se pudo leer «" + f.name + "».")); }; l.readAsDataURL(f); });
-  }
+  function leerArchivo(f) { return G.leerParaSubir(f, 25); }          // las fotos se reducen antes de subir
   function subirDocumento(t, r) {
     var inp = document.createElement("input"); inp.type = "file"; inp.accept = ".pdf,.doc,.docx,.odt,.jpg,.jpeg,.png";
     inp.onchange = function () {
@@ -6207,15 +6312,21 @@
     }
     if ((d.fin && d.inicio && d.fin < d.inicio) || (d.defensa && d.inicio && d.defensa < d.inicio)) return void ($("msgDoc").textContent = "La fecha final es anterior a la de inicio.");
     var f = nuevo && $("dcArchivo") && $("dcArchivo").files && $("dcArchivo").files[0];
+    // El documento se lee (y la foto se reduce) mientras se guarda el registro; al guardarlo se cierra el formulario
+    // y el documento termina de subirse en segundo plano.
+    var lectura = f ? leerArchivo(f) : null; if (lectura) lectura.catch(function () {});
     $("dlgAceptar").disabled = true; $("msgDoc").textContent = "Guardando…";
     G.api("webGuardarDocencia", G.S.token, srv(t), d).then(function (res) {
       if (!res || !res.ok) { $("msgDoc").textContent = (res && res.mensaje) || "No se pudo guardar."; return; }
-      var sigue = f ? leerArchivo(f).then(function (x) { return G.api("webSubirArchivoDocencia", G.S.token, srv(t), res.id, x.nombre, x.tipo, x.b64); })
-        .then(function (s) { return s && s.ok ? "" : " " + ((s && s.mensaje) || ""); }, function (e) { return " El documento no se pudo subir: " + e.message; }) : Promise.resolve("");
-      return sigue.then(function (extra) {
-        G.cerrarDialogo(); G.aviso(res.mensaje + extra, 8000);
-        return cargar().then(function () { if (registro(t, res.id)) abrirFicha(res.id); });
-      });
+      G.cerrarDialogo();
+      if (!lectura) { G.aviso(res.mensaje, 6000); return cargar().then(function () { if (registro(t, res.id)) abrirFicha(res.id); }); }
+      G.aviso(res.mensaje + " Subiendo el documento…", 60000);
+      return lectura.then(function (x) { return G.api("webSubirArchivoDocencia", G.S.token, srv(t), res.id, x.nombre, x.tipo, x.b64); })
+        .then(function (s) { return s && s.ok ? "" : " " + ((s && s.mensaje) || ""); }, function (e) { return " El documento no se pudo subir: " + e.message; })
+        .then(function (extra) {
+          G.aviso(res.mensaje + (extra || " Documento subido."), 8000);
+          return cargar().then(function () { if (registro(t, res.id)) abrirFicha(res.id); });
+        });
     }).catch(function (e) { $("msgDoc").textContent = e.message; }).then(function () { $("dlgAceptar").disabled = false; });
   }
   $("btAnadirDoc").onclick = function () { if (DC.datos) formulario(DC.tab, null); };
