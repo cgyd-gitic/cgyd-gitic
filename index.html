@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Gestión CGyAD-GITIC · web publicada (GitHub Pages) · versión 0.9.6 · generado el 15/11/2026 a partir de Web_App + Web_Estilos + Web_Cliente + Web_Estudios_Cliente + Web_Congresos_Cliente + Web_Docencia_Cliente + Web_Perfil_Cliente.
+<!-- Gestión CGyAD-GITIC · web publicada (GitHub Pages) · versión 0.9.7 · generado el 15/11/2026 a partir de Web_App + Web_Estilos + Web_Cliente + Web_Estudios_Cliente + Web_Congresos_Cliente + Web_Docencia_Cliente + Web_Perfil_Cliente.
      No edites este archivo: la dirección del servidor está en config.js. -->
 <html lang="es">
 <head>
@@ -1237,6 +1237,16 @@
   .gc-gira { animation:gcGira var(--d) linear infinite; }
   .gc-deriva2 { animation:gcDeriva2 var(--d) ease-in-out infinite; }
   @media (prefers-reduced-motion: reduce) { .gc-it, .gc-olas { animation:none !important; } }
+  /* ===== v0.9.7 ===== */
+  /* (3) Icono de la app junto al título, centrados juntos */
+  .cab .titulo { display:inline-flex; align-items:center; gap:8px; overflow:visible; }
+  .cab .titulo .icono-app { width:26px; height:26px; flex:none; display:block; border-radius:6px; }
+  .cab .titulo .titulo-txt { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  @media (max-width: 899px) {
+    .cab .titulo { font-size:16px; gap:6px; max-width:calc(100% - 192px); }
+    .cab .titulo .icono-app { width:22px; height:22px; border-radius:5px; }
+  }
+  @media (max-width: 380px) { .cab .titulo { font-size:15px; } .cab .titulo .icono-app { width:20px; height:20px; } }
   main.area.arrastrando { transition:none; }                          /* sigue al dedo, sin retardo */
   main.area.volviendo { transition:transform .2s ease-out, opacity .2s ease-out; }
   @media (prefers-reduced-motion: reduce) {
@@ -1279,7 +1289,7 @@
 
   /* ===== v0.7.1: logo animado en la pantalla de acceso (los arcos rojos giran mientras carga) ===== */
   .logo-acceso { display:block; width:84px; height:84px; margin:0 auto; overflow:visible; }
-  .logo-acceso .arcos { transform-origin:32px 32px; transform-box:view-box; }
+  .logo-acceso .arcos { transform-box:view-box; transform-origin:50% 50%; }   /* v0.9.7: en porcentaje, para que el zoom del 110 % no desplace el centro */
   .logo-acceso.girando .arcos { animation:giroArcos .9s cubic-bezier(.45,.05,.4,1) infinite; }
   @keyframes giroArcos { from { transform:rotate(0deg); } to { transform:rotate(180deg); } }   /* los dos arcos son simétricos: media vuelta = ciclo completo */
   @media (prefers-reduced-motion: reduce) { .logo-acceso.girando .arcos { animation-duration:2.2s; animation-timing-function:linear; } }
@@ -1542,8 +1552,7 @@
     <header class="cab">
       <button class="bt-icono" id="btMenu" title="Menú"><i class="fa-solid fa-bars"></i></button>
       <button class="bt-icono" id="btAtras" title="Atrás" aria-label="Atrás"><i class="fa-solid fa-chevron-left"></i></button>
-      <span class="hueco-logo" data-tam="32"></span>
-      <span class="titulo">Gestión CGyAD-GITIC</span>
+      <span class="titulo"><img class="icono-app" src="data:image/png;base64,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" alt="" width="26" height="26"><span class="titulo-txt">Gestión CGyAD-GITIC</span></span>
       <div class="buscador"><div><i class="fa-solid fa-magnifying-glass"></i><input id="fTexto" type="search" placeholder="Buscar Publicaciones"></div></div>
       <button class="bt-icono" id="btSync" title="Actualizar datos"><i class="fa-solid fa-rotate"></i></button>
       <button class="avatar" id="avatar" title="Mi cuenta">?</button>
@@ -2069,7 +2078,7 @@
   var MODULOS = {   // bloques aún no disponibles en la web
     asistencial: ["Asistencial", "fa-stethoscope", ""]
   };
-  var VERSION_WEB = "0.9.6";
+  var VERSION_WEB = "0.9.7";
   // Nombres visibles iguales a los de AppSheet (con las erratas corregidas) y orden de la ficha
   var ETIQ = { "Volúmen": "Volumen", "Notas_JCR": "Notas sobre JCR", "Investigadores Servicio": "Investigadores participantes",
                "Posiciones Servicio": "Posición en la autoría", "Es Correspondencia": "¿Es autor de correspondencia?",
@@ -2107,7 +2116,10 @@
   function aviso(t, ms) { var a = $("aviso"); a.textContent = t; a.classList.remove("oculto"); clearTimeout(aviso._t); aviso._t = setTimeout(function () { a.classList.add("oculto"); }, ms || 3500); }
   // Solo se abren enlaces http(s): un valor como «javascript:…» escrito a mano en la hoja no llega a ser un enlace
   function urlSegura(u) { u = String(u === null || u === undefined ? "" : u).trim(); return /^https?:\/\/\S+$/i.test(u) ? u : ""; }
-  function cargando(on) { $("cargando").classList.toggle("oculto", !on); }
+  // La barra fina de carga solo dentro de la app: en la pantalla de carga y de acceso ya giran los arcos del logotipo (v0.9.7)
+  var CARGA = { on: false };
+  function cargando(on) { CARGA.on = !!on; pintarCarga(); }
+  function pintarCarga() { var acc = $("vAcceso"), b = $("cargando"); if (!b) return; b.classList.toggle("oculto", !CARGA.on || !!(acc && !acc.classList.contains("oculto"))); }
   function esMovil() { return window.matchMedia("(max-width: 899px)").matches; }
   // Servidor: dentro de Apps Script se usa google.script.run; en la web publicada (GitHub Pages), fetch a la URL de config.js (window.GC_API)
   var EN_APPS_SCRIPT = !!(window.google && google.script && google.script.run);
@@ -3514,7 +3526,13 @@
   GC.subCambiado = subCambiado;
   var FICHAS = [["panelFicha", function () { cerrarFicha(); }], ["panelFichaEst", "btCerrarFichaEst"], ["panelFichaCon", "btCerrarFichaCon"], ["panelFichaDoc", "btCerrarFichaDoc"]];
   function fichaAbierta() { return FICHAS.filter(function (f) { var e = $(f[0]); return e && !e.classList.contains("oculto") && !(f[0] === "panelFicha" && S.vista !== "pubs" && S.vista !== "revision"); })[0]; }
-  function dialogoAbierto() { return ["dlgForm", "dlgAlta"].filter(function (id) { return $(id) && !$(id).classList.contains("oculto"); })[0]; }
+  function dialogoAbierto() { return ["dlgForm", "dlgAlta", "dlgDescarga"].filter(function (id) { return $(id) && !$(id).classList.contains("oculto"); })[0]; }
+  // v0.9.7: en el ordenador, la tecla Esc cierra el diálogo que esté encima (como «Cancelar»), sin tocar lo que hay debajo
+  window.addEventListener("keydown", function (ev) {
+    if (ev.key !== "Escape" || (GC.legal && GC.legal.abierto()) || !$("dlgError").classList.contains("oculto")) return;
+    var dlg = dialogoAbierto(); if (!dlg) return;
+    ev.stopPropagation(); if (dlg === "dlgForm") cerrarDialogo(); else $(dlg).classList.add("oculto");
+  }, true);
   // Antes de cambiar de pantalla, «atrás» cierra lo que esté abierto encima: diálogo, menú, filtros o detalles
   function cerrarCapa() {
     if (GC.legal && GC.legal.abierto()) { GC.legal.cerrar(true); return "capa"; }
@@ -4272,6 +4290,7 @@
     var acc = $("vAcceso"); if (!acc) return;
     var tema = null; try { tema = leer("gc_deco_prueba") || temaTemporada(new Date()); } catch (e) {}
     function revisar() {
+      pintarCarga();
       var visible = !acc.classList.contains("oculto");
       if (visible && !decoActual && tema && DECO[tema]) ponerDecoracion(tema); else if (!visible && decoActual) quitarDecoracion();
     }
