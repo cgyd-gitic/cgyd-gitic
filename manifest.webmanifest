@@ -40,5 +40,12 @@
       "type": "image/png",
       "purpose": "monochrome"
     }
-  ]
+  ],
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "https://cgyd-gitic.github.io/cgyd-gitic/manifest.webmanifest"
+    }
+  ],
+  "prefer_related_applications": false
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Gestión CGyAD-GITIC · web publicada (GitHub Pages) · versión 0.9.7 · generado el 15/11/2026 a partir de Web_App + Web_Estilos + Web_Cliente + Web_Estudios_Cliente + Web_Congresos_Cliente + Web_Docencia_Cliente + Web_Perfil_Cliente.
+<!-- Gestión CGyAD-GITIC · web publicada (GitHub Pages) · versión 0.9.8 · generado el 15/11/2026 a partir de Web_App + Web_Estilos + Web_Cliente + Web_Estudios_Cliente + Web_Congresos_Cliente + Web_Docencia_Cliente + Web_Perfil_Cliente.
      No edites este archivo: la dirección del servidor está en config.js. -->
 <html lang="es">
 <head>
@@ -1240,13 +1240,34 @@
   /* ===== v0.9.7 ===== */
   /* (3) Icono de la app junto al título, centrados juntos */
   .cab .titulo { display:inline-flex; align-items:center; gap:8px; overflow:visible; }
-  .cab .titulo .icono-app { width:26px; height:26px; flex:none; display:block; border-radius:6px; }
+  .cab .titulo .icono-app { width:28px; height:28px; flex:none; display:block; overflow:visible; }   /* v0.9.8: logotipo original (vectorial) */
   .cab .titulo .titulo-txt { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   @media (max-width: 899px) {
     .cab .titulo { font-size:16px; gap:6px; max-width:calc(100% - 192px); }
-    .cab .titulo .icono-app { width:22px; height:22px; border-radius:5px; }
+    .cab .titulo .icono-app { width:24px; height:24px; }
   }
-  @media (max-width: 380px) { .cab .titulo { font-size:15px; } .cab .titulo .icono-app { width:20px; height:20px; } }
+  @media (max-width: 380px) { .cab .titulo { font-size:15px; } .cab .titulo .icono-app { width:22px; height:22px; } }
+  /* v0.9.8: «Instala la app» (teléfono o tableta) */
+  #dlgInstalar { z-index:220; }
+  .dialogo.instalar { max-width:440px; border-radius:16px; }
+  .inst-cab { display:flex; align-items:center; gap:12px; margin-bottom:6px; }
+  .inst-cab h2 { margin:0; font-size:19px; line-height:1.25; }
+  .inst-logo { width:52px; height:52px; flex:none; }
+  .inst-pasos { margin:12px 0 4px; padding:0; list-style:none; counter-reset:paso; }
+  .inst-pasos li { counter-increment:paso; position:relative; padding:9px 0 9px 38px; border-top:1px solid var(--borde); line-height:1.4; }
+  .inst-pasos li:first-child { border-top:0; }
+  .inst-pasos li::before { content:counter(paso); position:absolute; left:0; top:8px; width:26px; height:26px; border-radius:50%; background:#1e5a96; color:#fff; font-weight:600; font-size:14px; display:flex; align-items:center; justify-content:center; }
+  .ico-inst { width:22px; height:22px; vertical-align:-5px; margin:0 2px; color:#1e7cf2; }
+  .ico-movil { width:1.15em; height:1.15em; vertical-align:-.2em; }
+  .inst-nota { font-size:13px; margin:8px 0 0; }
+  .inst-ya { display:block; margin:10px auto 0; font-size:14px; }
+  .acceso-instalar { display:block; margin:12px auto 0; }
+  @media (max-width: 899px) {
+    #dlgInstalar { align-items:flex-end; }
+    #dlgInstalar .dialogo.instalar { border-radius:18px 18px 12px 12px; animation:instSube .28s ease-out; }
+  }
+  @keyframes instSube { from { transform:translateY(40px); opacity:0; } to { transform:none; opacity:1; } }
+  @media (prefers-reduced-motion: reduce) { #dlgInstalar .dialogo.instalar { animation:none; } }
   main.area.arrastrando { transition:none; }                          /* sigue al dedo, sin retardo */
   main.area.volviendo { transition:transform .2s ease-out, opacity .2s ease-out; }
   @media (prefers-reduced-motion: reduce) {
@@ -1543,6 +1564,7 @@
       </div>
       <p class="mensaje" id="msgAcceso"></p>
       <p class="acceso-cargando" id="txtArranque" aria-live="polite">Cargando…</p>
+      <button class="bt-texto acceso-instalar oculto" id="btInstalarAcceso"><svg class="ico-movil" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10.5 18.5h3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> Instalar la app en este dispositivo</button>
       <p class="acceso-legal"><a href="#" data-legal="privacidad">Política de privacidad</a> · <a href="#" data-legal="terminos">Términos de uso</a></p>
     </div>
   </div>
@@ -1552,13 +1574,14 @@
     <header class="cab">
       <button class="bt-icono" id="btMenu" title="Menú"><i class="fa-solid fa-bars"></i></button>
       <button class="bt-icono" id="btAtras" title="Atrás" aria-label="Atrás"><i class="fa-solid fa-chevron-left"></i></button>
-      <span class="titulo"><img class="icono-app" src="data:image/png;base64,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" alt="" width="26" height="26"><span class="titulo-txt">Gestión CGyAD-GITIC</span></span>
+      <span class="titulo"><svg class="icono-app" viewBox="0 0 64 64" width="28" height="28" aria-hidden="true" focusable="false"><circle cx="32" cy="32" r="30" fill="#fff" stroke="#1e5a96" stroke-width="3"/><g fill="none" stroke="#e53935" stroke-width="4" stroke-linecap="round"><path d="M32 6a26 26 0 0 1 24 16"/><path d="M32 58A26 26 0 0 1 8 42"/></g><circle cx="24" cy="25" r="5" fill="#1e5a96"/><circle cx="40" cy="25" r="5" fill="#1e5a96"/><circle cx="32" cy="21" r="5.5" fill="#e53935"/><path d="M15 44c0-8 4-12 9-12s9 4 9 12z M31 44c0-8 4-12 9-12s9 4 9 12z" fill="#1e5a96"/><path d="M22 42c0-9 4.5-13.5 10-13.5S42 33 42 42z" fill="#e53935"/></svg><span class="titulo-txt">Gestión CGyAD-GITIC</span></span>
       <div class="buscador"><div><i class="fa-solid fa-magnifying-glass"></i><input id="fTexto" type="search" placeholder="Buscar Publicaciones"></div></div>
       <button class="bt-icono" id="btSync" title="Actualizar datos"><i class="fa-solid fa-rotate"></i></button>
       <button class="avatar" id="avatar" title="Mi cuenta">?</button>
     </header>
     <div id="menuUsuario" class="menu-usuario oculto">
       <p><b id="lblNombre"></b><br><span class="tenue" id="lblEmail"></span><br><span class="tenue" id="lblRol"></span></p>
+      <button class="bt oculto" id="btInstalarApp" style="margin-bottom:8px"><svg class="ico-movil" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10.5 18.5h3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> Instalar la app en este dispositivo</button>
       <button class="bt oculto" id="btBio" style="margin-bottom:8px"><i class="fa-solid fa-fingerprint"></i> Face ID / huella</button>
       <label class="menu-et" for="selEscala"><i class="fa-solid fa-text-height"></i> Tamaño de la pantalla</label>
       <select id="selEscala" class="menu-sel"></select>
@@ -1964,6 +1987,19 @@
     </div>
   </div>
 
+  <!-- Diálogo: instalar la app en el teléfono o la tableta (v0.9.8; el contenido lo pone Web_Cliente según el sistema) -->
+  <div id="dlgInstalar" class="velo oculto">
+    <div class="dialogo instalar" role="dialog" aria-modal="true" aria-labelledby="instTitulo">
+      <div class="inst-cab">
+        <svg class="inst-logo" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="#fff" stroke="#1e5a96" stroke-width="3"/><g fill="none" stroke="#e53935" stroke-width="4" stroke-linecap="round"><path d="M32 6a26 26 0 0 1 24 16"/><path d="M32 58A26 26 0 0 1 8 42"/></g><circle cx="24" cy="25" r="5" fill="#1e5a96"/><circle cx="40" cy="25" r="5" fill="#1e5a96"/><circle cx="32" cy="21" r="5.5" fill="#e53935"/><path d="M15 44c0-8 4-12 9-12s9 4 9 12z M31 44c0-8 4-12 9-12s9 4 9 12z" fill="#1e5a96"/><path d="M22 42c0-9 4.5-13.5 10-13.5S42 33 42 42z" fill="#e53935"/></svg>
+        <h2 id="instTitulo">Instala la app</h2>
+      </div>
+      <div id="instCuerpo"></div>
+      <div class="botones"><button class="bt" id="btInstAhoraNo">Ahora no</button><button class="bt-rojo" id="btInstOk">Entendido</button></div>
+      <button class="bt-texto inst-ya" id="btInstYaLaTengo">Ya la tengo instalada</button>
+    </div>
+  </div>
+
   <!-- Diálogo: descargar la lista -->
   <div id="dlgDescarga" class="velo oculto">
     <div class="dialogo">
@@ -2078,7 +2114,7 @@
   var MODULOS = {   // bloques aún no disponibles en la web
     asistencial: ["Asistencial", "fa-stethoscope", ""]
   };
-  var VERSION_WEB = "0.9.7";
+  var VERSION_WEB = "0.9.8";
   // Nombres visibles iguales a los de AppSheet (con las erratas corregidas) y orden de la ficha
   var ETIQ = { "Volúmen": "Volumen", "Notas_JCR": "Notas sobre JCR", "Investigadores Servicio": "Investigadores participantes",
                "Posiciones Servicio": "Posición en la autoría", "Es Correspondencia": "¿Es autor de correspondencia?",
@@ -2344,7 +2380,7 @@
   })();
 
   // ---------- acceso ----------
-  function mostrarAcceso() { finArranque(); $("vApp").classList.add("oculto"); $("vAcceso").classList.remove("oculto"); $("pasoEmail").classList.remove("oculto"); $("pasoCodigo").classList.add("oculto"); $("pasoBio").classList.add("oculto"); $("msgAcceso").textContent = "";
+  function mostrarAcceso() { finArranque(); if (INST) INST.sugerir("acceso"); $("vApp").classList.add("oculto"); $("vAcceso").classList.remove("oculto"); $("pasoEmail").classList.remove("oculto"); $("pasoCodigo").classList.add("oculto"); $("pasoBio").classList.add("oculto"); $("msgAcceso").textContent = "";
     PK.disponible().then(function (si) { $("btBioEntrar").classList.toggle("oculto", !si); if (si) PK.prepararEntrada(); }); }
   $("btEnviar").onclick = function () {
     var email = $("inEmail").value.trim(); if (!email) return;
@@ -2358,7 +2394,7 @@
     var email = $("inEmail").value.trim() || leer("gc_email"), cod = $("inCodigo").value.trim();
     if (!/^\d{6}$/.test(cod)) { $("msgAcceso").textContent = "El código tiene 6 dígitos."; return; }
     $("btEntrar").disabled = true; logoCarga(true);
-    api("webVerificarCodigo", email, cod, navigator.userAgent).then(function (r) {
+    api("webVerificarCodigo", email, cod, uaSesion()).then(function (r) {
       if (!r.ok) { $("msgAcceso").textContent = r.mensaje; return; }
       S.token = r.token; guardarToken(r.token); arrancar(String(email).toLowerCase() === leer("gc_cuenta")); setTimeout(ofrecerBio, 2500);
     }).catch(function (e) { $("msgAcceso").textContent = e.message; }).then(function () { $("btEntrar").disabled = false; logoCarga(false); });
@@ -2530,7 +2566,7 @@
           allowCredentials: id ? [{ type: "public-key", id: aBuf(id) }] : [] } })
         .then(function (c) {
           return api("webPasskeyEntrar", { id: c.id, clientDataJSON: aB64u(c.response.clientDataJSON), authenticatorData: aB64u(c.response.authenticatorData),
-            signature: aB64u(c.response.signature), userHandle: c.response.userHandle ? aB64u(c.response.userHandle) : "" }, navigator.userAgent)
+            signature: aB64u(c.response.signature), userHandle: c.response.userHandle ? aB64u(c.response.userHandle) : "" }, uaSesion())
             .then(function (r) { if (r && r.ok && !leer("gc_pk")) { guardar("gc_pk", c.id); guardar("gc_bio", "1"); } return r; });
         });
     }
@@ -2715,7 +2751,7 @@
     if (conCache) CACHE.get("webInicio").then(function (x) { if (x && !aplicado && S.token) { aplicado = true; aplicar(x.v); } });
     api("webInicio", S.token).then(function (ini) {
       guardar("gc_cuenta", String(ini.usuario.email || "").toLowerCase()); CACHE.set("webInicio", ini);
-      aplicado = true; aplicar(ini);
+      aplicado = true; aplicar(ini); INST.sugerir("app", ini);
     }).catch(function (e) { cargando(false); pararLogo(); aviso(e.message); if (!S.inicio) mostrarAcceso(); });
   }
   // En segundo plano, tras las publicaciones: datos que necesitan los contadores de Revisar (y la ficha personal)
@@ -3526,7 +3562,7 @@
   GC.subCambiado = subCambiado;
   var FICHAS = [["panelFicha", function () { cerrarFicha(); }], ["panelFichaEst", "btCerrarFichaEst"], ["panelFichaCon", "btCerrarFichaCon"], ["panelFichaDoc", "btCerrarFichaDoc"]];
   function fichaAbierta() { return FICHAS.filter(function (f) { var e = $(f[0]); return e && !e.classList.contains("oculto") && !(f[0] === "panelFicha" && S.vista !== "pubs" && S.vista !== "revision"); })[0]; }
-  function dialogoAbierto() { return ["dlgForm", "dlgAlta", "dlgDescarga"].filter(function (id) { return $(id) && !$(id).classList.contains("oculto"); })[0]; }
+  function dialogoAbierto() { return ["dlgInstalar", "dlgForm", "dlgAlta", "dlgDescarga"].filter(function (id) { return $(id) && !$(id).classList.contains("oculto"); })[0]; }
   // v0.9.7: en el ordenador, la tecla Esc cierra el diálogo que esté encima (como «Cancelar»), sin tocar lo que hay debajo
   window.addEventListener("keydown", function (ev) {
     if (ev.key !== "Escape" || (GC.legal && GC.legal.abierto()) || !$("dlgError").classList.contains("oculto")) return;
@@ -4286,6 +4322,89 @@
     if (texto && sub) { var p = document.createElement("p"); p.className = "gc-saludo"; p.textContent = texto; sub.parentNode.insertBefore(p, sub.nextSibling); decoActual.saludo = p; }
     acc.classList.add("deco-" + id);
   }
+  // ---------- v0.9.8: «Instala la app en tu teléfono o tableta» ----------
+  // Solo en la web publicada, en teléfonos y tabletas, y si no se está ya dentro de la app instalada. Para saber si ya la tiene:
+  //  · Android (Chrome, Edge, Samsung): getInstalledRelatedApps() y el evento beforeinstallprompt (no llega si ya está instalada);
+  //  · iPhone/iPad: Safari no puede saberlo; tras entrar, el servidor dice si esta persona tiene sesiones abiertas desde la app
+  //    en ese tipo de dispositivo (webInicio → appEn). Además, «Ya la tengo instalada» lo recuerda en este navegador.
+  var INST = (function () {
+    var ua = navigator.userAgent || "", DIFERIDO = null, mostrado = false, POSPONER = 7 * 864e5;
+    var tactilMac = navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
+    var plat = /iPhone|iPod/.test(ua) ? { so: "ios", disp: "iPhone", que: "teléfono" } :
+      (/iPad/.test(ua) || tactilMac) ? { so: "ios", disp: "iPad", que: "tableta" } :
+      /Android/.test(ua) ? (/Mobile/.test(ua) ? { so: "android", disp: "Android", que: "teléfono" } : { so: "android", disp: "Android tableta", que: "tableta" }) : null;
+    var COMPARTIR = '<svg class="ico-inst" viewBox="0 0 24 24" aria-label="Compartir"><path d="M12 3.5v11M8 7.5l4-4 4 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 10.5H7a2 2 0 0 0-2 2v6.5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6.5a2 2 0 0 0-2-2h-1.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+    var MAS = '<svg class="ico-inst" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+    var MENU = '<svg class="ico-inst" viewBox="0 0 24 24" aria-label="menú"><circle cx="12" cy="5" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="19" r="2" fill="currentColor"/></svg>';
+    function enApp() { var mm = function (q) { return window.matchMedia && window.matchMedia(q).matches; }; return !!(navigator.standalone || mm("(display-mode: standalone)") || mm("(display-mode: fullscreen)")); }
+    function abierto() { return !$("dlgInstalar").classList.contains("oculto"); }
+    function cerrar() { $("dlgInstalar").classList.add("oculto"); }
+    function disponible() { return !EN_APPS_SCRIPT && !!plat && !enApp() && leer("gc_app_instalada") !== "1"; }
+    function navegadorIOS() { return /CriOS|FxiOS|EdgiOS|OPiOS/.test(ua) ? "otro" : (/Safari\//.test(ua) && !/GSA\//.test(ua)) ? "safari" : "integrado"; }
+    function pintar() {
+      var html, ok = "Entendido", ent = plat.so === "ios" ? "Face ID o Touch ID" : "tu huella o el desbloqueo del " + plat.que;
+      $("instTitulo").textContent = "Instala la app en tu " + plat.que;
+      var intro = '<p class="tenue" style="margin:4px 0 0">Tendrás «Gestión CGyAD-GITIC» en la pantalla de inicio como cualquier otra app: se abre a pantalla completa, entras con ' + ent + " y recibes los avisos.</p>";
+      if (plat.so === "ios" && navegadorIOS() === "integrado") {
+        html = intro + '<ol class="inst-pasos"><li>Esta página se ha abierto dentro de otra app (correo, mensajería…) y desde aquí no se puede instalar.</li>' +
+          "<li>Pulsa «Copiar enlace», abre <b>Safari</b> y pégalo en la barra de direcciones.</li><li>En Safari, sigue los pasos que aparecerán.</li></ol>";
+        ok = "Copiar enlace";
+      } else if (plat.so === "ios") {
+        var dondeComp = navegadorIOS() === "safari" ? "en la barra de Safari (en las versiones recientes, dentro del menú «⋯»)" : "junto a la barra de direcciones";
+        html = intro + '<ol class="inst-pasos"><li>Pulsa el botón <b>Compartir</b> ' + COMPARTIR + " " + dondeComp + ".</li>" +
+          "<li>Elige <b>«Añadir a pantalla de inicio»</b> " + MAS + " (si no lo ves, desliza la lista hacia arriba).</li>" +
+          "<li>Pulsa <b>«Añadir»</b> y abre la app desde su icono.</li></ol>" +
+          '<p class="inst-nota tenue">La primera vez que abras la app tendrás que entrar con tu correo; después, con ' + ent + ".</p>";
+      } else if (DIFERIDO) {
+        html = intro + '<p class="inst-nota tenue">Pulsa «Instalar» y confirma. El icono aparecerá en la pantalla de inicio.</p>';
+        ok = "Instalar";
+      } else {
+        html = intro + '<ol class="inst-pasos"><li>Abre el menú del navegador ' + MENU + " (arriba a la derecha o abajo, según el navegador).</li>" +
+          "<li>Elige <b>«Instalar aplicación»</b> o <b>«Añadir a pantalla de inicio»</b>.</li><li>Confirma y abre la app desde su icono.</li></ol>";
+      }
+      $("instCuerpo").innerHTML = html; $("btInstOk").textContent = ok;
+    }
+    function abrir() { if (!plat || enApp()) return; mostrado = true; pintar(); $("dlgInstalar").classList.remove("oculto"); }
+    function posponer() { guardar("gc_inst_pospuesto", String(Date.now())); cerrar(); }
+    function yaInstalada(ini) {
+      if (ini && ini.appEn && ini.appEn.indexOf(plat.disp) !== -1) return Promise.resolve(true);
+      if (navigator.getInstalledRelatedApps) return Promise.resolve().then(function () { return navigator.getInstalledRelatedApps(); }).then(function (l) { return !!(l && l.length); }, function () { return false; });
+      return Promise.resolve(false);
+    }
+    function sugerir(momento, ini) {
+      if (!disponible() || mostrado) return;
+      var p = Number(leer("gc_inst_pospuesto") || 0); if (p && Date.now() - p < POSPONER) return;
+      setTimeout(function () {
+        if (mostrado || !disponible()) return;
+        if (momento === "acceso" && ($("vAcceso").classList.contains("oculto") || $("pasoEmail").classList.contains("oculto"))) return;
+        if (momento === "app" && (dialogoAbierto() || (GC.legal && GC.legal.abierto()) || !$("dlgError").classList.contains("oculto"))) return;
+        yaInstalada(ini).then(function (si) { if (!si && !mostrado && disponible()) abrir(); });
+      }, momento === "acceso" ? 1500 : 2500);
+    }
+    window.addEventListener("beforeinstallprompt", function (ev) { ev.preventDefault(); DIFERIDO = ev; if (abierto()) pintar(); });
+    window.addEventListener("appinstalled", function () { guardar("gc_app_instalada", "1"); DIFERIDO = null; cerrar(); pintarBotones(); });
+    $("btInstOk").onclick = function () {
+      if (DIFERIDO && plat.so === "android") {
+        var d = DIFERIDO; DIFERIDO = null;
+        d.prompt(); Promise.resolve(d.userChoice).then(function (r) { if (r && r.outcome === "accepted") { guardar("gc_app_instalada", "1"); cerrar(); aviso("Instalada: ábrela desde el icono de la pantalla de inicio.", 6000); pintarBotones(); } else pintar(); });
+        return;
+      }
+      if (plat.so === "ios" && navegadorIOS() === "integrado") {
+        var url = location.origin + location.pathname;
+        Promise.resolve().then(function () { return navigator.clipboard.writeText(url); }).then(function () { aviso("Enlace copiado: pégalo en Safari.", 5000); }, function () { aviso("Copia esta dirección en Safari: " + url, 9000); });
+      }
+      posponer();
+    };
+    $("btInstAhoraNo").onclick = posponer;
+    $("btInstYaLaTengo").onclick = function () { guardar("gc_app_instalada", "1"); cerrar(); pintarBotones(); };
+    $("dlgInstalar").addEventListener("click", function (ev) { if (ev.target === $("dlgInstalar")) posponer(); });
+    function pintarBotones() { var v = !EN_APPS_SCRIPT && !!plat && !enApp(); ["btInstalarApp", "btInstalarAcceso"].forEach(function (id) { if ($(id)) $(id).classList.toggle("oculto", !v); }); }
+    ["btInstalarApp", "btInstalarAcceso"].forEach(function (id) { if ($(id)) $(id).onclick = function () { if ($("menuUsuario")) $("menuUsuario").classList.add("oculto"); abrir(); }; });
+    pintarBotones();
+    return { sugerir: sugerir, abrir: abrir, cerrar: cerrar, comprobar: yaInstalada, plataforma: function () { return plat; }, enApp: enApp, hayAviso: function () { return !!DIFERIDO; } };
+  })();
+  GC.instalar = INST;
+  function uaSesion() { return (INST && INST.enApp() ? "[app] " : "") + navigator.userAgent; }   // la sesión queda marcada si se abre desde la app instalada
   (function () {
     var acc = $("vAcceso"); if (!acc) return;
     var tema = null; try { tema = leer("gc_deco_prueba") || temaTemporada(new Date()); } catch (e) {}
