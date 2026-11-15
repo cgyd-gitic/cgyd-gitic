@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Gestión CGyAD-GITIC · web publicada (GitHub Pages) · versión 0.9.4 · generado el 14/11/2026 a partir de Web_App + Web_Estilos + Web_Cliente + Web_Estudios_Cliente + Web_Congresos_Cliente + Web_Docencia_Cliente + Web_Perfil_Cliente.
+<!-- Gestión CGyAD-GITIC · web publicada (GitHub Pages) · versión 0.9.5 · generado el 15/11/2026 a partir de Web_App + Web_Estilos + Web_Cliente + Web_Estudios_Cliente + Web_Congresos_Cliente + Web_Docencia_Cliente + Web_Perfil_Cliente.
      No edites este archivo: la dirección del servidor está en config.js. -->
 <html lang="es">
 <head>
@@ -1187,6 +1187,25 @@
   body.tactil input:not([type="checkbox"]):not([type="radio"]), body.tactil select, body.tactil textarea { font-size:16px; }
   body.tactil .dialogo input:not([type="checkbox"]):not([type="radio"]):not([type="file"]), body.tactil .dialogo select { min-height:40px; }
   body.tactil .chips input { min-height:0; }
+  /* ===== v0.9.5: cabecera — título centrado, flecha «atrás» alineada y sin círculo que se queda marcado =====
+     Los botones redondos centran su icono; en pantallas táctiles el círculo gris solo aparece mientras se pulsa
+     (el iPhone deja «pegado» el estado de ratón encima después de tocar). */
+  .bt-icono { display:inline-flex; align-items:center; justify-content:center; flex:none; padding:0; line-height:1; -webkit-tap-highlight-color:transparent; }
+  .bt-icono > i { line-height:1; }
+  .bt-icono:focus:not(:focus-visible) { outline:none; }
+  @media (hover: none) { .bt-icono:hover { background:none; color:var(--tenue); } .bt-icono:active { background:var(--gris); color:var(--texto); } }
+  body.tactil .bt-icono:hover { background:none; color:var(--tenue); }
+  body.tactil .bt-icono:active { background:var(--gris); color:var(--texto); }
+  .cab .bt-icono, .cab .avatar { align-self:center; }
+  /* «Gestión CGyAD-GITIC» en el centro de la cabecera, en todas las pantallas */
+  .cab .titulo { position:absolute; left:50%; top:calc(var(--sa-t) + var(--cab) / 2); transform:translate(-50%, -50%);
+    max-width:calc(100% - 220px); margin:0; text-align:center; line-height:1.2; z-index:1; }
+  @media (max-width: 899px) { .cab .titulo { max-width:calc(100% - 190px); } }
+  @media (min-width: 900px) {
+    /* el buscador deja libre el centro y se coloca a la derecha, junto a «Actualizar» y «Mi cuenta» */
+    .cab .buscador { flex:0 0 auto; width:clamp(180px, 24vw, 380px); margin-left:auto; }
+    .cab .buscador div { max-width:none; }
+  }
   main.area.arrastrando { transition:none; }                          /* sigue al dedo, sin retardo */
   main.area.volviendo { transition:transform .2s ease-out, opacity .2s ease-out; }
   @media (prefers-reduced-motion: reduce) {
@@ -2019,7 +2038,7 @@
   var MODULOS = {   // bloques aún no disponibles en la web
     asistencial: ["Asistencial", "fa-stethoscope", ""]
   };
-  var VERSION_WEB = "0.9.4";
+  var VERSION_WEB = "0.9.5";
   // Nombres visibles iguales a los de AppSheet (con las erratas corregidas) y orden de la ficha
   var ETIQ = { "Volúmen": "Volumen", "Notas_JCR": "Notas sobre JCR", "Investigadores Servicio": "Investigadores participantes",
                "Posiciones Servicio": "Posición en la autoría", "Es Correspondencia": "¿Es autor de correspondencia?",
@@ -2308,7 +2327,7 @@
     if (S.token && !silencioso) api("webCerrarSesion", S.token).catch(function () {});
     S.token = null; guardarToken(null); $("menuUsuario").classList.add("oculto");
     if (!silencioso) { CACHE.vaciar(); guardar("gc_cuenta", null); }       // al cerrar sesión no queda ningún dato en el dispositivo
-    if (bioActivo()) mostrarDesbloqueo(); else mostrarAcceso();
+    if (bioActivo()) mostrarDesbloqueo(!!silencioso); else mostrarAcceso();     // tras «Cerrar sesión», Face ID no se abre solo
   }
   $("btSalir").onclick = function () { var fin = function () { salir(false); }; PUSH.desactivar(true).then(fin, fin); };
 
@@ -2535,15 +2554,30 @@
     return m;
   }
   // Pantalla de desbloqueo (Face ID / huella activado en este dispositivo)
-  function mostrarDesbloqueo() {
+  // v0.9.5: al abrir la app con Face ID / huella activado en este dispositivo se pide directamente, sin pulsar el botón.
+  // Una sola vez por apertura: si se cancela, queda el botón (y el correo con código, que siempre se pide a mano).
+  // No se pide solo justo después de «Cerrar sesión».
+  var AUTO_BIO = { hecho: false };
+  function mostrarDesbloqueo(auto) {
     finArranque();
     $("vApp").classList.add("oculto"); $("vAcceso").classList.remove("oculto");
     ["pasoEmail", "pasoCodigo"].forEach(function (id) { $(id).classList.add("oculto"); }); $("pasoBio").classList.remove("oculto");
     $("lblBioHola").textContent = leer("gc_nombre") ? "Hola, " + leer("gc_nombre") : "Hola";
     $("btBioDesbloquear").innerHTML = '<i class="fa-solid fa-fingerprint"></i> Entrar con ' + esc(nombreBio());
-    $("msgAcceso").textContent = ""; PK.prepararEntrada().catch(function (e) { $("msgAcceso").textContent = e.message; });
+    $("msgAcceso").textContent = "";
+    var listo = PK.prepararEntrada(); listo.catch(function (e) { $("msgAcceso").textContent = e.message; });
+    if (auto && !AUTO_BIO.hecho) listo.then(function () { setTimeout(bioAutomatico, 250); }, function () {});
   }
-  function entrarConBio(boton) {
+  function bioAutomatico() {
+    if (AUTO_BIO.hecho || $("vAcceso").classList.contains("oculto") || $("pasoBio").classList.contains("oculto")) return;
+    if (document.hidden) {                         // la app aún no está en primer plano: se espera a que lo esté
+      var cuandoVisible = function () { if (document.hidden) return; document.removeEventListener("visibilitychange", cuandoVisible); bioAutomatico(); };
+      document.addEventListener("visibilitychange", cuandoVisible); return;
+    }
+    AUTO_BIO.hecho = true;
+    entrarConBio($("btBioDesbloquear"), true);
+  }
+  function entrarConBio(boton, auto) {
     if (boton.getAttribute("data-ocupado") === "1") return;
     boton.setAttribute("data-ocupado", "1"); boton.disabled = true; $("msgAcceso").textContent = PK.entradaLista() ? "" : "Preparando…"; logoCarga(true);
     PK.entrar().then(function (r) {
@@ -2552,8 +2586,11 @@
         if (r && r.noRegistrada) { guardar("gc_bio", null); guardar("gc_pk", null); $("pasoBio").classList.add("oculto"); $("pasoEmail").classList.remove("oculto"); return; }
         PK.prepararEntrada(); return;
       }
+      AUTO_BIO.hecho = false;                       // si la sesión caduca más tarde, se vuelve a pedir sola
       $("msgAcceso").textContent = ""; S.token = r.token; guardarToken(r.token); if (r.email) guardar("gc_email", r.email); arrancar(!!r.email && String(r.email).toLowerCase() === leer("gc_cuenta"));
-    }).catch(function (e) { $("msgAcceso").textContent = errorBio(e); PK.prepararEntrada().catch(function () {}); })
+    }).catch(function (e) {
+      var cancelado = e && (e.name === "NotAllowedError" || e.name === "AbortError");
+      $("msgAcceso").textContent = auto && cancelado ? "" : errorBio(e); PK.prepararEntrada().catch(function () {}); })
       .then(function () { boton.disabled = false; boton.removeAttribute("data-ocupado"); estadoBotonesBio(); logoCarga(false); });
   }
   $("btBioDesbloquear").onclick = function () { entrarConBio(this); };
@@ -4146,7 +4183,7 @@
   if (!leer("gc_bio") && leer("gc_token")) { /* versión anterior: la sesión seguía en localStorage */ }
   S.token = leerToken();
   if (leer("gc_email")) $("inEmail").value = leer("gc_email");
-  if (S.token) arrancar(true); else if (bioActivo() && PK.soportado) mostrarDesbloqueo(); else mostrarAcceso();
+  if (S.token) arrancar(true); else if (bioActivo() && PK.soportado) mostrarDesbloqueo(true); else mostrarAcceso();
 })();
 </script>
 
