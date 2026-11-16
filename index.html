@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Gestión CGyAD-GITIC · web publicada (GitHub Pages) · versión 0.9.8 · generado el 15/11/2026 a partir de Web_App + Web_Estilos + Web_Cliente + Web_Estudios_Cliente + Web_Congresos_Cliente + Web_Docencia_Cliente + Web_Perfil_Cliente.
+<!-- Gestión CGyAD-GITIC · web publicada (GitHub Pages) · versión 0.9.9 · generado el 15/11/2026 a partir de Web_App + Web_Estilos + Web_Cliente + Web_Estudios_Cliente + Web_Congresos_Cliente + Web_Docencia_Cliente + Web_Perfil_Cliente.
      No edites este archivo: la dirección del servidor está en config.js. -->
 <html lang="es">
 <head>
@@ -1247,6 +1247,96 @@
     .cab .titulo .icono-app { width:24px; height:24px; }
   }
   @media (max-width: 380px) { .cab .titulo { font-size:15px; } .cab .titulo .icono-app { width:22px; height:22px; } }
+  /* v0.9.9: botón flotante «+» (abajo a la derecha) en lugar del botón «Añadir» de cada barra */
+  #btAnadir, #btAnadirEst, #btAnadirCon, #btAnadirDoc { display:none !important; }
+  .fab-anadir { position:fixed; right:calc(24px + var(--sa-r, 0px)); bottom:calc(24px + var(--sa-b, 0px)); width:58px; height:58px; border-radius:50%; border:none;
+    background:var(--rojo); color:#fff; font-size:22px; box-shadow:0 6px 18px rgba(229,57,53,.38), 0 2px 6px rgba(0,0,0,.18); z-index:31;
+    display:flex; align-items:center; justify-content:center; transition:transform .15s ease, box-shadow .15s ease; -webkit-tap-highlight-color:transparent; }
+  .fab-anadir:active { transform:scale(.92); }
+  @media (hover: hover) { .fab-anadir:hover { transform:scale(1.06); box-shadow:0 8px 22px rgba(229,57,53,.45), 0 2px 6px rgba(0,0,0,.2); } }
+  .fab-anadir:focus-visible { outline:3px solid #1e5a96; outline-offset:3px; }
+  body.con-fab .lista, body.con-fab #listaEst, body.con-fab #listaCon, body.con-fab #listaDoc { padding-bottom:88px; }
+  @media (max-width: 899px) {
+    .fab-anadir { right:calc(16px + var(--sa-r, 0px)); bottom:calc(58px + 16px + var(--sa-b, 0px)); width:56px; height:56px; }
+    body.ficha-abierta .fab-anadir { display:none; }
+  }
+  html.tema-oscuro .fab-anadir { box-shadow:0 6px 18px rgba(0,0,0,.5); }
+
+  /* v0.9.9: Revisar → Autorías */
+  .et.riesgo-Alto { background:#fde0e0; color:#8a1c1c; } .et.riesgo-Medio { background:#fff3cd; color:#7a5d00; } .et.riesgo-Bajo { background:#e6f4ea; color:#1b5e20; }
+  .aut-progreso { margin:8px 0 12px; } .aut-progreso p { margin:6px 0 0; font-size:13px; }
+  .aut-barra { height:8px; border-radius:4px; background:var(--gris); overflow:hidden; } .aut-barra span { display:block; height:100%; background:var(--verde); border-radius:4px; transition:width .4s ease; }
+  .aut-filtros { display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-bottom:10px; } .aut-filtros .bt-rojo { margin-left:auto; }
+  .bt-chip { border:1px solid var(--borde); background:#fff; color:var(--texto); border-radius:16px; padding:5px 12px; font-size:13px; }
+  .bt-chip.activo { background:var(--rojo-claro); border-color:var(--rojo); color:var(--rojo-osc); font-weight:500; }
+  .aut-hecho { color:var(--verde); } .aut-hecho i { margin-right:4px; }
+  .aut-tit { margin:0 0 8px; line-height:1.4; } .aut-tit a { margin-left:6px; font-size:13px; }
+  .aut-riesgo ul { margin:6px 0 0; padding-left:18px; font-size:13px; } .aut-riesgo li { margin:2px 0; }
+  .aut-sub { font-size:13px; font-weight:600; margin:16px 0 6px; color:var(--tenue); text-transform:uppercase; letter-spacing:.03em; }
+  .aut-par { border:1px solid var(--borde); border-radius:10px; padding:8px 10px; margin-bottom:8px; }
+  .aut-par.aut-falta { border-color:#f0c36d; background:#fffaf0; }
+  .aut-ev { font-size:12.5px; line-height:1.55; margin:4px 0 0 26px; overflow-wrap:anywhere; }
+  .aut-ok { color:var(--verde); } .aut-ko { color:var(--ambar); } .aut-motivo { color:#8a1c1c; }
+  .aut-autores { margin-top:12px; font-size:13px; } .aut-autores p { line-height:1.5; overflow-wrap:anywhere; }
+  html.tema-oscuro .bt-chip { background:#1c1e22; border-color:#2c2f35; color:#e8eaed; } html.tema-oscuro .aut-par { border-color:#2c2f35; }
+  html.tema-oscuro .aut-par.aut-falta { background:#2b2414; border-color:#5c4a1e; } html.tema-oscuro .aut-motivo { color:#f2a5a5; }
+
+  /* v0.9.9: «Mi ficha personal» con el estilo del vídeo: cabecera con foto, nombre, cargo y tres cifras; filas plegables */
+  .pf-head2 { max-width:900px; display:flex; flex-direction:column; align-items:center; text-align:center; gap:10px; padding:22px 18px 18px; }
+  .pf-head2 .pf-foto, .pf-head2 .pf-foto img { width:104px; height:104px; } .pf-head2 .pf-ini { font-size:36px; }
+  .pf-id .pf-nombre { display:block; margin:2px 0 4px; font-size:22px; font-weight:700; }
+  .pf-sub2 { font-size:13.5px; color:#3c4043; line-height:1.45; } .pf-sub2.tenue { color:var(--tenue); font-size:12.5px; }
+  .pf-id .bt-texto { font-size:12.5px; margin-top:4px; }
+  .pf-cifras { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:6px; width:100%; max-width:440px; margin-top:6px; }
+  .pf-cifra b { display:block; font-size:27px; line-height:1.1; color:var(--rojo); font-weight:700; }
+  .pf-cifra span { display:block; font-size:12px; color:var(--tenue); margin-top:2px; }
+  @media (min-width: 900px) {
+    .pf-head2 { flex-direction:row; text-align:left; gap:22px; padding:20px 24px; }
+    .pf-head2 .pf-id { flex:1; min-width:0; } .pf-head2 .pf-cifras { width:auto; min-width:360px; margin:0; text-align:center; }
+  }
+  .pf-filas { max-width:900px; display:flex; flex-direction:column; gap:8px; margin-bottom:24px; }
+  .pf-filas .pf-grupo { margin:14px 2px 2px; }
+  .pf-row { background:#fff; border:1px solid var(--borde); border-radius:12px; overflow:hidden; }
+  .pf-row-cab { width:100%; display:flex; align-items:center; gap:12px; padding:12px 14px; background:none; border:none; text-align:left; color:inherit; -webkit-tap-highlight-color:transparent; }
+  @media (hover: hover) { .pf-row-cab:hover { background:#fafbfc; } }
+  .pf-row-ic { width:38px; height:38px; border-radius:50%; background:var(--rojo-claro); color:var(--rojo); display:flex; align-items:center; justify-content:center; flex:none; font-size:15px; }
+  .pf-row-txt { flex:1; min-width:0; } .pf-row-txt b { display:block; font-size:15px; font-weight:600; }
+  .pf-row-txt small { display:block; font-size:12.5px; color:var(--tenue); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:1px; }
+  .pf-row-fl { color:var(--tenue); transition:transform .2s ease; flex:none; }
+  .pf-row.abierta .pf-row-fl { transform:rotate(180deg); }
+  .pf-row-det { display:none; padding:2px 14px 14px; border-top:1px solid var(--borde); }
+  .pf-row.abierta .pf-row-det { display:block; animation:apAparece .2s ease-out; }
+  .pf-row-det .pf-tiles { margin-top:10px; } .pf-row-det .pf-campos { margin-top:10px; }
+  .pf-row-det #pfVerPubs { margin-top:10px; }
+  .pf-mini { font-size:13px; font-weight:500; margin:14px 0 4px; color:var(--tenue); } .pf-mini i { color:var(--rojo); margin-right:6px; }
+  html.tema-oscuro .pf-row { background:#1c1e22; border-color:#2c2f35; } html.tema-oscuro .pf-row-det { border-color:#2c2f35; }
+  html.tema-oscuro .pf-sub2 { color:#c4c7cc; } html.tema-oscuro .pf-row-ic { background:#3a2224; }
+  @media (hover: hover) { html.tema-oscuro .pf-row-cab:hover { background:#22252a; } }
+  @media print { .pf-row-det { display:block !important; } .pf-row-fl { display:none; } }
+
+  /* v0.9.9: «Añadir publicación» con vista previa en directo */
+  .alta-ident { position:relative; }
+  .alta-ident input { padding-right:40px; }
+  .alta-estado { position:absolute; right:10px; top:50%; transform:translateY(-50%); font-size:16px; color:var(--tenue); }
+  .alta-estado.ok { color:var(--verde); } .alta-estado.ko { color:var(--rojo); }
+  .alta-previa { margin-top:12px; display:grid; gap:8px; }
+  .ap-campo { border-radius:8px; background:var(--gris); padding:7px 34px 7px 10px; position:relative; min-height:44px; transition:background .25s ease; }
+  .ap-et { display:block; font-size:11px; color:var(--tenue); }
+  .ap-val { display:block; font-size:13.5px; line-height:1.35; min-height:18px; }
+  .ap-campo.cargando .ap-val { border-radius:4px; width:70%; background:linear-gradient(90deg, rgba(0,0,0,.06) 25%, rgba(0,0,0,.12) 50%, rgba(0,0,0,.06) 75%); background-size:200% 100%; animation:apBrillo 1.1s linear infinite; }
+  .ap-campo.listo { background:#eef7f0; }
+  .ap-campo.listo::after { content:"\f058"; font-family:"Font Awesome 6 Free"; font-weight:900; position:absolute; right:10px; top:50%; transform:translateY(-50%); color:var(--verde); font-size:15px; }
+  .ap-campo.aviso { background:#fff6e0; }
+  .ap-campo.aviso::after { content:"\f071"; font-family:"Font Awesome 6 Free"; font-weight:900; position:absolute; right:10px; top:50%; transform:translateY(-50%); color:var(--ambar); font-size:14px; }
+  .ap-campo.listo .ap-val, .ap-campo.aviso .ap-val { animation:apAparece .3s ease-out; }
+  .ap-chips { display:flex; flex-wrap:wrap; gap:4px; margin-top:2px; }
+  .ap-chip { background:#fff; border:1px solid var(--borde); border-radius:12px; padding:1px 8px; font-size:12px; }
+  @keyframes apBrillo { from { background-position:200% 0; } to { background-position:-200% 0; } }
+  @keyframes apAparece { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:none; } }
+  @media (prefers-reduced-motion: reduce) { .ap-campo.cargando .ap-val, .ap-campo.listo .ap-val, .ap-campo.aviso .ap-val { animation:none; } }
+  html.tema-oscuro .ap-campo { background:#24272c; } html.tema-oscuro .ap-campo.listo { background:#1f2d22; } html.tema-oscuro .ap-campo.aviso { background:#33291a; }
+  html.tema-oscuro .ap-chip { background:#1c1e22; border-color:#2c2f35; }
+
   /* v0.9.8: «Instala la app» (teléfono o tableta) */
   #dlgInstalar { z-index:220; }
   .dialogo.instalar { max-width:440px; border-radius:16px; }
@@ -1964,6 +2054,7 @@
     </main>
 
     <!-- Barra inferior (móvil) -->
+    <button class="fab-anadir oculto" id="fabAnadir" title="Añadir" aria-label="Añadir"><i class="fa-solid fa-plus"></i></button>
     <nav class="inferior" id="inferior">
       <button data-vista="inicio"><i class="fa-solid fa-house"></i><small>Inicio</small></button>
       <button data-vista="ciencia"><i class="fa-solid fa-microscope"></i><small>Investigación</small></button>
@@ -1973,15 +2064,22 @@
     </nav>
   </div>
 
-  <!-- Diálogo: añadir publicación -->
+  <!-- Diálogo: añadir publicación (v0.9.9: los datos se descargan en directo mientras escribes) -->
   <div id="dlgAlta" class="velo oculto">
-    <div class="dialogo">
+    <div class="dialogo alta-pub">
       <h2>Añadir publicación</h2>
-      <p class="tenue">Escribe el PMID, el DOI o el ISBN. Los datos (autores, revista, JCR, filiación…) se rellenan solos.</p>
+      <p class="tenue">Escribe el PMID, el DOI o el ISBN: los datos (autores, revista, JCR y autores del Servicio) se descargan al momento.</p>
       <label for="inIdent">PMID, DOI o ISBN</label>
-      <input id="inIdent" placeholder="p. ej. 39222746 · 10.1016/j.ciresp.2023.11.007 · 978-84-…">
+      <div class="alta-ident"><input id="inIdent" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="p. ej. 39222746 · 10.1016/j.ciresp.2023.11.007 · 978-84-…"><span class="alta-estado" id="altaEstado" aria-live="polite"></span></div>
       <label for="inTipoAlta">Tipo (solo si es un libro o capítulo)</label>
       <select id="inTipoAlta"><option value="">Artículo (se detecta solo)</option><option>Capítulo de libro</option><option>Libro</option></select>
+      <div class="alta-previa oculto" id="altaPrevia" aria-live="polite">
+        <div class="ap-campo" data-c="titulo"><span class="ap-et">Título</span><span class="ap-val"></span></div>
+        <div class="ap-campo" data-c="autores"><span class="ap-et">Autores</span><span class="ap-val"></span></div>
+        <div class="ap-campo" data-c="revista"><span class="ap-et">Revista · año</span><span class="ap-val"></span></div>
+        <div class="ap-campo" data-c="servicio"><span class="ap-et">Autores del Servicio</span><span class="ap-val"></span></div>
+        <div class="ap-campo" data-c="jcr"><span class="ap-et">JCR</span><span class="ap-val"></span></div>
+      </div>
       <p class="mensaje" id="msgAlta"></p>
       <div class="botones"><button class="bt" id="btAltaCancelar">Cancelar</button><button class="bt-rojo" id="btAltaGuardar">Guardar</button></div>
     </div>
@@ -2114,7 +2212,7 @@
   var MODULOS = {   // bloques aún no disponibles en la web
     asistencial: ["Asistencial", "fa-stethoscope", ""]
   };
-  var VERSION_WEB = "0.9.8";
+  var VERSION_WEB = "0.9.9";
   // Nombres visibles iguales a los de AppSheet (con las erratas corregidas) y orden de la ficha
   var ETIQ = { "Volúmen": "Volumen", "Notas_JCR": "Notas sobre JCR", "Investigadores Servicio": "Investigadores participantes",
                "Posiciones Servicio": "Posición en la autoría", "Es Correspondencia": "¿Es autor de correspondencia?",
@@ -3274,17 +3372,104 @@
   };
 
   // ---------- alta ----------
-  $("btAnadir").onclick = function () { $("dlgAlta").classList.remove("oculto"); $("msgAlta").textContent = ""; $("inIdent").value = ""; $("inIdent").focus(); };
+  // v0.9.9: vista previa en directo. Al escribir un PMID, DOI o ISBN válido se descargan los datos (sin guardar nada) y se
+  // van mostrando: título, autores, revista y año, autores del Servicio detectados y, después, el JCR.
+  var PREVIA = { n: 0, temp: null, ultimo: "", existe: null };
+  function identValido(v) { v = String(v || "").trim(); return /^\d{4,9}$/.test(v) || /10\.\d{4,9}\/\S+/i.test(v) || (/^[\d\-\sXx]{10,17}$/.test(v) && v.replace(/[^\dXx]/g, "").length >= 10); }
+  function campoPrevia(c) { return document.querySelector('#altaPrevia [data-c="' + c + '"]'); }
+  function ponerCampo(c, estado, html) {
+    var el = campoPrevia(c); if (!el) return;
+    el.classList.remove("cargando", "listo", "aviso"); if (estado) el.classList.add(estado);
+    el.querySelector(".ap-val").innerHTML = html || "";
+  }
+  function limpiarPrevia() {
+    PREVIA.n++; PREVIA.ultimo = ""; PREVIA.existe = null; clearTimeout(PREVIA.temp);
+    $("altaPrevia").classList.add("oculto"); $("altaEstado").innerHTML = ""; $("altaEstado").className = "alta-estado";
+    $("btAltaGuardar").textContent = "Guardar";
+  }
+  function autoresCortos(a) {
+    var l = String(a || "").split(";").map(function (x) { return x.trim(); }).filter(Boolean);
+    return esc(l.slice(0, 6).join("; ")) + (l.length > 6 ? ' <span class="tenue">y ' + (l.length - 6) + " más (" + l.length + " en total)</span>" : "");
+  }
+  function chipsServicio(r) {
+    var ent = String(r.servicio || "").split(";").map(function (x) { return x.trim(); }).filter(Boolean), pos = String(r.posiciones || "").split(";").map(function (x) { return x.trim(); });
+    if (!ent.length) return "";
+    var pers = r.personas || [];
+    return (pers.length ? "<b>" + esc(pers.join(" · ")) + "</b>" : "") + '<span class="ap-chips">' + ent.map(function (e, i) {
+      var rol = (e.match(/\[([^\]]+)\]/) || [])[1] || "", nom = e.replace(/\s*\[[^\]]*\]/g, "");
+      return '<span class="ap-chip">' + esc(nom) + (rol ? " · " + esc(rol.toLowerCase()) : "") + (pos[i] && pos[i] !== "Collaborator" ? " · " + esc(pos[i]) : "") + "</span>"; }).join("") + "</span>";
+  }
+  function vistaPrevia() {
+    var ident = $("inIdent").value.trim(), n = ++PREVIA.n;
+    if (!identValido(ident)) { if (!ident) limpiarPrevia(); return; }
+    if (ident === PREVIA.ultimo) return;
+    PREVIA.ultimo = ident; PREVIA.existe = null; $("msgAlta").textContent = ""; $("btAltaGuardar").textContent = "Guardar";
+    $("altaPrevia").classList.remove("oculto");
+    ["titulo", "autores", "revista", "servicio", "jcr"].forEach(function (c) { ponerCampo(c, "cargando", ""); });
+    $("altaEstado").className = "alta-estado"; $("altaEstado").innerHTML = '<i class="fa-solid fa-spinner fa-spin" aria-label="Buscando"></i>';
+    api("webVistaPreviaPublicacion", S.token, { identificador: ident, tipo: $("inTipoAlta").value, parte: "datos" }).then(function (r) {
+      if (n !== PREVIA.n) return;
+      if (!r.ok) {
+        $("altaEstado").className = "alta-estado ko"; $("altaEstado").innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
+        $("altaPrevia").classList.add("oculto"); $("msgAlta").textContent = r.mensaje || "";
+        if (r.existe && r.id) { PREVIA.existe = r.id; $("msgAlta").textContent = "Ya está registrada" + (r.titulo ? ": «" + r.titulo + "»" : "") + "."; $("btAltaGuardar").textContent = "Abrir"; }
+        return;
+      }
+      $("altaEstado").className = "alta-estado ok"; $("altaEstado").innerHTML = '<i class="fa-solid fa-circle-check" aria-label="Encontrada"></i>';
+      var rev = [r.revista, r.ano].filter(Boolean).join(" · ") + ([r.volumen && "vol. " + r.volumen, r.numero && "n.º " + r.numero, r.paginas && "p. " + r.paginas].filter(Boolean).length ? ' <span class="tenue">' + esc([r.volumen && "vol. " + r.volumen, r.numero && "n.º " + r.numero, r.paginas && "p. " + r.paginas].filter(Boolean).join(", ")) + "</span>" : "");
+      var pasos = [["titulo", r.titulo ? "listo" : "aviso", r.titulo ? esc(r.titulo) : "Sin título en la fuente"],
+                   ["autores", r.autores ? "listo" : "aviso", r.autores ? autoresCortos(r.autores) : "Sin autores en la fuente"],
+                   ["revista", rev ? "listo" : "aviso", rev ? esc([r.revista, r.ano].filter(Boolean).join(" · ")) + rev.replace(/^[^<]*/, "") : "—"],
+                   ["servicio", r.servicio ? "listo" : "aviso", r.servicio ? chipsServicio(r) : esc(r.avisoServicio || "No se ha detectado a nadie del Servicio entre los autores. Comprueba el identificador antes de guardar.")]];
+      pasos.forEach(function (p, i) { setTimeout(function () { if (n === PREVIA.n) ponerCampo(p[0], p[1], p[2]); }, 140 * i); });
+      if (r.esLibro || !r.revista) { setTimeout(function () { if (n === PREVIA.n) ponerCampo("jcr", "aviso", r.esLibro ? "No aplica a libros" : "Sin revista: no se puede buscar"); }, 600); return; }
+      return api("webVistaPreviaPublicacion", S.token, { parte: "jcr", revista: r.revista, ano: r.ano, issn: r.issn, essn: r.essn }).then(function (j) {
+        if (n !== PREVIA.n) return;
+        var t = [j.fi !== "" && j.fi !== undefined ? "FI " + String(j.fi).replace(".", ",") : "", j.cuartil, j.categoria].filter(Boolean).join(" · ");
+        setTimeout(function () { if (n === PREVIA.n) ponerCampo("jcr", t ? "listo" : "aviso", t ? esc(t) + (j.notas && /provisional/i.test(j.notas) ? ' <span class="tenue">(' + esc(j.notas) + ")</span>" : "") : "Revista sin JCR para ese año"); }, 560);
+      }, function () { if (n === PREVIA.n) ponerCampo("jcr", "aviso", "No se ha podido consultar ahora; se buscará al guardar."); });
+    }).catch(function (e) {
+      if (n !== PREVIA.n) return;
+      $("altaEstado").className = "alta-estado ko"; $("altaEstado").innerHTML = ""; $("altaPrevia").classList.add("oculto");
+      $("msgAlta").textContent = "No se ha podido descargar la vista previa (" + e.message + "). Puedes guardarla igualmente.";
+    });
+  }
+  $("inIdent").addEventListener("input", function () { clearTimeout(PREVIA.temp); PREVIA.temp = setTimeout(vistaPrevia, 650); });
+  $("inIdent").addEventListener("paste", function () { clearTimeout(PREVIA.temp); PREVIA.temp = setTimeout(vistaPrevia, 60); });
+  $("inIdent").addEventListener("keydown", function (ev) { if (ev.key === "Enter") { clearTimeout(PREVIA.temp); vistaPrevia(); } });
+  $("inTipoAlta").addEventListener("change", function () { PREVIA.ultimo = ""; vistaPrevia(); });
+  $("btAnadir").onclick = function () { $("dlgAlta").classList.remove("oculto"); $("msgAlta").textContent = ""; $("inIdent").value = ""; limpiarPrevia(); $("inIdent").focus(); };
   $("btAltaCancelar").onclick = function () { $("dlgAlta").classList.add("oculto"); };
   $("btAltaGuardar").onclick = function () {
     var ident = $("inIdent").value.trim(); if (!ident) return;
-    $("btAltaGuardar").disabled = true; $("msgAlta").textContent = "Buscando datos… puede tardar hasta un minuto.";
+    if (PREVIA.existe) { var idE = PREVIA.existe; $("dlgAlta").classList.add("oculto"); mostrarVista("pubs"); abrirFicha(idE); return; }
+    PREVIA.n++;
+    $("btAltaGuardar").disabled = true; $("msgAlta").textContent = "Guardando y completando los datos… puede tardar hasta un minuto.";
     api("webAltaPublicacion", S.token, { identificador: ident, tipo: $("inTipoAlta").value }).then(function (r) {
       $("msgAlta").textContent = r.mensaje;
       if (r.existe && r.id) { $("dlgAlta").classList.add("oculto"); mostrarVista("pubs"); abrirFicha(r.id); return; }
       if (r.ok) { $("dlgAlta").classList.add("oculto"); aviso(r.mensaje, 5000); return cargarPubs().then(function () { mostrarVista("pubs"); abrirFicha(r.id); }); }
     }).catch(function (e) { $("msgAlta").textContent = e.message; }).then(function () { $("btAltaGuardar").disabled = false; });
   };
+
+  // ---------- v0.9.9: botón flotante «+» ----------
+  // Un único botón, abajo a la derecha, que pulsa el «Añadir» de la sección visible (los de las barras quedan ocultos).
+  (function () {
+    var BOTONES = ["btAnadir", "btAnadirEst", "btAnadirCon", "btAnadirDoc"], destino = null, pend = false;
+    function porClases(el) { for (var e = el; e && e !== document.body; e = e.parentElement) if (e.classList.contains("oculto") || e.hidden) return false; return !!el; }
+    function actualizar() {
+      pend = false;
+      var b = BOTONES.map($).filter(function (x) { return x && !x.disabled && porClases(x); })[0], fab = $("fabAnadir"); if (!fab) return;
+      destino = b || null;
+      fab.classList.toggle("oculto", !b || !S.token || $("vApp").classList.contains("oculto"));
+      document.body.classList.toggle("con-fab", !!b);
+      if (b) { var t = { btAnadir: "Añadir publicación", btAnadirEst: "Añadir estudio", btAnadirCon: "Añadir congreso o curso" }[b.id] || b.getAttribute("title") || "Añadir"; fab.title = t; fab.setAttribute("aria-label", t); }
+    }
+    function programar() { if (pend) return; pend = true; (window.requestAnimationFrame || setTimeout)(actualizar); }
+    $("fabAnadir").onclick = function () { if (destino) destino.click(); };
+    if (window.MutationObserver) new MutationObserver(programar).observe($("vApp"), { attributes: true, attributeFilter: ["class", "hidden", "disabled"], subtree: true });
+    actualizar();
+  })();
 
   // ---------- navegación entre vistas ----------
   // Módulos (Estudios, Congresos, Docencia…) en archivos aparte: GC.registrar("vista", {secciones, buscar, mostrar, ocultar, placeholder, bloque, grupo})
@@ -3763,7 +3948,7 @@
   function pendientePub(p) { return estadoDe(p) === "Pendiente de Confirmación"; }
   function revSecciones() {
     return S.inicio.usuario.admin ?
-      [["pubs", "Publicaciones", "fa-book"], ["accesos", "Accesos", "fa-user-plus"], ["autoria", "Autoría", "fa-user-check"], ["docencia", "Docencia y méritos", "fa-user-graduate"],
+      [["pubs", "Publicaciones", "fa-book"], ["autorias", "Autorías", "fa-users"], ["accesos", "Accesos", "fa-user-plus"], ["autoria", "Reclamaciones", "fa-user-check"], ["docencia", "Docencia y méritos", "fa-user-graduate"],
        ["dias", "Días de congreso", "fa-calendar-days"], ["ia", "Propuestas IA", "fa-wand-magic-sparkles"]] :
       [["autoria", "Mis reclamaciones", "fa-user-check"], ["docencia", "Mis registros", "fa-user-graduate"], ["dias", "Mis solicitudes de días", "fa-calendar-days"]];
   }
@@ -3795,7 +3980,8 @@
       autoria: S.reclCargadas ? S.recl.filter(function (r) { return r.Estado === "Pendiente"; }).length : null,
       docencia: doc === null ? null : admin ? doc.length : doc.filter(function (x) { return x.r.estadoVal === V.no; }).length,
       dias: dias === null ? null : admin ? dias.length : 0,
-      ia: ia === null ? null : ia.length
+      ia: ia === null ? null : ia.length,
+      autorias: admin && S.autorias && S.autorias.resumen ? (S.autorias.resumen.pendAlto || 0) + (S.autorias.resumen.pendMedio || 0) : null   // cola de largo plazo: no suma al contador general
     };
   }
   function contarRevision() {
@@ -3905,6 +4091,8 @@
         h.push(S.recl.map(function (r) { return tarjetaRecl(r, false); }).join("") || vacioHtml("No tienes reclamaciones."));
       }
       cu.innerHTML = h.join(""); enlazarRecl(cu);
+    } else if (t === "autorias") {
+      pintarAutorias(cu); return;
     } else if (t === "docencia") {
       var l = revDocencia();
       if (l === null) { cu.innerHTML = cargandoHtml("Cargando Docencia y méritos…"); if (GC.docencia) GC.docencia.asegurar().then(pintarRevision); return; }
@@ -3949,6 +4137,96 @@
         cu.querySelectorAll("[data-rcon]").forEach(function (e) { e.onclick = function () { GC.congresos.abrir(e.getAttribute("data-rcon")); }; });
       }
     }
+  }
+  // ---------- v0.9.9: revisión de autorías (solo administradores) ----------
+  // Cola ordenada por riesgo (calculado en el servidor contrastando cada autoría con PubMed: nombre de pila, ORCID, afiliación).
+  REV.autFiltro = REV.autFiltro || "riesgo"; REV.autVer = 60;
+  function cargarAutorias() { return api("webAutoriasCola", S.token).then(function (r) { S.autorias = r; contarRevision(); return r; }); }
+  function autFiltradas() {
+    var it = (S.autorias && S.autorias.items) || [], f = REV.autFiltro;
+    return it.filter(function (x) { return f === "revisadas" ? !!x.revision : !x.revision && (f === "todas" || x.riesgo === "Alto" || x.riesgo === "Medio"); });
+  }
+  function chipRiesgo(r) { return r ? '<span class="et riesgo-' + esc(r) + '">' + esc(r) + "</span>" : '<span class="et">sin calcular</span>'; }
+  function pintarAutorias(cu) {
+    if (!S.autorias) { cu.innerHTML = cargandoHtml("Cargando la cola de autorías…"); cargarAutorias().then(pintarRevision, function (e) { cu.innerHTML = vacioHtml(e.message); }); return; }
+    var A = S.autorias, R = A.resumen || {}, h = [];
+    if (!A.preparado) { cu.innerHTML = '<p class="rev-ayuda">La revisión de autorías aún no está preparada. En Apps Script ejecuta <b>prepararRevisionAutorias</b> y después <b>calcularRiesgoAutorias</b> (tarda unos minutos y continúa sola).</p>'; return; }
+    var pct = R.total ? Math.round(R.revisados / R.total * 100) : 0, l = autFiltradas();
+    h.push('<p class="rev-ayuda">Cada artículo se ha contrastado con PubMed (nombre de pila, ORCID y afiliación de cada firma). Empieza por los de riesgo <b>alto</b>: ábrelos, comprueba las personas del Servicio y guarda. Lo que corrijas aquí se mantiene aunque el artículo se vuelva a rellenar.</p>');
+    h.push('<div class="aut-progreso"><div class="aut-barra" role="progressbar" aria-valuenow="' + pct + '" aria-valuemin="0" aria-valuemax="100"><span style="width:' + pct + '%"></span></div>' +
+      "<p><b>" + R.revisados + "</b> de " + R.total + " artículos revisados (" + pct + " %) · pendientes: " + chipRiesgo("Alto") + " " + (R.pendAlto || 0) + " · " + chipRiesgo("Medio") + " " + (R.pendMedio || 0) +
+      " · " + chipRiesgo("Bajo") + " " + (R.pendBajo || 0) + (R.sinCalcular ? " · " + R.sinCalcular + " sin calcular" : "") + "</p></div>");
+    h.push('<div class="aut-filtros">' + [["riesgo", "Alto y medio pendientes"], ["todas", "Todas las pendientes"], ["revisadas", "Revisadas"]].map(function (f) {
+      return '<button class="bt-chip' + (REV.autFiltro === f[0] ? " activo" : "") + '" data-autf="' + f[0] + '">' + esc(f[1]) + "</button>"; }).join("") +
+      (REV.autFiltro !== "revisadas" && l.length ? '<button class="bt-rojo" id="btAutSig"><i class="fa-solid fa-chevron-right"></i> Revisar el siguiente</button>' : "") + "</div>");
+    h.push(l.length ? '<div class="lista-simple" id="listaAut">' + l.slice(0, REV.autVer).map(function (x) {
+      return '<div class="item-lista aut-item" data-aut="' + esc(x.id) + '"><div class="t">' + esc(x.titulo || "(sin título)") + "</div>" +
+        '<div class="m">' + chipRiesgo(x.riesgo) + " " + esc([x.revista, x.ano, x.pmid ? "PMID " + x.pmid : ""].filter(Boolean).join(" · ")) + "</div>" +
+        (x.motivo ? '<div class="m tenue">' + esc(x.motivo.replace(/^[AM]\d · /, "")) + (x.nMotivos > 1 ? " (+" + (x.nMotivos - 1) + ")" : "") + "</div>" : "") +
+        (x.revision ? '<div class="m aut-hecho"><i class="fa-solid fa-circle-check"></i> ' + esc(x.revision) + "</div>" : "") + "</div>"; }).join("") + "</div>" +
+      (l.length > REV.autVer ? '<button class="bt" id="btAutMas">Mostrar más (' + (l.length - REV.autVer) + ")</button>" : "") :
+      vacioHtml(REV.autFiltro === "revisadas" ? "Aún no hay artículos revisados." : REV.autFiltro === "riesgo" ? "No quedan artículos de riesgo alto o medio por revisar." : "No quedan artículos por revisar."));
+    cu.innerHTML = h.join("");
+    cu.querySelectorAll("[data-autf]").forEach(function (b) { b.onclick = function () { REV.autFiltro = b.getAttribute("data-autf"); REV.autVer = 60; pintarRevision(); }; });
+    cu.querySelectorAll("[data-aut]").forEach(function (e) { e.onclick = function () { abrirAutoria(e.getAttribute("data-aut")); }; });
+    if ($("btAutSig")) $("btAutSig").onclick = function () { var l2 = autFiltradas(); if (l2.length) abrirAutoria(l2[0].id); };
+    if ($("btAutMas")) $("btAutMas").onclick = function () { REV.autVer += 100; pintarRevision(); };
+  }
+  function abrirAutoria(id) {
+    cargando(true);
+    api("webAutoriasDetalle", S.token, id).then(function (x) {
+      var ev = x.evid || {}, pares = ev.pares || [], faltan = ev.faltan || [];
+      var parDe = function (p) { return pares.filter(function (q) { return q.persona === p; }); };
+      var si = function (b) { return b ? '<i class="fa-solid fa-circle-check aut-ok"></i>' : '<i class="fa-solid fa-triangle-exclamation aut-ko"></i>'; };
+      var evid = function (q) {
+        var l = [];
+        if (q.nombrePub) l.push("PubMed: <b>" + esc(q.nombrePub) + "</b>" + (q.pos && q.pos.indexOf("/") !== -1 ? " · posición " + esc(q.pos) : " · " + esc(q.rol || "colaborador")));
+        else l.push("Firma en la plataforma: «" + esc(q.firma) + "»" + (q.pos ? " · " + esc(q.pos) : ""));
+        if (q.orcidPub) l.push(si(q.orcidOk) + " ORCID " + esc(q.orcidPub) + (q.orcidOk ? " (el suyo)" : " (no es el registrado)"));
+        if (q.afil) l.push(si(q.laPaz) + " " + esc(q.afil));
+        if (q.nombrePub) l.push(si(q.enPeriodo) + (q.enPeriodo ? " dentro de su periodo en el Servicio" : " fuera de su periodo en el Servicio"));
+        if (q.motivo) l.push('<span class="aut-motivo">' + esc(q.motivo) + "</span>");
+        return '<div class="aut-ev">' + l.join("<br>") + "</div>";
+      };
+      var h = '<p class="aut-tit"><b>' + esc(x.titulo) + "</b><br><span class=\"tenue\">" + esc([x.revista, x.ano].filter(Boolean).join(" · ")) + "</span> " +
+        (x.pmid ? '<a href="https://pubmed.ncbi.nlm.nih.gov/' + esc(x.pmid) + '/" target="_blank" rel="noopener">PubMed</a> ' : "") +
+        (x.doi ? '<a href="https://doi.org/' + esc(x.doi) + '" target="_blank" rel="noopener">DOI</a>' : "") + "</p>" +
+        '<div class="aut-riesgo">' + chipRiesgo(x.riesgo) + (x.revision ? ' <span class="aut-hecho"><i class="fa-solid fa-circle-check"></i> ' + esc(x.revision) + "</span>" : "") +
+        "<ul>" + (x.motivos || []).map(function (m) { return "<li>" + esc(m.replace(/^[AM]\d · /, "")) + "</li>"; }).join("") + "</ul></div>";
+      h += '<h4 class="aut-sub">Personas del Servicio en este artículo</h4>';
+      h += x.personas.length ? x.personas.map(function (p, i) {
+        return '<div class="aut-par"><label class="check"><input type="checkbox" data-pers="' + esc(p) + '" checked> <b>' + esc(p) + "</b> es autor/a</label>" +
+          (parDe(p).map(evid).join("") || '<div class="aut-ev tenue">Sin datos de PubMed para esta persona.</div>') + "</div>"; }).join("") :
+        '<p class="tenue">No hay ninguna persona del Servicio asignada.</p>';
+      var sinPersona = pares.filter(function (q) { return !q.persona; });
+      if (sinPersona.length) h += '<p class="tenue">Firmas detectadas sin persona asignada: ' + sinPersona.map(function (q) { return "«" + esc(q.firma) + "»"; }).join(", ") + "</p>";
+      if (faltan.length) h += '<h4 class="aut-sub">Posibles autorías no detectadas</h4>' + faltan.map(function (f) {
+        return '<div class="aut-par aut-falta"><label class="check"><input type="checkbox" data-anadir="' + esc(f.persona) + '"> Añadir a <b>' + esc(f.persona) + "</b></label>" +
+          '<div class="aut-ev">PubMed: <b>' + esc(f.firmaPub) + "</b> · " + esc(f.pos) + " · por " + esc(f.como) + "</div></div>"; }).join("");
+      var otros = (x.personal || []).filter(function (n) { return x.personas.indexOf(n) === -1 && !faltan.some(function (f) { return f.persona === n; }); });
+      h += '<h4 class="aut-sub">Añadir otra persona del Servicio</h4><select id="autOtra"><option value="">—</option>' + otros.map(function (n) { return '<option>' + esc(n) + "</option>"; }).join("") + "</select>";
+      h += '<details class="aut-autores"><summary>Lista completa de autores</summary><p>' + esc(x.autores) + "</p></details>";
+      h += '<label for="autNota">Nota (opcional)</label><input id="autNota" maxlength="300" placeholder="p. ej. homónimo: es otra persona del mismo apellido">';
+      h += '<label class="check" style="margin-top:12px"><input type="checkbox" id="autSiguiente" checked> Abrir el siguiente al guardar</label>';
+      dialogo("Revisar autorías", h, "Guardar revisión", function () {
+        var quitar = Array.prototype.filter.call($("dlgCuerpo").querySelectorAll("[data-pers]"), function (c) { return !c.checked; }).map(function (c) { return c.getAttribute("data-pers"); });
+        var anadir = Array.prototype.filter.call($("dlgCuerpo").querySelectorAll("[data-anadir]"), function (c) { return c.checked; }).map(function (c) { return c.getAttribute("data-anadir"); });
+        if ($("autOtra").value) anadir.push($("autOtra").value);
+        if (quitar.length && !confirm("¿Quitar a " + quitar.join(", ") + " de este artículo?")) return;
+        var siguiente = $("autSiguiente").checked;
+        $("dlgAceptar").disabled = true; cargando(true);
+        api("webAutoriasRevisar", S.token, id, { quitar: quitar, anadir: anadir, nota: $("autNota").value.trim() }).then(function (r) {
+          aviso(r.mensaje, 5000); cerrarDialogo();
+          if (quitar.length || anadir.length) CACHE.quitar("webListarPublicaciones");
+          return cargarAutorias().then(function () {
+            pintarRevision();
+            if (siguiente) { var l2 = autFiltradas().filter(function (z) { return z.id !== id; }); if (l2.length) abrirAutoria(l2[0].id); }
+          });
+        }).catch(function (e) { aviso(e.message, 7000); }).then(function () { $("dlgAceptar").disabled = false; cargando(false); });
+      });
+      document.querySelector("#dlgForm .dialogo").classList.add("ancho");
+      $("dlgForm").classList.add("hoja");
+    }).catch(function (e) { aviso(e.message, 7000); }).then(function () { cargando(false); });
   }
   $("pestRev").addEventListener("click", function (ev) { var b = ev.target.closest("[data-rtab]"); if (b) { REV.tab = b.getAttribute("data-rtab"); if (REV.tab === "accesos") S.accesos = null; pintarRevision(); subCambiado(); } });
 
@@ -6748,7 +7026,7 @@
 (function () {
   "use strict";
   var G = window.GC, $ = G.$, esc = G.esc;
-  var PF = { persona: null, datos: {}, fotos: {}, cargandoFicha: {} };
+  var PF = { persona: null, datos: {}, fotos: {}, cargandoFicha: {}, abiertas: {} };
   var MES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
   function fTxt(s) { var p = String(s || "").split("-"); return p.length === 3 ? Number(p[2]) + " " + MES[Number(p[1]) - 1] + " " + p[0] : String(s || ""); }
   function yo() { return G.S.inicio.usuario.nombre; }
@@ -6929,56 +7207,70 @@
     var n = PF.persona || yo(), per = periodo(), d = PF.datos[n], h = [];
     $("tituloPerfil").textContent = n === yo() ? "Mi ficha personal" : "Ficha personal";
     var mp = metricasPubs(n, per), mc = metricasCongresos(n, per), me = metricasEstudios(n, per), md = metricasDocencia(n, per);
-    // ---- cabecera: foto, nombre, datos y cifras principales ----
-    var datos = "", chips = "";
+    // ---- v0.9.9: cabecera como en el vídeo (foto redonda, nombre, cargo y tres cifras) y debajo filas plegables ----
+    var datos = "", sub = "";
     if (!d) datos = CARGANDO;
     else if (d.error) datos = '<p class="mensaje">' + esc(d.error) + "</p>";
     else {
       var cf = function (et, v, html) { return v ? '<div class="pf-campo"><span class="et-campo">' + esc(et) + '</span><span class="valor">' + (html ? v : esc(v)) + "</span></div>" : ""; };
       var orcid = d.orcid ? '<a href="https://orcid.org/' + esc(String(d.orcid).replace(/^https?:\/\/orcid\.org\//, "")) + '" target="_blank" rel="noopener">' + esc(d.orcid) + "</a>" : "";
-      chips = [d.cargo, d.rol, d.estado].filter(Boolean).map(function (x) { return '<span class="pf-chip">' + esc(x) + "</span>"; }).join("");
+      sub = [d.cargo, d.rol, d.estado && d.estado !== "Activo" ? d.estado : ""].filter(Boolean).map(esc).join(" · ");
       datos = '<div class="pf-campos">' + cf("Nombre completo", d.nombreCompleto) + cf("Correo", d.email) + cf("Correo alternativo", d.emailAlt) +
         cf("ORCID", orcid, true) + cf("En el Servicio desde", fTxt(d.alta)) + cf("Fecha de baja", fTxt(d.baja)) + "</div>" + contactoAdmin(d);
     }
-    h.push('<section class="pf-card pf-head"><div class="pf-foto" id="pfFoto"></div><div class="pf-datos"><div class="pf-nombre-fila"><h2 class="pf-nombre">' + esc(n) + "</h2>" + chips +
-      ((n === yo() || admin()) ? '<button class="bt-texto" id="pfQuitar"><i class="fa-regular fa-trash-can"></i> Quitar foto</button>' : "") + "</div>" + datos + "</div>" +
-      '<div class="pf-kpis">' + kpi(mp.art, "artículos", mp.libros || mp.abs ? "+ " + (mp.libros + mp.abs) + (mp.libros + mp.abs === 1 ? " libro o abstract" : " libros o abstracts") : "") + kpi(mp.q1, "en Q1", mp.jcr ? Math.round(mp.q1 / mp.jcr * 100) + " % de los JCR" : "") +
-      kpi(dec1(mp.fi), "FI acumulado", mp.jcr ? "medio " + dec1(mp.fi / mp.jcr) : "") + kpi(mp.h, "índice h", mp.citas.toLocaleString("es-ES") + " citas") + "</div></section>");
+    var cifra = function (v, et) { return '<div class="pf-cifra"><b>' + v + "</b><span>" + esc(et) + "</span></div>"; };
+    var npub = mp.art + mp.libros + mp.abs, ntrab = md ? md.tesis + md.tfm + md.tfg : "…";
+    h.push('<section class="pf-card pf-head2"><div class="pf-foto" id="pfFoto"></div><div class="pf-id"><h2 class="pf-nombre">' + esc(n) + "</h2>" +
+      (sub ? '<div class="pf-sub2">' + sub + "</div>" : "") + (d && d.alta ? '<div class="pf-sub2 tenue">En el Servicio desde ' + esc(fTxt(d.alta)) + "</div>" : "") +
+      ((n === yo() || admin()) ? '<button class="bt-texto" id="pfQuitar"><i class="fa-regular fa-trash-can"></i> Quitar foto</button>' : "") + "</div>" +
+      '<div class="pf-cifras">' + cifra(npub, npub === 1 ? "Publicación" : "Publicaciones") + cifra(mc ? mc.asist : "…", "Congresos") + cifra(ntrab, "Trabajos dirigidos") + "</div></section>");
     h.push('<p class="pf-per">Métricas de <b>' + esc(per[2]) + "</b> · solo registros confirmados o validados (no se cuentan los rechazados)." +
       (md && md.pend ? " Incluye " + md.pend + " registro" + (md.pend === 1 ? "" : "s") + " de docencia o méritos pendiente" + (md.pend === 1 ? "" : "s") + " de validar." : "") + "</p>");
-    // ---- Investigación ----
-    h.push(grupo("fa-microscope", "Investigación"));
-    h.push('<div class="pf-fila">' +
-      card("s7", "fa-book", "Publicaciones", tiles(4,
-        tile(mp.jcr, "indexados JCR", mp.art ? Math.round(mp.jcr / mp.art * 100) + " % de los artículos" : "") + tile(mp.q1, "en Q1", "", "destacado") + tile(mp.d1, "en D1") +
-        tile(mp.jcr ? dec1(mp.fi / mp.jcr) : "—", "FI medio") + tile(mp.primero, "primer/a autor/a") + tile(mp.ultimo, "último/a autor/a") +
-        tile(mp.corr, "correspondencia") + tile(mp.libros + " · " + mp.abs, "libros · abstracts")), ' <button class="bt-texto" id="pfVerPubs">Ver la lista</button>') +
-      card("s5 pf-graf", "fa-chart-column", "Artículos por año", mp.art ? barras(mp.porAno, per) : '<p class="tenue">Sin artículos en este periodo.</p>') + "</div>");
+    var fila = function (id, ic, tit, res, det) {
+      var ab = !!PF.abiertas[id];
+      return '<div class="pf-row' + (ab ? " abierta" : "") + '" data-fila="' + id + '"><button class="pf-row-cab" aria-expanded="' + ab + '"><span class="pf-row-ic"><i class="fa-solid ' + ic + '"></i></span>' +
+        '<span class="pf-row-txt"><b>' + esc(tit) + "</b><small>" + res + '</small></span><i class="fa-solid fa-chevron-down pf-row-fl"></i></button><div class="pf-row-det">' + det + "</div></div>"; };
     var tiposM = md ? Object.keys(md.porTipo).sort(function (a, b) { return md.porTipo[b] - md.porTipo[a]; }) : [];
-    h.push('<div class="pf-fila">' +
-      card("s4", "fa-people-group", "Congresos y cursos", mc ? tiles(2, tile(mc.asist, "asistencias") + tile(mc.aport, "comunicaciones y pósteres", mc.ponente ? mc.ponente + " como ponente" : "") +
-        tile(mc.premios, "premios") + tile(mc.org, "organizados")) +
-        (mc.limite !== undefined ? '<p class="pf-pie">Días de congreso ' + new Date().getFullYear() + ": <b>" + mc.diasAprob + " de " + mc.limite + "</b>" + (mc.diasPend ? " · " + mc.diasPend + " pendientes de aprobar" : "") + "</p>" : "") : CARGANDO) +
-      card("s4", "fa-flask", "Estudios", me ? tiles(2, tile(me.ip, "como IP") + tile(me.ipLocal, "como IP local") + tile(me.colab, "como colaborador/a") + tile(me.activos, "activos ahora")) +
-        '<p class="pf-pie">Pacientes incluidos como IP o IP local: <b>' + me.pacientes.toLocaleString("es-ES") + "</b></p>" : CARGANDO) +
-      card("s4", "fa-award", "Otros méritos", !md ? CARGANDO : tiposM.length ? '<div class="pf-stats">' + tiposM.map(function (t) { return stat(t, md.porTipo[t]); }).join("") + "</div>" :
-        '<p class="tenue">Sin otros méritos registrados en este periodo.</p>') + "</div>");
-    // ---- Docencia ----
-    h.push(grupo("fa-user-graduate", "Docencia"));
-    h.push('<div class="pf-fila">' +
-      card("s4", "fa-graduation-cap", "Trabajos dirigidos", md ? tiles(2, tile(md.tesis, "tesis defendidas") + tile(md.tfm, "TFM defendidos") + tile(md.tfg, "TFG defendidos") + tile(md.enCurso, "en curso")) : CARGANDO) +
-      card("s4", "fa-user-doctor", "Tutorías y rotantes", md ? tiles(2, tile(md.tutorias, "tutorías") + tile(md.mir, "de residentes MIR") + tile(md.est, "estudiantes en prácticas") + tile(md.rotantes, "rotantes")) : CARGANDO) +
-      card("s4", "fa-certificate", "Acreditaciones ANECA", !md ? CARGANDO : md.aneca.length ? '<div class="pf-stats">' + md.aneca.map(function (r) {
+    var nM = tiposM.reduce(function (t, k) { return t + md.porTipo[k]; }, 0);
+    var L = function (v, s1, sN) { return v + " " + (v === 1 ? s1 : sN); };
+    h.push('<div class="pf-filas">');
+    h.push(fila("datos", "fa-id-card", "Datos personales y contacto", d && !d.error ? esc([d.orcid ? "ORCID " + d.orcid : "Sin ORCID", d.alta ? "desde " + fTxt(d.alta) : ""].filter(Boolean).join(" · ")) : "…", datos));
+    h.push('<h3 class="pf-grupo"><i class="fa-solid fa-microscope"></i> Investigación</h3>');
+    h.push(fila("pubs", "fa-book", "Publicaciones", esc(L(mp.art, "artículo", "artículos") + " · " + mp.q1 + " en Q1 · índice h " + mp.h),
+      tiles(4, tile(mp.jcr, "indexados JCR", mp.art ? Math.round(mp.jcr / mp.art * 100) + " % de los artículos" : "") + tile(mp.q1, "en Q1", "", "destacado") + tile(mp.d1, "en D1") +
+        tile(mp.jcr ? dec1(mp.fi / mp.jcr) : "—", "FI medio", "acumulado " + dec1(mp.fi)) + tile(mp.primero, "primer/a autor/a") + tile(mp.ultimo, "último/a autor/a") +
+        tile(mp.corr, "correspondencia") + tile(mp.h, "índice h", mp.citas.toLocaleString("es-ES") + " citas") + tile(mp.libros + " · " + mp.abs, "libros · abstracts")) +
+      '<h4 class="pf-mini"><i class="fa-solid fa-chart-column"></i> Artículos por año</h4>' + (mp.art ? barras(mp.porAno, per) : '<p class="tenue">Sin artículos en este periodo.</p>') +
+      '<button class="bt" id="pfVerPubs"><i class="fa-solid fa-book-open"></i> Ver la lista</button>'));
+    h.push(fila("congresos", "fa-people-group", "Congresos y cursos", mc ? esc(L(mc.asist, "asistencia", "asistencias") + " · " + L(mc.aport, "comunicación o póster", "comunicaciones y pósteres")) : "Cargando…",
+      mc ? tiles(2, tile(mc.asist, "asistencias") + tile(mc.aport, "comunicaciones y pósteres", mc.ponente ? mc.ponente + " como ponente" : "") + tile(mc.premios, "premios") + tile(mc.org, "organizados")) +
+        (mc.limite !== undefined ? '<p class="pf-pie">Días de congreso ' + new Date().getFullYear() + ": <b>" + mc.diasAprob + " de " + mc.limite + "</b>" + (mc.diasPend ? " · " + mc.diasPend + " pendientes de aprobar" : "") + "</p>" : "") : CARGANDO));
+    h.push(fila("estudios", "fa-flask", "Estudios", me ? esc(me.ip + " como IP · " + me.pacientes.toLocaleString("es-ES") + " pacientes incluidos") : "Cargando…",
+      me ? tiles(2, tile(me.ip, "como IP") + tile(me.ipLocal, "como IP local") + tile(me.colab, "como colaborador/a") + tile(me.activos, "activos ahora")) +
+        '<p class="pf-pie">Pacientes incluidos como IP o IP local: <b>' + me.pacientes.toLocaleString("es-ES") + "</b></p>" : CARGANDO));
+    h.push(fila("meritos", "fa-award", "Otros méritos", md ? esc(nM ? L(nM, "mérito", "méritos") : "Sin otros méritos en este periodo") : "Cargando…",
+      !md ? CARGANDO : tiposM.length ? '<div class="pf-stats">' + tiposM.map(function (t) { return stat(t, md.porTipo[t]); }).join("") + "</div>" : '<p class="tenue">Sin otros méritos registrados en este periodo.</p>'));
+    h.push('<h3 class="pf-grupo"><i class="fa-solid fa-user-graduate"></i> Docencia</h3>');
+    h.push(fila("trabajos", "fa-graduation-cap", "Trabajos dirigidos", md ? esc(md.tesis + " tesis · " + md.tfm + " TFM · " + md.tfg + " TFG" + (md.enCurso ? " · " + md.enCurso + " en curso" : "")) : "Cargando…",
+      md ? tiles(2, tile(md.tesis, "tesis defendidas") + tile(md.tfm, "TFM defendidos") + tile(md.tfg, "TFG defendidos") + tile(md.enCurso, "en curso")) : CARGANDO));
+    h.push(fila("tutorias", "fa-user-doctor", "Tutorías y rotantes", md ? esc(L(md.tutorias, "tutoría", "tutorías") + " · " + L(md.rotantes, "rotante", "rotantes")) : "Cargando…",
+      md ? tiles(2, tile(md.tutorias, "tutorías") + tile(md.mir, "de residentes MIR") + tile(md.est, "estudiantes en prácticas") + tile(md.rotantes, "rotantes")) : CARGANDO));
+    h.push(fila("aneca", "fa-certificate", "Acreditaciones ANECA", md ? esc(md.aneca.length ? L(md.aneca.length, "acreditación", "acreditaciones") : "Sin acreditaciones registradas") : "Cargando…",
+      !md ? CARGANDO : md.aneca.length ? '<div class="pf-stats">' + md.aneca.map(function (r) {
         return '<div class="pf-stat pf-acr"><span><b>' + esc(r.titulo) + "</b><small>" + esc([r.entidad, r.rol, fTxt(r.inicio)].filter(Boolean).join(" · ")) + "</small></span>" +
           (r.estadoVal === G.docencia.VAL.pend ? '<span class="et pend">pendiente</span>' : '<i class="fa-solid fa-circle-check" style="color:var(--verde)"></i>') + "</div>"; }).join("") + "</div>" :
-        '<p class="tenue">Sin acreditaciones registradas.</p>') + "</div>");
-    // ---- Asistencial ----
-    h.push(grupo("fa-stethoscope", "Asistencial"));
-    h.push('<div class="pf-fila">' + card("s12 pf-fina", "fa-stethoscope", "Actividad asistencial", '<p class="tenue" style="margin:0">Se añadirá cuando esté el bloque Asistencial.</p>') + "</div>");
+        '<p class="tenue">Sin acreditaciones registradas.</p>'));
+    h.push('<h3 class="pf-grupo"><i class="fa-solid fa-stethoscope"></i> Asistencial</h3>');
+    h.push(fila("asistencial", "fa-stethoscope", "Actividad asistencial", "Próximamente", '<p class="tenue" style="margin:0">Se añadirá cuando esté el bloque Asistencial.</p>'));
+    h.push("</div>");
     $("cuerpoPerfil").innerHTML = h.join("");
     pintarFoto();
     if ($("pfQuitar")) $("pfQuitar").onclick = quitarFoto;
     $("pfVerPubs").onclick = function () { G.verPubsDe(n); };
+    Array.prototype.forEach.call(document.querySelectorAll("#cuerpoPerfil .pf-row-cab"), function (b) {
+      b.onclick = function () { var f = b.parentNode, id = f.getAttribute("data-fila"), ab = !f.classList.contains("abierta");
+        f.classList.toggle("abierta", ab); b.setAttribute("aria-expanded", String(ab)); PF.abiertas[id] = ab; };
+    });
   }
   function prepararPersonas() {
     var s = $("pfPersona");
