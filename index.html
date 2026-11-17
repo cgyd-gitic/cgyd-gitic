@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Gestión CGyAD-GITIC · web publicada (GitHub Pages) · versión 0.9.9 · generado el 15/11/2026 a partir de Web_App + Web_Estilos + Web_Cliente + Web_Estudios_Cliente + Web_Congresos_Cliente + Web_Docencia_Cliente + Web_Perfil_Cliente.
+<!-- Gestión CGyAD-GITIC · web publicada (GitHub Pages) · versión 0.9.10 · generado el 17/11/2026 a partir de Web_App + Web_Estilos + Web_Cliente + Web_Estudios_Cliente + Web_Congresos_Cliente + Web_Docencia_Cliente + Web_Perfil_Cliente.
      No edites este archivo: la dirección del servidor está en config.js. -->
 <html lang="es">
 <head>
@@ -1280,6 +1280,31 @@
   .aut-autores { margin-top:12px; font-size:13px; } .aut-autores p { line-height:1.5; overflow-wrap:anywhere; }
   html.tema-oscuro .bt-chip { background:#1c1e22; border-color:#2c2f35; color:#e8eaed; } html.tema-oscuro .aut-par { border-color:#2c2f35; }
   html.tema-oscuro .aut-par.aut-falta { background:#2b2414; border-color:#5c4a1e; } html.tema-oscuro .aut-motivo { color:#f2a5a5; }
+  /* v0.9.10: varias personas, decisión confirmar/descartar y guardado en segundo plano */
+  .aut-envio { margin:4px 0 0; font-size:12.5px; min-height:1.2em; color:var(--tenue); } .aut-envio.ok { color:var(--verde); } .aut-envio.error { color:var(--rojo-osc); }
+  .aut-envio i { margin-right:4px; }
+  .et.aut-nuevo { background:#dbe9f7; color:#123f72; font-weight:600; } .et.aut-sugd { background:#fff3cd; color:#7a5d00; }
+  .aut-decision { border:1px solid var(--borde); border-radius:10px; padding:4px 12px 10px; margin:12px 0 4px; }
+  .aut-decision .aut-sub { margin-top:10px; }
+  .aut-sug { background:#fff8e1; border:1px solid #f0c36d; border-radius:8px; padding:8px 10px; font-size:13px; line-height:1.45; margin-bottom:8px; } .aut-sug i { color:var(--ambar); margin-right:4px; }
+  .aut-motrastreo { font-size:12.5px; margin:0 0 8px; }
+  .aut-seg { display:flex; gap:6px; flex-wrap:wrap; }
+  .aut-seg label { flex:1 1 180px; display:flex; align-items:center; gap:8px; border:1px solid var(--borde); border-radius:8px; padding:9px 10px; cursor:pointer; font-size:14px; margin:0; }
+  .aut-seg label.activo.mantener { border-color:var(--verde); background:#e6f4ea; color:#1b5e20; font-weight:500; }
+  .aut-seg label.activo.descartar { border-color:var(--rojo); background:var(--rojo-claro); color:var(--rojo-osc); font-weight:500; }
+  .aut-seg input { margin:0; accent-color:currentColor; }
+  #autMotivoCaja { margin-top:8px; }
+  .aut-atenuado { opacity:.42; pointer-events:none; }
+  .aut-otras { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:6px; } .aut-otras:empty { display:none; }
+  .aut-chip { display:inline-flex; align-items:center; gap:6px; background:#dbe9f7; color:#123f72; border-radius:16px; padding:4px 4px 4px 10px; font-size:13px; }
+  .aut-chip button { border:0; background:rgba(18,63,114,.12); color:inherit; width:24px; height:24px; border-radius:50%; font-size:15px; line-height:1; cursor:pointer; padding:0; }
+  .aut-chip button:hover { background:rgba(18,63,114,.25); }
+  .aut-pendiente { background:#eef4fb; border-radius:8px; padding:8px 10px; font-size:12.5px; color:#123f72; } .aut-pendiente i { margin-right:4px; }
+  html.tema-oscuro .aut-decision { border-color:#2c2f35; } html.tema-oscuro .aut-sug { background:#2b2414; border-color:#5c4a1e; }
+  html.tema-oscuro .aut-seg label { border-color:#2c2f35; } html.tema-oscuro .aut-seg label.activo.mantener { background:#16301b; color:#a5d6a7; border-color:#2e7d32; }
+  html.tema-oscuro .aut-seg label.activo.descartar { background:#3a1717; color:#f2a5a5; border-color:#c62828; }
+  html.tema-oscuro .aut-chip, html.tema-oscuro .et.aut-nuevo { background:#1d3550; color:#cfe3f8; } html.tema-oscuro .aut-chip button { background:rgba(255,255,255,.12); }
+  html.tema-oscuro .aut-pendiente { background:#1a2633; color:#cfe3f8; } html.tema-oscuro .et.aut-sugd { background:#3a3014; color:#f3d58a; }
 
   /* v0.9.9: «Mi ficha personal» con el estilo del vídeo: cabecera con foto, nombre, cargo y tres cifras; filas plegables */
   .pf-head2 { max-width:900px; display:flex; flex-direction:column; align-items:center; text-align:center; gap:10px; padding:22px 18px 18px; }
@@ -2212,7 +2237,7 @@
   var MODULOS = {   // bloques aún no disponibles en la web
     asistencial: ["Asistencial", "fa-stethoscope", ""]
   };
-  var VERSION_WEB = "0.9.9";
+  var VERSION_WEB = "0.9.10";
   // Nombres visibles iguales a los de AppSheet (con las erratas corregidas) y orden de la ficha
   var ETIQ = { "Volúmen": "Volumen", "Notas_JCR": "Notas sobre JCR", "Investigadores Servicio": "Investigadores participantes",
                "Posiciones Servicio": "Posición en la autoría", "Es Correspondencia": "¿Es autor de correspondencia?",
@@ -3981,7 +4006,7 @@
       docencia: doc === null ? null : admin ? doc.length : doc.filter(function (x) { return x.r.estadoVal === V.no; }).length,
       dias: dias === null ? null : admin ? dias.length : 0,
       ia: ia === null ? null : ia.length,
-      autorias: admin && S.autorias && S.autorias.resumen ? (S.autorias.resumen.pendAlto || 0) + (S.autorias.resumen.pendMedio || 0) : null   // cola de largo plazo: no suma al contador general
+      autorias: admin && S.autorias && S.autorias.resumen ? (S.autorias.resumen.pendNuevos || 0) + (S.autorias.resumen.pendAlto || 0) + (S.autorias.resumen.pendMedio || 0) : null   // cola de largo plazo: no suma al contador general
     };
   }
   function contarRevision() {
@@ -4140,41 +4165,92 @@
   }
   // ---------- v0.9.9: revisión de autorías (solo administradores) ----------
   // Cola ordenada por riesgo (calculado en el servidor contrastando cada autoría con PubMed: nombre de pila, ORCID, afiliación).
+  // [v0.9.10] Guardado inmediato: la ficha se cierra y se abre la siguiente (ya precargada) mientras la revisión se guarda
+  // en segundo plano; los cambios de personas se aplican en el servidor ~1 min después. Varias personas a la vez.
+  // Los artículos nuevos del rastreo («Pendiente de Confirmación») salen primero y se confirman o descartan aquí mismo.
   REV.autFiltro = REV.autFiltro || "riesgo"; REV.autVer = 60;
-  function cargarAutorias() { return api("webAutoriasCola", S.token).then(function (r) { S.autorias = r; contarRevision(); return r; }); }
+  var AUT = { det: {}, cadena: Promise.resolve(), enviando: 0, error: false, refresco: null };
+  function cargarAutorias(fresco) { return api("webAutoriasCola", S.token, !!fresco).then(function (r) { S.autorias = r; AUT.det = {}; contarRevision(); return r; }); }
   function autFiltradas() {
     var it = (S.autorias && S.autorias.items) || [], f = REV.autFiltro;
-    return it.filter(function (x) { return f === "revisadas" ? !!x.revision : !x.revision && (f === "todas" || x.riesgo === "Alto" || x.riesgo === "Medio"); });
+    return it.filter(function (x) { return f === "revisadas" ? !!x.revision : !x.revision && (f === "todas" || x.nuevo || x.riesgo === "Alto" || x.riesgo === "Medio"); });
   }
+  function autSiguienteId(id) { var l = autFiltradas().filter(function (z) { return z.id !== id; }); return l.length ? l[0].id : ""; }
+  function autDetalle(id) {
+    if (!AUT.det[id]) AUT.det[id] = api("webAutoriasDetalle", S.token, id).catch(function (e) { delete AUT.det[id]; throw e; });
+    return AUT.det[id];
+  }
+  function autSinPrefijo(m) { return String(m || "").replace(/^(?:[AM]\d|SD) · /, ""); }
   function chipRiesgo(r) { return r ? '<span class="et riesgo-' + esc(r) + '">' + esc(r) + "</span>" : '<span class="et">sin calcular</span>'; }
+  function autHoy() { var d = new Date(); return ("0" + d.getDate()).slice(-2) + "/" + ("0" + (d.getMonth() + 1)).slice(-2) + "/" + d.getFullYear(); }
+  function pintarEnvioAut() {
+    var e = $("autEnvio"); if (!e) return;
+    e.className = "aut-envio" + (AUT.enviando ? " guardando" : AUT.error ? " error" : AUT.ok ? " ok" : "");
+    e.innerHTML = AUT.enviando ? '<i class="fa-solid fa-spinner fa-spin"></i> Guardando ' + AUT.enviando + (AUT.enviando === 1 ? " revisión…" : " revisiones…") :
+      AUT.error ? '<i class="fa-solid fa-triangle-exclamation"></i> Una revisión no se guardó: vuelve a abrirla' : AUT.ok ? '<i class="fa-solid fa-circle-check"></i> Todo guardado' : "";
+  }
   function pintarAutorias(cu) {
     if (!S.autorias) { cu.innerHTML = cargandoHtml("Cargando la cola de autorías…"); cargarAutorias().then(pintarRevision, function (e) { cu.innerHTML = vacioHtml(e.message); }); return; }
     var A = S.autorias, R = A.resumen || {}, h = [];
     if (!A.preparado) { cu.innerHTML = '<p class="rev-ayuda">La revisión de autorías aún no está preparada. En Apps Script ejecuta <b>prepararRevisionAutorias</b> y después <b>calcularRiesgoAutorias</b> (tarda unos minutos y continúa sola).</p>'; return; }
     var pct = R.total ? Math.round(R.revisados / R.total * 100) : 0, l = autFiltradas();
-    h.push('<p class="rev-ayuda">Cada artículo se ha contrastado con PubMed (nombre de pila, ORCID y afiliación de cada firma). Empieza por los de riesgo <b>alto</b>: ábrelos, comprueba las personas del Servicio y guarda. Lo que corrijas aquí se mantiene aunque el artículo se vuelva a rellenar.</p>');
+    h.push('<p class="rev-ayuda">Cada artículo se ha contrastado con PubMed (nombre de pila, ORCID y afiliación de cada firma). Primero salen los <b>nuevos</b> del rastreo (confírmalos o descártalos aquí) y después los de riesgo <b>alto</b>. Al guardar se abre el siguiente al momento; lo que corrijas se mantiene aunque el artículo se vuelva a rellenar.</p>');
     h.push('<div class="aut-progreso"><div class="aut-barra" role="progressbar" aria-valuenow="' + pct + '" aria-valuemin="0" aria-valuemax="100"><span style="width:' + pct + '%"></span></div>' +
-      "<p><b>" + R.revisados + "</b> de " + R.total + " artículos revisados (" + pct + " %) · pendientes: " + chipRiesgo("Alto") + " " + (R.pendAlto || 0) + " · " + chipRiesgo("Medio") + " " + (R.pendMedio || 0) +
-      " · " + chipRiesgo("Bajo") + " " + (R.pendBajo || 0) + (R.sinCalcular ? " · " + R.sinCalcular + " sin calcular" : "") + "</p></div>");
-    h.push('<div class="aut-filtros">' + [["riesgo", "Alto y medio pendientes"], ["todas", "Todas las pendientes"], ["revisadas", "Revisadas"]].map(function (f) {
+      "<p><b>" + R.revisados + "</b> de " + R.total + " artículos revisados (" + pct + " %) · pendientes: " + (R.pendNuevos ? '<span class="et aut-nuevo">Nuevos</span> ' + R.pendNuevos + " · " : "") +
+      chipRiesgo("Alto") + " " + (R.pendAlto || 0) + " · " + chipRiesgo("Medio") + " " + (R.pendMedio || 0) +
+      " · " + chipRiesgo("Bajo") + " " + (R.pendBajo || 0) + (R.sinCalcular ? " · " + R.sinCalcular + " sin calcular" : "") + '</p><p id="autEnvio" class="aut-envio" aria-live="polite"></p></div>');
+    h.push('<div class="aut-filtros">' + [["riesgo", "Nuevos, alto y medio"], ["todas", "Todas las pendientes"], ["revisadas", "Revisadas"]].map(function (f) {
       return '<button class="bt-chip' + (REV.autFiltro === f[0] ? " activo" : "") + '" data-autf="' + f[0] + '">' + esc(f[1]) + "</button>"; }).join("") +
+      '<button class="bt-chip" id="btAutAct" title="Volver a leer la cola del servidor"><i class="fa-solid fa-rotate"></i> Actualizar</button>' +
       (REV.autFiltro !== "revisadas" && l.length ? '<button class="bt-rojo" id="btAutSig"><i class="fa-solid fa-chevron-right"></i> Revisar el siguiente</button>' : "") + "</div>");
     h.push(l.length ? '<div class="lista-simple" id="listaAut">' + l.slice(0, REV.autVer).map(function (x) {
       return '<div class="item-lista aut-item" data-aut="' + esc(x.id) + '"><div class="t">' + esc(x.titulo || "(sin título)") + "</div>" +
-        '<div class="m">' + chipRiesgo(x.riesgo) + " " + esc([x.revista, x.ano, x.pmid ? "PMID " + x.pmid : ""].filter(Boolean).join(" · ")) + "</div>" +
-        (x.motivo ? '<div class="m tenue">' + esc(x.motivo.replace(/^[AM]\d · /, "")) + (x.nMotivos > 1 ? " (+" + (x.nMotivos - 1) + ")" : "") + "</div>" : "") +
-        (x.revision ? '<div class="m aut-hecho"><i class="fa-solid fa-circle-check"></i> ' + esc(x.revision) + "</div>" : "") + "</div>"; }).join("") + "</div>" +
+        '<div class="m">' + (x.nuevo ? '<span class="et aut-nuevo">Nuevo</span> ' : "") + chipRiesgo(x.riesgo) + (x.sug ? ' <span class="et aut-sugd">Se sugiere descartar</span>' : "") + " " +
+        esc([x.revista, x.ano, x.pmid ? "PMID " + x.pmid : ""].filter(Boolean).join(" · ")) + "</div>" +
+        (x.motivo ? '<div class="m tenue">' + esc(autSinPrefijo(x.motivo)) + (x.nMotivos > 1 ? " (+" + (x.nMotivos - 1) + ")" : "") + "</div>" : "") +
+        (x.revision ? '<div class="m aut-hecho"><i class="fa-solid ' + (x.aplicando ? "fa-spinner fa-spin" : "fa-circle-check") + '"></i> ' + esc(x.revision) + "</div>" : "") + "</div>"; }).join("") + "</div>" +
       (l.length > REV.autVer ? '<button class="bt" id="btAutMas">Mostrar más (' + (l.length - REV.autVer) + ")</button>" : "") :
-      vacioHtml(REV.autFiltro === "revisadas" ? "Aún no hay artículos revisados." : REV.autFiltro === "riesgo" ? "No quedan artículos de riesgo alto o medio por revisar." : "No quedan artículos por revisar."));
+      vacioHtml(REV.autFiltro === "revisadas" ? "Aún no hay artículos revisados." : REV.autFiltro === "riesgo" ? "No quedan artículos nuevos ni de riesgo alto o medio por revisar." : "No quedan artículos por revisar."));
     cu.innerHTML = h.join("");
+    pintarEnvioAut();
     cu.querySelectorAll("[data-autf]").forEach(function (b) { b.onclick = function () { REV.autFiltro = b.getAttribute("data-autf"); REV.autVer = 60; pintarRevision(); }; });
     cu.querySelectorAll("[data-aut]").forEach(function (e) { e.onclick = function () { abrirAutoria(e.getAttribute("data-aut")); }; });
     if ($("btAutSig")) $("btAutSig").onclick = function () { var l2 = autFiltradas(); if (l2.length) abrirAutoria(l2[0].id); };
     if ($("btAutMas")) $("btAutMas").onclick = function () { REV.autVer += 100; pintarRevision(); };
+    $("btAutAct").onclick = function () { cu.innerHTML = cargandoHtml("Actualizando la cola de autorías…"); cargarAutorias(true).then(pintarRevision, function (e) { aviso(e.message, 7000); pintarRevision(); }); };
   }
+  // Marca la revisión en la lista al momento (sin esperar al servidor)
+  function autMarcarLocal(id, d) {
+    var A = S.autorias; if (!A || !A.items) return;
+    var R = A.resumen, k = -1; A.items.forEach(function (z, i) { if (z.id === id) k = i; }); if (k === -1) return;
+    var it = A.items[k], cambios = d.quitar.length + d.anadir.length;
+    if (!it.revision) { R.revisados++; if (it.riesgo) R["pend" + it.riesgo]--; if (it.nuevo) R.pendNuevos--; }
+    if (d.estado === "Descartado") { A.items.splice(k, 1); R.total--; R.revisados--; if (it.riesgo) R[it.riesgo]--; contarRevision(); return; }
+    if (d.estado === "Confirmado") it.nuevo = false;
+    it.revision = (cambios ? "Corregido" : "Correcto") + " · " + S.inicio.usuario.nombre + " · " + autHoy() + (d.nota ? " · " + d.nota : "") + (cambios ? " · aplicando cambios…" : "");
+    it.aplicando = !!cambios; it.sug = d.estado === "Confirmado" ? "" : it.sug;
+    contarRevision();
+  }
+  function autGuardarFondo(id, d) {
+    AUT.enviando++; AUT.ok = false; pintarEnvioAut(); delete AUT.det[id];
+    AUT.cadena = AUT.cadena.then(function () {
+      return api("webAutoriasRevisar", S.token, id, d).then(function (r) {
+        var it = S.autorias && (S.autorias.items || []).filter(function (z) { return z.id === id; })[0];
+        if (it && r.revision) { it.revision = r.revision + (r.enCola ? " · aplicando cambios…" : ""); it.aplicando = !!r.enCola; }
+        if (r.enCola || d.estado) CACHE.quitar("webListarPublicaciones");
+        if (r.enCola) { clearTimeout(AUT.refresco); AUT.refresco = setTimeout(function () {          // al minuto y medio, refresca riesgos y personas
+          cargarAutorias(true).then(function () { if (REV.tab === "autorias" && S.vista === "revision") pintarRevision(); }, function () {}); }, 90000); }
+        AUT.ok = true;
+      }, function (e) {
+        AUT.error = true; aviso("No se ha guardado la revisión: " + e.message + ". Vuelve a abrir el artículo.", 9000);
+        cargarAutorias(true).then(function () { if (REV.tab === "autorias" && S.vista === "revision") pintarRevision(); }, function () {});
+      });
+    }).then(function () { AUT.enviando--; if (!AUT.enviando && AUT.ok) AUT.error = false; pintarEnvioAut(); });
+  }
+  window.addEventListener("beforeunload", function (ev) { if (AUT.enviando) { ev.preventDefault(); ev.returnValue = ""; } });
   function abrirAutoria(id) {
     cargando(true);
-    api("webAutoriasDetalle", S.token, id).then(function (x) {
+    autDetalle(id).then(function (x) {
       var ev = x.evid || {}, pares = ev.pares || [], faltan = ev.faltan || [];
       var parDe = function (p) { return pares.filter(function (q) { return q.persona === p; }); };
       var si = function (b) { return b ? '<i class="fa-solid fa-circle-check aut-ok"></i>' : '<i class="fa-solid fa-triangle-exclamation aut-ko"></i>'; };
@@ -4188,13 +4264,25 @@
         if (q.motivo) l.push('<span class="aut-motivo">' + esc(q.motivo) + "</span>");
         return '<div class="aut-ev">' + l.join("<br>") + "</div>";
       };
+      // decisión sobre el artículo: los nuevos se confirman o descartan; los ya confirmados se mantienen o descartan
+      var opc = x.nuevo ? [["Confirmado", "Confirmar el artículo"], ["Descartado", "Descartar el artículo"]] : [["", "Mantener el artículo"], ["Descartado", "Descartar el artículo"]];
+      var porDefecto = x.nuevo ? (x.sug ? "Descartado" : "Confirmado") : "";
+      var decision = '<div class="aut-decision" id="autDecision"><h4 class="aut-sub">' + (x.nuevo ? "Artículo nuevo del rastreo: ¿confirmar o descartar?" : "Decisión sobre el artículo") + "</h4>" +
+        (x.sug ? '<div class="aut-sug"><i class="fa-solid fa-lightbulb"></i> <b>Se sugiere descartarlo:</b> ' + esc(x.sug) + "</div>" : "") +
+        (x.nuevo && x.motivoRevision ? '<p class="tenue aut-motrastreo">Motivo del rastreo: ' + esc(x.motivoRevision) + "</p>" : "") +
+        '<div class="aut-seg" role="radiogroup">' + opc.map(function (o) {
+          return '<label class="' + (o[0] === "Descartado" ? "descartar" : "mantener") + '"><input type="radio" name="autEstado" value="' + o[0] + '"' + (o[0] === porDefecto ? " checked" : "") + "> " + esc(o[1]) + "</label>"; }).join("") + "</div>" +
+        '<div id="autMotivoCaja" class="oculto"><label for="autMotivoD">Motivo del descarte</label><input id="autMotivoD" maxlength="300" value="' + esc(x.sug ? x.sug.replace(/\.$/, "") : "") + '" placeholder="p. ej. ninguna firma es del Servicio"></div></div>';
       var h = '<p class="aut-tit"><b>' + esc(x.titulo) + "</b><br><span class=\"tenue\">" + esc([x.revista, x.ano].filter(Boolean).join(" · ")) + "</span> " +
         (x.pmid ? '<a href="https://pubmed.ncbi.nlm.nih.gov/' + esc(x.pmid) + '/" target="_blank" rel="noopener">PubMed</a> ' : "") +
         (x.doi ? '<a href="https://doi.org/' + esc(x.doi) + '" target="_blank" rel="noopener">DOI</a>' : "") + "</p>" +
-        '<div class="aut-riesgo">' + chipRiesgo(x.riesgo) + (x.revision ? ' <span class="aut-hecho"><i class="fa-solid fa-circle-check"></i> ' + esc(x.revision) + "</span>" : "") +
-        "<ul>" + (x.motivos || []).map(function (m) { return "<li>" + esc(m.replace(/^[AM]\d · /, "")) + "</li>"; }).join("") + "</ul></div>";
-      h += '<h4 class="aut-sub">Personas del Servicio en este artículo</h4>';
-      h += x.personas.length ? x.personas.map(function (p, i) {
+        '<div class="aut-riesgo">' + (x.nuevo ? '<span class="et aut-nuevo">Nuevo</span> ' : "") + chipRiesgo(x.riesgo) + (x.revision ? ' <span class="aut-hecho"><i class="fa-solid fa-circle-check"></i> ' + esc(x.revision) + "</span>" : "") +
+        "<ul>" + (x.motivos || []).map(function (m) { return "<li>" + esc(autSinPrefijo(m)) + "</li>"; }).join("") + "</ul></div>";
+      if ((x.pendiente || []).length) h += '<p class="aut-pendiente"><i class="fa-solid fa-spinner fa-spin"></i> Hay cambios guardados que se están aplicando (' +
+        esc(x.pendiente.map(function (q) { return [q.quitar ? "quitar: " + q.quitar : "", q.anadir ? "añadir: " + q.anadir : ""].filter(Boolean).join(" · "); }).join(" · ")) + "). Lo de abajo aún no los refleja.</p>";
+      if (x.nuevo || x.sug) h += decision;
+      h += '<div id="autPersonasCaja"><h4 class="aut-sub">Personas del Servicio en este artículo</h4>';
+      h += x.personas.length ? x.personas.map(function (p) {
         return '<div class="aut-par"><label class="check"><input type="checkbox" data-pers="' + esc(p) + '" checked> <b>' + esc(p) + "</b> es autor/a</label>" +
           (parDe(p).map(evid).join("") || '<div class="aut-ev tenue">Sin datos de PubMed para esta persona.</div>') + "</div>"; }).join("") :
         '<p class="tenue">No hay ninguna persona del Servicio asignada.</p>';
@@ -4204,28 +4292,54 @@
         return '<div class="aut-par aut-falta"><label class="check"><input type="checkbox" data-anadir="' + esc(f.persona) + '"> Añadir a <b>' + esc(f.persona) + "</b></label>" +
           '<div class="aut-ev">PubMed: <b>' + esc(f.firmaPub) + "</b> · " + esc(f.pos) + " · por " + esc(f.como) + "</div></div>"; }).join("");
       var otros = (x.personal || []).filter(function (n) { return x.personas.indexOf(n) === -1 && !faltan.some(function (f) { return f.persona === n; }); });
-      h += '<h4 class="aut-sub">Añadir otra persona del Servicio</h4><select id="autOtra"><option value="">—</option>' + otros.map(function (n) { return '<option>' + esc(n) + "</option>"; }).join("") + "</select>";
+      h += '<h4 class="aut-sub">Añadir otras personas del Servicio</h4><div class="aut-otras" id="autOtras" aria-live="polite"></div>' +
+        '<select id="autOtra" aria-label="Añadir otra persona del Servicio"><option value="">Elige una persona para añadirla (puedes añadir varias)…</option>' +
+        otros.map(function (n) { return '<option value="' + esc(n) + '">' + esc(n) + "</option>"; }).join("") + "</select></div>";
       h += '<details class="aut-autores"><summary>Lista completa de autores</summary><p>' + esc(x.autores) + "</p></details>";
+      if (!x.nuevo && !x.sug) h += decision;
       h += '<label for="autNota">Nota (opcional)</label><input id="autNota" maxlength="300" placeholder="p. ej. homónimo: es otra persona del mismo apellido">';
       h += '<label class="check" style="margin-top:12px"><input type="checkbox" id="autSiguiente" checked> Abrir el siguiente al guardar</label>';
       dialogo("Revisar autorías", h, "Guardar revisión", function () {
-        var quitar = Array.prototype.filter.call($("dlgCuerpo").querySelectorAll("[data-pers]"), function (c) { return !c.checked; }).map(function (c) { return c.getAttribute("data-pers"); });
-        var anadir = Array.prototype.filter.call($("dlgCuerpo").querySelectorAll("[data-anadir]"), function (c) { return c.checked; }).map(function (c) { return c.getAttribute("data-anadir"); });
-        if ($("autOtra").value) anadir.push($("autOtra").value);
-        if (quitar.length && !confirm("¿Quitar a " + quitar.join(", ") + " de este artículo?")) return;
+        var cu = $("dlgCuerpo"), marcado = cu.querySelector('input[name="autEstado"]:checked'), estado = marcado ? marcado.value : "";
+        var quitar = Array.prototype.filter.call(cu.querySelectorAll("[data-pers]"), function (c) { return !c.checked; }).map(function (c) { return c.getAttribute("data-pers"); });
+        var anadir = Array.prototype.filter.call(cu.querySelectorAll("[data-anadir]"), function (c) { return c.checked; }).map(function (c) { return c.getAttribute("data-anadir"); })
+          .concat(Array.prototype.map.call(cu.querySelectorAll("[data-otra]"), function (c) { return c.getAttribute("data-otra"); }));
+        if (estado === "Descartado") {
+          if (!confirm("¿Descartar este artículo? No se borra: queda como «Descartado» y deja de contar en las publicaciones del Servicio.")) return;
+          quitar = []; anadir = [];
+        } else if (quitar.length && !confirm("¿Quitar a " + quitar.join(", ") + " de este artículo?")) return;
+        var d = { quitar: quitar, anadir: anadir, nota: $("autNota").value.trim(), estado: estado, motivo: estado === "Descartado" ? $("autMotivoD").value.trim() : "" };
         var siguiente = $("autSiguiente").checked;
-        $("dlgAceptar").disabled = true; cargando(true);
-        api("webAutoriasRevisar", S.token, id, { quitar: quitar, anadir: anadir, nota: $("autNota").value.trim() }).then(function (r) {
-          aviso(r.mensaje, 5000); cerrarDialogo();
-          if (quitar.length || anadir.length) CACHE.quitar("webListarPublicaciones");
-          return cargarAutorias().then(function () {
-            pintarRevision();
-            if (siguiente) { var l2 = autFiltradas().filter(function (z) { return z.id !== id; }); if (l2.length) abrirAutoria(l2[0].id); }
-          });
-        }).catch(function (e) { aviso(e.message, 7000); }).then(function () { $("dlgAceptar").disabled = false; cargando(false); });
+        cerrarDialogo();
+        autMarcarLocal(id, d);
+        autGuardarFondo(id, d);
+        if (REV.tab === "autorias") pintarRevision();
+        var sig = siguiente ? autSiguienteId(id) : "";
+        if (sig) abrirAutoria(sig); else if (siguiente) aviso("No quedan más artículos en esta lista.", 4000);
       });
       document.querySelector("#dlgForm .dialogo").classList.add("ancho");
       $("dlgForm").classList.add("hoja");
+      // varias personas: cada una elegida pasa a una etiqueta con «×» para quitarla
+      var sel = $("autOtra"), caja = $("autOtras");
+      var ponerChip = function (n) {
+        if (Array.prototype.some.call(caja.querySelectorAll("[data-otra]"), function (z) { return z.getAttribute("data-otra") === n; })) return;
+        var op = sel.querySelector('option[value="' + (window.CSS && CSS.escape ? CSS.escape(n) : n.replace(/"/g, '\\"')) + '"]'); if (op) op.disabled = true;
+        var c = document.createElement("span"); c.className = "aut-chip"; c.setAttribute("data-otra", n);
+        c.innerHTML = '<i class="fa-solid fa-user-plus"></i> ' + esc(n) + ' <button type="button" aria-label="Quitar a ' + esc(n) + '">×</button>';
+        c.querySelector("button").onclick = function () { c.remove(); if (op) op.disabled = false; };
+        caja.appendChild(c);
+      };
+      sel.onchange = function () { if (sel.value) ponerChip(sel.value); sel.value = ""; };
+      // descartar: atenúa las personas y cambia el botón
+      var cambiarEstado = function () {
+        var m = $("dlgCuerpo").querySelector('input[name="autEstado"]:checked'), desc = !!m && m.value === "Descartado";
+        $("autMotivoCaja").classList.toggle("oculto", !desc); $("autPersonasCaja").classList.toggle("aut-atenuado", desc);
+        $("autDecision").querySelectorAll(".aut-seg label").forEach(function (l) { l.classList.toggle("activo", l.querySelector("input").checked); });
+        $("dlgAceptar").textContent = desc ? "Descartar artículo" : x.nuevo ? "Confirmar y guardar" : "Guardar revisión";
+      };
+      $("dlgCuerpo").querySelectorAll('input[name="autEstado"]').forEach(function (r) { r.onchange = cambiarEstado; });
+      cambiarEstado();
+      var sig = autSiguienteId(id); if (sig) autDetalle(sig).catch(function () {});        // precarga la siguiente
     }).catch(function (e) { aviso(e.message, 7000); }).then(function () { cargando(false); });
   }
   $("pestRev").addEventListener("click", function (ev) { var b = ev.target.closest("[data-rtab]"); if (b) { REV.tab = b.getAttribute("data-rtab"); if (REV.tab === "accesos") S.accesos = null; pintarRevision(); subCambiado(); } });
