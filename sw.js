@@ -1,4 +1,4 @@
-// Service worker de Gestión CGyAD-GITIC (v0.9.10)
+// Service worker de Gestión CGyAD-GITIC (v0.9.11)
 // 1) Guarda la INTERFAZ (la página lleva dentro la letra y los iconos; los datos nunca se guardan) para que la web abra al instante, también con mala conexión.
 //    La página guardada se muestra enseguida y, a la vez, se pide la publicada: si es distinta, se guarda y la web avisa
 //    («Hay una versión nueva · Actualizar»).
